@@ -2,11 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import PatientDispenseForm from '../components/PatientDispenseForm'
 import MedicationHistorySection from '../components/MedicationHistorySection'
-
-import {
-  dispenseMedicationToPatient,
-  getPatientMedicationHistory,
-} from '../services/patientDispenseService'
+import PatientMedicationProfile from '../components/PatientMedicationProfile'
 
 export default function PatientRegistryPage() {
   const [organizationId, setOrganizationId] = useState('')
@@ -460,7 +456,19 @@ export default function PatientRegistryPage() {
               >
                 <td style={tdStyle}>{patient.mrn}</td>
                 <td style={tdStyle}>{patient.patient_name}</td>
-                <td style={tdStyle}>{patient.patient_status || '-'}</td>
+                <td style={tdStyle}>
+  <span
+    style={{
+      color:
+        String(patient.patient_status || '').toLowerCase() === 'active'
+          ? '#34d399'
+          : '#f87171',
+      fontWeight: 'bold',
+    }}
+  >
+    {patient.patient_status || '-'}
+  </span>
+</td>
                 <td style={tdStyle}>{patient.gender || '-'}</td>
                 <td style={tdStyle}>{patient.date_of_birth || '-'}</td>
                 <td style={tdStyle}>{patient.mobile || '-'}</td>
@@ -502,10 +510,15 @@ export default function PatientRegistryPage() {
 
             <hr style={{ borderColor: '#334155' }} />
 
-            <p><strong>Address:</strong> {selectedPatient.address || '-'}</p>
-            <p><strong>Allergies:</strong> {selectedPatient.allergies || '-'}</p>
-            <p><strong>Chronic Conditions:</strong> {selectedPatient.chronic_conditions || '-'}</p>
-            <p><strong>Notes:</strong> {selectedPatient.notes || '-'}</p>
+     <p><strong>Address:</strong> {selectedPatient.address || '-'}</p>
+<p><strong>Allergies:</strong> {selectedPatient.allergies || '-'}</p>
+<p><strong>Chronic Conditions:</strong> {selectedPatient.chronic_conditions || '-'}</p>
+<p><strong>Notes:</strong> {selectedPatient.notes || '-'}</p>
+
+<PatientMedicationProfile
+  patient={selectedPatient}
+  refreshKey={medicationRefreshKey}
+/>
 
 <PatientDispenseForm
   patient={selectedPatient}
@@ -531,11 +544,10 @@ export default function PatientRegistryPage() {
 
 const statsGridStyle = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(5, 1fr)',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
   gap: '16px',
   marginBottom: '24px',
 }
-
 const noticeStyle = {
   background: '#020617',
   border: '1px solid #334155',

@@ -1,4 +1,7 @@
 import PatientRegistryPage from './pages/PatientRegistryPage'
+import StockCountPage from './pages/StockCountPage'
+import ReconciliationCasesPage from './pages/ReconciliationCasesPage'
+import ReconciliationAuditPage from './pages/ReconciliationAuditPage'
 import { useState } from 'react'
 import { searchDrugs } from './lib/drugMasterService'
 import {
@@ -162,6 +165,48 @@ export default function App() {
 >
   Patients
 </button>
+<button
+  onClick={() => setCurrentPage('stockcount')}
+  style={{
+    padding: '12px 20px',
+    borderRadius: '12px',
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '16px',
+    fontWeight: currentPage === 'stockcount' ? 'bold' : 'normal',
+  }}
+>
+  Stock Count
+</button>
+<button
+  onClick={() => setCurrentPage('reconciliation')}
+  style={{
+    padding: '12px 20px',
+    borderRadius: '12px',
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '16px',
+    fontWeight: currentPage === 'reconciliation' ? 'bold' : 'normal',
+  }}
+>
+  Reconciliation
+</button>
+<button
+  onClick={() => setCurrentPage('reconciliation-audit')}
+  style={{
+    padding: '12px 20px',
+    borderRadius: '12px',
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '16px',
+    fontWeight:
+      currentPage === 'reconciliation-audit'
+        ? 'bold'
+        : 'normal',
+  }}
+>
+  Reconciliation Audit
+</button>
       </div>
 
     {currentPage === 'dashboard' && <DashboardPage />}
@@ -172,6 +217,13 @@ export default function App() {
 
 {currentPage === 'operations' && <InventoryOperationsPage />}
 {currentPage === 'patients' && <PatientRegistryPage />}
+{currentPage === 'stockcount' && <StockCountPage />}
+{currentPage === 'reconciliation' && (
+  <ReconciliationCasesPage />
+)}
+{currentPage === 'reconciliation-audit' && (
+  <ReconciliationAuditPage />
+)}
 
 {currentPage === 'drug-search' && (
         <>

@@ -127,6 +127,39 @@ export async function dispenseMedicationToPatient({
 
     throw new Error(`Medication history insert failed: ${historyError.message}`)
   }
+const { error: dispenseHistoryError } = await supabase
+  .from('patient_dispense_history')
+  .insert({
+    patient_id: patientId,
+    pharmacy_id: pharmacyId,
+    drug_code: inventoryItem.drug_code,
+    generic_name: drug?.generic_name || null,
+    brand_name: drug?.brand_name || null,
+    strength: drug?.strength || null,
+    quantity_dispensed: qty,
+    dispense_date: now,
+    dispensed_by: createdBy || 'FalconMed Patient Dispense',
+    transaction_id: transaction.id,
+    notes: `Patient dispense: ${qty} units`,
+  })
+
+if (dispenseHistoryError) {
+  await rollbackInventory()
+
+  await supabase
+    .from('inventory_transactions')
+    .delete()
+    .eq('id', transaction.id)
+
+  await supabase
+    .from('patient_medication_history')
+    .delete()
+    .eq('id', history.id)
+
+  throw new Error(
+    `Patient dispense history insert failed: ${dispenseHistoryError.message}`
+  )
+}
 
   return {
     success: true,

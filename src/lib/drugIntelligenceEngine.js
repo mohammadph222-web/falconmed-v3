@@ -5,13 +5,7 @@ export function normalizeDrugText(value = '') {
     .trim()
 }
 
-const COMBINATION_SEPARATORS = [
-  '+',
-  ',',
-  '/',
-  ' and ',
-  ' with ',
-]
+const COMBINATION_SEPARATORS = ['+', ',', '/', ' and ', ' with ']
 
 const SALT_FORMS = [
   'besilate',
@@ -56,7 +50,7 @@ export function splitIngredients(genericName = '') {
   let value = normalizeDrugText(genericName)
 
   value = value
-    .replace(/\s+\+\s+/g, '|')
+    .replace(/\s*\+\s*/g, '|')
     .replace(/\s*,\s*/g, '|')
     .replace(/\s*\/\s*/g, '|')
     .replace(/\s+and\s+/g, '|')
@@ -113,9 +107,12 @@ export function buildDrugIntelligence(drug = {}) {
     .map((item) => item.ingredient)
     .filter(Boolean)
 
-  const primary = ingredientList[0] || normalizeDrugText(rawGeneric)
+  const primaryIngredient = ingredientList[0] || normalizeDrugText(rawGeneric)
+
   const saltForm =
-    parsedIngredients.length === 1 ? parsedIngredients[0]?.salt_form || null : null
+    parsedIngredients.length === 1
+      ? parsedIngredients[0]?.salt_form || null
+      : null
 
   return {
     ...drug,
@@ -123,7 +120,7 @@ export function buildDrugIntelligence(drug = {}) {
     normalized_brand_name: normalizeDrugText(rawBrand),
     ingredient_list: ingredientList,
     ingredient_count: ingredientList.length,
-    primary_ingredient: primary,
+    primary_ingredient: primaryIngredient,
     salt_form: saltForm,
     is_combination: ingredientList.length > 1,
   }
