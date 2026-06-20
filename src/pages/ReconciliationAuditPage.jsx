@@ -28,64 +28,283 @@ export default function ReconciliationAuditPage() {
     setLoading(false)
   }
 
-  return (
-    <div style={pageStyle}>
-      <div style={headerStyle}>
-        <div>
-          <h1 style={titleStyle}>Reconciliation Audit Trail</h1>
-          <p style={subtitleStyle}>
-            Full history of reconciliation actions, investigations, approvals, and rejections.
-          </p>
-        </div>
+  const savedCount = auditRows.filter(
+    (r) => r.action === 'INVESTIGATION_SAVED'
+  ).length
+  const approvedCount = auditRows.filter(
+    (r) => r.action === 'CASE_APPROVED'
+  ).length
+  const rejectedCount = auditRows.filter(
+    (r) => r.action === 'CASE_REJECTED'
+  ).length
 
-        <button onClick={loadAuditTrail} style={buttonStyle}>
-          Refresh
-        </button>
+  return (
+    <div>
+      <div className="fm-page-header">
+        <div className="fm-page-header-top">
+          <div>
+            <div className="fm-page-header-meta">Governance</div>
+            <h1 className="fm-page-header-title">Reconciliation audit trail</h1>
+            <p className="fm-page-header-desc">
+              Full history of reconciliation actions, investigations,
+              approvals, and rejections.
+            </p>
+          </div>
+          <div className="fm-page-header-actions">
+            <button className="fm-btn" onClick={loadAuditTrail}>
+              Refresh
+            </button>
+          </div>
+        </div>
       </div>
 
-      {loading ? (
-        <div style={cardStyle}>Loading audit trail...</div>
-      ) : auditRows.length === 0 ? (
-        <div style={cardStyle}>No audit records found.</div>
-      ) : (
-        <div style={tableWrapperStyle}>
-          <table style={tableStyle}>
-            <thead>
-              <tr>
-                <th style={thStyle}>Date</th>
-                <th style={thStyle}>Case ID</th>
-                <th style={thStyle}>Action</th>
-                <th style={thStyle}>Previous Status</th>
-                <th style={thStyle}>New Status</th>
-                <th style={thStyle}>Previous Quantity</th>
-                <th style={thStyle}>New Quantity</th>
-                <th style={thStyle}>Reason</th>
-                <th style={thStyle}>Approval Status</th>
-                <th style={thStyle}>Performed By</th>
-              </tr>
-            </thead>
+      {!loading && auditRows.length > 0 && (
+        <div className="fm-grid-kpi" style={{ marginBottom: '24px' }}>
+          <AuditKpiCard
+            label="Total audit records"
+            value={auditRows.length}
+            color="var(--color-text-accent)"
+            barColor="var(--color-primary)"
+          />
+          <AuditKpiCard
+            label="Investigations saved"
+            value={savedCount}
+            color="var(--color-warning-mid)"
+            barColor="var(--color-warning-mid)"
+          />
+          <AuditKpiCard
+            label="Cases approved"
+            value={approvedCount}
+            color="var(--color-success)"
+            barColor="var(--color-success)"
+          />
+          <AuditKpiCard
+            label="Cases rejected"
+            value={rejectedCount}
+            color="var(--color-danger-mid)"
+            barColor="var(--color-danger-mid)"
+          />
+        </div>
+      )}
 
-            <tbody>
-              {auditRows.map((row) => (
-                <tr key={row.id}>
-                  <td style={tdStyle}>{formatDate(row.created_at)}</td>
-                  <td style={tdStyle}>{row.reconciliation_case_id ? row.reconciliation_case_id.substring(0, 8) : '-'}</td>
-                  <td style={tdStyle}>{row.action || '-'}</td>
-                  <td style={tdStyle}>{row.previous_status || '-'}</td>
-                  <td style={tdStyle}>{row.new_status || '-'}</td>
-                  <td style={tdStyle}>{formatValue(row.previous_quantity)}</td>
-                  <td style={tdStyle}>{formatValue(row.new_quantity)}</td>
-                  <td style={tdStyle}>{row.reason || '-'}</td>
-                  <td style={tdStyle}>{row.approval_status || '-'}</td>
-                  <td style={tdStyle}>{row.performed_by || '-'}</td>
+      {loading && (
+        <div
+          className="fm-card"
+          style={{ color: 'var(--color-text-secondary)' }}
+        >
+          Loading audit trail...
+        </div>
+      )}
+
+      {!loading && auditRows.length === 0 && (
+        <div className="fm-empty-state">
+          <div className="fm-empty-state-title">No audit records found</div>
+          <div className="fm-empty-state-desc">
+            Audit records are created automatically when reconciliation
+            cases are investigated, approved, or rejected.
+          </div>
+        </div>
+      )}
+
+      {!loading && auditRows.length > 0 && (
+        <div className="fm-card" style={{ padding: 0, overflow: 'hidden' }}>
+          <div className="fm-table-wrap">
+            <table className="fm-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Case ID</th>
+                  <th>Action</th>
+                  <th>Previous status</th>
+                  <th>New status</th>
+                  <th>Previous qty</th>
+                  <th>New qty</th>
+                  <th>Reason</th>
+                  <th>Approval status</th>
+                  <th>Performed by</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {auditRows.map((row) => (
+                  <tr key={row.id}>
+                    <td className="fm-table-muted" style={{ whiteSpace: 'nowrap' }}>
+                      {formatDate(row.created_at)}
+                    </td>
+                    <td>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 'var(--text-xs)',
+                          color: 'var(--color-text-accent)',
+                        }}
+                      >
+                        {row.reconciliation_case_id
+                          ? row.reconciliation_case_id.substring(0, 8)
+                          : '-'}
+                      </span>
+                    </td>
+                    <td>
+                      <ActionBadge action={row.action} />
+                    </td>
+                    <td className="fm-table-muted">
+                      {row.previous_status || '-'}
+                    </td>
+                    <td>
+                      <StatusBadge status={row.new_status} />
+                    </td>
+                    <td className="fm-table-muted">
+                      {formatValue(row.previous_quantity)}
+                    </td>
+                    <td className="fm-table-muted">
+                      {formatValue(row.new_quantity)}
+                    </td>
+                    <td className="fm-table-muted">
+                      {row.reason || (
+                        <span style={{ color: 'var(--color-text-tertiary)' }}>
+                          —
+                        </span>
+                      )}
+                    </td>
+                    <td>
+                      <ApprovalBadge status={row.approval_status} />
+                    </td>
+                    <td className="fm-table-muted">
+                      {row.performed_by || '-'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
   )
+}
+
+function AuditKpiCard({ label, value, color, barColor }) {
+  return (
+    <div className="fm-kpi-card">
+      <div className="fm-kpi-label">{label}</div>
+      <div className="fm-kpi-value" style={{ color }}>
+        {Number(value || 0).toLocaleString()}
+      </div>
+      <div className="fm-kpi-bar">
+        <div
+          className="fm-kpi-bar-fill"
+          style={{ width: '60%', background: barColor }}
+        />
+      </div>
+    </div>
+  )
+}
+
+function ActionBadge({ action }) {
+  const map = {
+    INVESTIGATION_SAVED: {
+      color: 'var(--color-warning-mid)',
+      background: 'rgba(186,117,23,0.12)',
+      border: '1px solid rgba(186,117,23,0.30)',
+      label: 'Investigation saved',
+    },
+    CASE_APPROVED: {
+      color: 'var(--color-success)',
+      background: 'rgba(29,158,117,0.12)',
+      border: '1px solid rgba(29,158,117,0.30)',
+      label: 'Case approved',
+    },
+    CASE_REJECTED: {
+      color: 'var(--color-danger-mid)',
+      background: 'rgba(163,45,45,0.12)',
+      border: '1px solid rgba(163,45,45,0.30)',
+      label: 'Case rejected',
+    },
+  }
+
+  const style = map[action] ?? {
+    color: 'var(--color-text-secondary)',
+    background: 'rgba(255,255,255,0.05)',
+    border: '1px solid var(--color-border-default)',
+    label: action || '-',
+  }
+
+  return (
+    <span
+      style={{
+        display: 'inline-block',
+        padding: '3px 10px',
+        borderRadius: 'var(--radius-pill)',
+        fontSize: 'var(--text-xs)',
+        fontWeight: 'var(--font-medium)',
+        whiteSpace: 'nowrap',
+        color: style.color,
+        background: style.background,
+        border: style.border,
+      }}
+    >
+      {style.label}
+    </span>
+  )
+}
+
+function StatusBadge({ status }) {
+  const map = {
+    PENDING: {
+      color: 'var(--color-warning-mid)',
+      background: 'rgba(186,117,23,0.12)',
+      border: '1px solid rgba(186,117,23,0.30)',
+    },
+    UNDER_REVIEW: {
+      color: 'var(--color-text-accent)',
+      background: 'rgba(24,95,165,0.12)',
+      border: '1px solid rgba(24,95,165,0.30)',
+    },
+    APPROVED: {
+      color: 'var(--color-success)',
+      background: 'rgba(29,158,117,0.12)',
+      border: '1px solid rgba(29,158,117,0.30)',
+    },
+    REJECTED: {
+      color: 'var(--color-danger-mid)',
+      background: 'rgba(163,45,45,0.12)',
+      border: '1px solid rgba(163,45,45,0.30)',
+    },
+    CLOSED: {
+      color: '#c084fc',
+      background: 'rgba(168,85,247,0.12)',
+      border: '1px solid rgba(168,85,247,0.30)',
+    },
+  }
+
+  if (!status) {
+    return <span style={{ color: 'var(--color-text-tertiary)' }}>—</span>
+  }
+
+  const style = map[status] ?? {
+    color: 'var(--color-text-secondary)',
+    background: 'rgba(255,255,255,0.05)',
+    border: '1px solid var(--color-border-default)',
+  }
+
+  return (
+    <span
+      style={{
+        display: 'inline-block',
+        padding: '3px 10px',
+        borderRadius: 'var(--radius-pill)',
+        fontSize: 'var(--text-xs)',
+        fontWeight: 'var(--font-medium)',
+        whiteSpace: 'nowrap',
+        ...style,
+      }}
+    >
+      {status}
+    </span>
+  )
+}
+
+function ApprovalBadge({ status }) {
+  return <StatusBadge status={status} />
 }
 
 function formatDate(value) {
@@ -96,79 +315,4 @@ function formatDate(value) {
 function formatValue(value) {
   if (value === null || value === undefined || value === '') return '-'
   return value
-}
-
-const pageStyle = {
-  minHeight: '100vh',
-  background: '#0f172a',
-  color: '#e5e7eb',
-  padding: '24px',
-}
-
-const headerStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginBottom: '20px',
-  gap: '16px',
-}
-
-const titleStyle = {
-  margin: 0,
-  fontSize: '28px',
-  fontWeight: '700',
-}
-
-const subtitleStyle = {
-  marginTop: '8px',
-  color: '#94a3b8',
-}
-
-const buttonStyle = {
-  background: '#2563eb',
-  color: 'white',
-  border: 'none',
-  borderRadius: '8px',
-  padding: '10px 16px',
-  cursor: 'pointer',
-  fontWeight: '600',
-}
-
-const cardStyle = {
-  background: '#111827',
-  border: '1px solid #1f2937',
-  borderRadius: '12px',
-  padding: '20px',
-  color: '#cbd5e1',
-}
-
-const tableWrapperStyle = {
-  overflowX: 'auto',
-  background: '#111827',
-  border: '1px solid #1f2937',
-  borderRadius: '12px',
-}
-
-const tableStyle = {
-  width: '100%',
-  borderCollapse: 'collapse',
-  minWidth: '1200px',
-}
-
-const thStyle = {
-  textAlign: 'left',
-  padding: '12px',
-  background: '#1e293b',
-  color: '#cbd5e1',
-  fontSize: '13px',
-  borderBottom: '1px solid #334155',
-  whiteSpace: 'nowrap',
-}
-
-const tdStyle = {
-  padding: '12px',
-  borderBottom: '1px solid #1f2937',
-  fontSize: '13px',
-  color: '#e5e7eb',
-  verticalAlign: 'top',
 }
