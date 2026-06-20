@@ -129,25 +129,28 @@ export default function InventoryExplorerPage() {
       return { score: 0, label: 'No Data', tone: 'blue', riskCount: 0 }
     }
 
-   const riskCount = summary.lowStockCount + summary.outOfStockCount
+    const riskCount = summary.lowStockCount + summary.outOfStockCount
 
-const score = Math.round(
-  ((summary.healthyCount || 0) / summary.totalItems) * 100
-)
+    const score = Math.round(
+      ((summary.healthyCount || 0) / summary.totalItems) * 100
+    )
 
-if (score >= 85) {
-  return { score, label: 'Healthy', tone: 'green', riskCount }
-}
+    if (score >= 85) {
+      return { score, label: 'Healthy', tone: 'green', riskCount }
+    }
 
-if (score >= 70) {
-  return { score, label: 'Watch', tone: 'amber', riskCount }
-}
+    if (score >= 70) {
+      return { score, label: 'Watch', tone: 'amber', riskCount }
+    }
 
-return { score, label: 'Critical', tone: 'red', riskCount }
+    return { score, label: 'Critical', tone: 'red', riskCount }
   }, [summary])
 
   const selectedPharmacyName = useMemo(() => {
-    return pharmacies.find((pharmacy) => pharmacy.id === selectedPharmacy)?.name || 'Selected Pharmacy'
+    return (
+      pharmacies.find((pharmacy) => pharmacy.id === selectedPharmacy)?.name ||
+      'Selected Pharmacy'
+    )
   }, [pharmacies, selectedPharmacy])
 
   const filteredInventory = inventory.filter((item) => {
@@ -159,7 +162,8 @@ return { score, label: 'Critical', tone: 'red', riskCount }
       item.drug_code?.toLowerCase().includes(search) ||
       item.drug?.generic_name?.toLowerCase().includes(search) ||
       item.drug?.brand_name?.toLowerCase().includes(search) ||
-      item.batch_number?.toLowerCase().includes(search)
+      item.batch_number?.toLowerCase().includes(search) ||
+      item.storage_location?.toLowerCase().includes(search)
     )
   })
 
@@ -175,6 +179,7 @@ return { score, label: 'Critical', tone: 'red', riskCount }
       'Quantity',
       'Minimum Stock',
       'Maximum Stock',
+      'Storage Location',
       'Stock Status',
       'Inventory Value AED',
     ]
@@ -194,6 +199,7 @@ return { score, label: 'Critical', tone: 'red', riskCount }
         qty,
         item.minimum_stock || 0,
         item.maximum_stock || 0,
+        item.storage_location || '',
         getStockStatus(item).label,
         (qty * unitCost).toFixed(2),
       ]
@@ -270,7 +276,7 @@ return { score, label: 'Critical', tone: 'red', riskCount }
           <label style={labelStyle}>Search</label>
           <input
             type="text"
-            placeholder="Search by drug code, generic, brand, or batch..."
+            placeholder="Search by drug, brand, code, batch, or location..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={inputStyle}
@@ -321,7 +327,6 @@ return { score, label: 'Critical', tone: 'red', riskCount }
         </div>
       )}
 
-     
       {!loading && inventory.length === 0 && (
         <div style={emptyStateStyle}>No inventory found for this pharmacy.</div>
       )}
@@ -335,6 +340,7 @@ return { score, label: 'Critical', tone: 'red', riskCount }
           <div style={tableHeaderStyle}>
             <div>
               <strong>{formatNumber(filteredInventory.length)}</strong> records shown
+              <span style={{ color: '#94a3b8' }}> · {selectedPharmacyName}</span>
             </div>
             <div style={{ color: '#94a3b8' }}>
               Sorted by quantity on hand
@@ -346,17 +352,15 @@ return { score, label: 'Critical', tone: 'red', riskCount }
               <thead>
                 <tr>
                   <th style={stickyThStyle}>Status</th>
-                  <th style={stickyThStyle}>Drug Code</th>
-                  <th style={stickyThStyle}>Generic</th>
+                  <th style={stickyThStyle}>Drug</th>
                   <th style={stickyThStyle}>Brand</th>
-                  <th style={stickyThStyle}>Strength</th>
-                  <th style={stickyThStyle}>Form</th>
-                  <th style={stickyThStyle}>Batch</th>
-                  <th style={stickyThStyle}>Expiry</th>
-                  <th style={stickyThStyle}>Quantity</th>
-                  <th style={stickyThStyle}>Min</th>
-                  <th style={stickyThStyle}>Max</th>
+                  <th style={stickyThStyle}>Stock</th>
+                  <th style={stickyThStyle}>Min / Max</th>
                   <th style={stickyThStyle}>Value</th>
+                  <th style={stickyThStyle}>Expiry</th>
+                  <th style={stickyThStyle}>Location</th>
+                  <th style={stickyThStyle}>Batch</th>
+                  <th style={stickyThStyle}>Code</th>
                 </tr>
               </thead>
 
@@ -364,6 +368,8 @@ return { score, label: 'Critical', tone: 'red', riskCount }
                 {filteredInventory.map((item, index) => {
                   const status = getStockStatus(item)
                   const qty = Number(item.quantity_on_hand || 0)
+                  const min = Number(item.minimum_stock || 0)
+                  const max = Number(item.maximum_stock || 0)
                   const unitCost = Number(item.drug?.unit_price_to_pharmacy || 0)
                   const value = qty * unitCost
 
@@ -378,21 +384,43 @@ return { score, label: 'Critical', tone: 'red', riskCount }
                       <td style={tdStyle}>
                         <StockBadge status={status} />
                       </td>
-                      <td style={tdStyle}>{item.drug_code}</td>
-                      <td style={truncateTdStyle} title={item.drug?.generic_name || '-'}>
-                        {item.drug?.generic_name || '-'}
+
+                      <td style={drugCellStyle}>
+                        <div style={drugNameStyle} title={item.drug?.generic_name || '-'}>
+                          {item.drug?.generic_name || '-'}
+                        </div>
+                        <div style={drugMetaStyle}>
+                          {item.drug?.strength || '-'} · {item.drug?.dosage_form || '-'}
+                        </div>
                       </td>
-                      <td style={truncateTdStyle} title={item.drug?.brand_name || '-'}>
+
+                      <td style={brandCellStyle} title={item.drug?.brand_name || '-'}>
                         {item.drug?.brand_name || '-'}
                       </td>
-                      <td style={tdStyle}>{item.drug?.strength || '-'}</td>
-                      <td style={tdStyle}>{item.drug?.dosage_form || '-'}</td>
+
+                      <td style={tdStyle}>
+                        <div style={stockNumberStyle}>{formatNumber(qty)}</div>
+                        <div style={stockSubTextStyle}>on hand</div>
+                      </td>
+
+                      <td style={tdStyle}>
+                        <div>{formatNumber(min)} / {formatNumber(max)}</div>
+                        <div style={stockSubTextStyle}>min / max</div>
+                      </td>
+
+                      <td style={valueTdStyle}>AED {formatMoney(value)}</td>
+
+                      <td style={tdStyle}>
+                        <div>{item.expiry_date || '-'}</div>
+                      </td>
+
+                      <td style={locationTdStyle}>
+                        {item.storage_location || '-'}
+                      </td>
+
                       <td style={tdStyle}>{item.batch_number || '-'}</td>
-                      <td style={tdStyle}>{item.expiry_date || '-'}</td>
-                      <td style={tdStyle}>{formatNumber(item.quantity_on_hand)}</td>
-                      <td style={tdStyle}>{formatNumber(item.minimum_stock)}</td>
-                      <td style={tdStyle}>{formatNumber(item.maximum_stock)}</td>
-                      <td style={tdStyle}>AED {formatMoney(value)}</td>
+
+                      <td style={codeTdStyle}>{item.drug_code}</td>
                     </tr>
                   )
                 })}
@@ -429,17 +457,6 @@ function SummaryCard({ title, value, subValue, tone }) {
           {subValue}
         </div>
       )}
-    </div>
-  )
-}
-
-function SummaryMetric({ label, value, tone = 'blue' }) {
-  const color = toneColors[tone] || toneColors.blue
-
-  return (
-    <div style={summaryMetricStyle}>
-      <div style={{ color: '#94a3b8', fontSize: '13px' }}>{label}</div>
-      <strong style={{ color: color.text, fontSize: '18px' }}>{value}</strong>
     </div>
   )
 }
@@ -618,27 +635,6 @@ const skeletonCardStyle = {
   opacity: 0.45,
 }
 
-const pharmacySummaryStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'minmax(240px, 1.4fr) repeat(5, minmax(120px, 1fr))',
-  gap: '14px',
-  alignItems: 'center',
-  background: '#0f172a',
-  border: '1px solid #334155',
-  borderRadius: '18px',
-  padding: '18px',
-  marginBottom: '22px',
-}
-
-const summaryMetricStyle = {
-  background: '#020617',
-  border: '1px solid #1e293b',
-  borderRadius: '14px',
-  padding: '12px',
-  display: 'grid',
-  gap: '6px',
-}
-
 const tableSectionStyle = {
   background: '#0f172a',
   border: '1px solid #334155',
@@ -664,7 +660,7 @@ const tableWrapperStyle = {
 const tableStyle = {
   width: '100%',
   borderCollapse: 'collapse',
-  minWidth: '1250px',
+  minWidth: '1180px',
 }
 
 const stickyThStyle = {
@@ -687,11 +683,61 @@ const tdStyle = {
   whiteSpace: 'nowrap',
 }
 
-const truncateTdStyle = {
+const drugCellStyle = {
   ...tdStyle,
-  maxWidth: '280px',
+  minWidth: '330px',
+  maxWidth: '420px',
+  whiteSpace: 'normal',
+}
+
+const drugNameStyle = {
+  color: 'white',
+  fontWeight: 800,
+  lineHeight: 1.35,
+}
+
+const drugMetaStyle = {
+  color: '#94a3b8',
+  fontSize: '13px',
+  marginTop: '4px',
+}
+
+const brandCellStyle = {
+  ...tdStyle,
+  minWidth: '190px',
+  maxWidth: '260px',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
+}
+
+const stockNumberStyle = {
+  color: 'white',
+  fontWeight: 900,
+  fontSize: '18px',
+}
+
+const stockSubTextStyle = {
+  color: '#94a3b8',
+  fontSize: '12px',
+  marginTop: '3px',
+}
+
+const valueTdStyle = {
+  ...tdStyle,
+  color: '#34d399',
+  fontWeight: 800,
+}
+
+const locationTdStyle = {
+  ...tdStyle,
+  color: '#e2e8f0',
+  fontWeight: 700,
+}
+
+const codeTdStyle = {
+  ...tdStyle,
+  color: '#94a3b8',
+  fontSize: '13px',
 }
 
 function rowStyle(index) {

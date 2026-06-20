@@ -1,0 +1,1001 @@
+drug_code,generic_name,brand_name,strength,dispense_events,total_quantity_dispensed
+A01-0011-02593-01,Glucosamine& Chondroitin with Minerals,21ST CENTURY ARTHRI-FLEX ADVANTAGE,Combination,8,20
+A01-0011-02594-01,Glucosamine& Hyaluronic Acid& Methylsulfonylmethane (MSM)& Vitamins & Minerals,21ST CENTURY ARTHRI-FLEX ADVANTAGE,Combination,10,16
+A01-0015-02452-01,"Calcium Carbonate,Folic Acid",21st CENTURY FOLIC ACID,"230 mg,400 mcg",4,7
+A01-0017-02317-01,"Calcium Carbonate,Ferrous Gluconate",21ST CENTURY IRON,"110 mg,27 mg",1,1
+A01-0018-04698-01,Pregnancy Multivitamin,21ST CENTURY PRENATAL,Combination,5,12
+A01-0021-00470-01,"Ascorbic Acid (Vitamin C),Calcium Carbonate",21ST CENTURY VIT C,"500 mg,40 mg",4,9
+A01-A421-11016-01,"Fish oil (anchovy,cod,herring,mackerel,salmon,sardine,sprat)",Alaska Wild Fish Oil,650 mg,5,10
+A01-A506-11339-01,Herbal Combination,"21st Century  Hair, Skin & Nail",20 Combination,12,21
+A02-5695-03428-01,"Epinephrine Hydrochloride,Lidocaine Hydrochloride",XYLESTESIN-A,"0.015 mg/ml,20 mg/ml",4,18
+A04-2376-03698-01,Methenamine Hippurate,HIPREX,1000 mg,4,10
+A04-3765-05459-01,Theophylline,NUELIN SA,175 mg,6,14
+A04-3765-05461-02,Theophylline,NUELIN SA,250 mg,3,7
+A05-0745-02013-01,Edetate Calcium DiSodium (EDTA),CALCIUM DISODIUM EDETATE,1 g/5ml,1,2
+A05-1579-02014-01,Edetate Calcium DiSodium (EDTA),EDETATE CALCIUM DISODIUM,200 mg/ml,12,37
+A07-1819-03231-01,Ketoprofen,FASTUM,25 mg/g,3,8
+A07-1819-03231-02,Ketoprofen,FASTUM,25 mg/g,2,3
+A07-1819-03231-03,Ketoprofen,FASTUM,25 mg/g,1,1
+A11-2631-03161-01,Isosorbide Dinitrate,ISOSORBIDE DINITRATE,10 mg,5,10
+A11-3284-03811-01,MIDODRINE,MIDODRINE,2.5 mg,6,16
+A11-3663-04066-01,Nitrofurantoin,NITROFURANTOIN,50 mg,7,15
+A11-5287-00625-01,Benzhexol (Trihexyphenedyl),TRIHEXYPHENIDYL,2 mg,1,3
+A11-5287-00626-01,Benzhexol (Trihexyphenedyl),TRIHEXYPHENIDYL,5 mg,3,7
+A14-2766-01307-01,Clarithromycin,KLACID,500 mg,11,21
+A14-4772-05049-01,Selenium Sulfide,SELSUN,25 mg/ml,4,10
+A15-4689-04759-01,Propafenone Hydrochloride,RYTMONORM,150 mg,4,9
+A15-4689-04760-01,Propafenone Hydrochloride,RYTMONORM,300 mg,4,8
+A15-5109-06667-01,"Verapamil Hydrochloride,Trandolapril",TARKA,"240 mg,4 mg",3,6
+A16-1531-03267-01,Lactulose,DUPHALAC,667 mg/g,4,11
+A16-6471-03269-01,Lactulose,DUPHALAC FRUIT,667 mg/ml,3,6
+A17-1821-02441-01,Fluvoxamine Maleate,FAVERIN,100 mg,5,9
+A17-1821-02442-01,Fluvoxamine Maleate,FAVERIN,50 mg,6,20
+A17-5161-02094-01,"Eprosartan,Hydrochlorothiazide",TEVETEN PLUS,"600 mg,12.5 mg",8,19
+A18-0635-04730-01,Probiotics- Lactobacillus reuteri,BIOGAIA PROBIOTIC,100 millionIU/5drops,4,6
+A18-1156-03461-01,"Amylase,Lipase,Protease",CREON,"18000 U,25000 U,1000 U",4,13
+A18-2369-06446-01,Racecadotril,HIDRASEC,100 mg,1,2
+A18-4689-04761-01,Propafenone Hydrochloride,RYTMONORM,325 mg,4,10
+A19-1877-02454-01,"Folic Acid,Iron (Ferrous Sulfate)",FERROGRAD FOLIC,"0.35 mg,105 mg",3,6
+A19-2046-02408-01,Flurbiprofen,FROBEN S.R,200 mg,10,25
+A19-2767-01306-01,Clarithromycin,KLACID XL,500 mg,4,8
+A19-3714-04940-01,Ritonavir,NORVIR,100 mg,1,2
+A19-7285-07287-01,"Fenofibrate,Simvastatin",CHOLIB,"145 mg,20 mg",4,8
+A21-5064-03380-01,Levothyroxine Sodium,SYNTHROID,125 mcg,5,11
+A21-5064-03382-01,Levothyroxine Sodium,SYNTHROID,150 mcg,5,10
+A23-0087-00100-01,Aciclovir (Acyclovir),ACYCLOVIR SODIUM,1 g,5,7
+A23-0452-00529-01,Atracurium Besilate,ATRACURIUM BESYLATE,10 mg/ml,4,8
+A23-0732-00851-01,Calcitriol,CALCIJEX,1 mcg/ml,2,3
+A23-0750-00899-01,"Calcium Gluconate,Calcium Saccharate",CALCIUM GLUCONATE USP,"94 mg/ml,4.5 mg/ml",6,11
+A23-1156-04289-01,Pancreatic Enzymes,CREON,12000 IU,13,34
+A23-1450-01918-01,Dobutamine Hydrochloride,DOBUTAMINE USP,12.5 mg/ml,3,6
+A23-1707-02127-01,Erythromycin Ethyl Succinate,ERYPED,400 mg/5ml,5,13
+A23-1710-02135-02,Erythromycin Stearate,ERYTHROCIN STEARATE,500 mg,3,7
+A23-2934-03409-01,Lidocaine Hydrochloride,LIDOCAINE HYDROCHLORIDE USP,20 mg/ml,3,10
+A23-2934-03409-02,Lidocaine Hydrochloride,LIDOCAINE HYDROCHLORIDE USP,20 mg/ml,6,11
+A23-3056-03327-01,Leuprorelin Acetate,LUPRON,11.25 mg,12,27
+A23-3056-03328-01,Leuprorelin Acetate,LUPRON,22.5 mg,6,20
+A23-4049-04192-01,ORS-Electrolyte,PEDIALYTE,Combination,9,21
+A23-5033-03907-01,Multivitamin,SURBEX - T,Combination,3,5
+A23-5064-03377-02,Levothyroxine,SYNTHROID,75 mcg,2,4
+A23-5064-03379-02,Levothyroxine Sodium,SYNTHROID,112 mcg,6,14
+A23-5064-03380-02,Levothyroxine Sodium,SYNTHROID,125 mcg,5,9
+A23-5064-03386-02,Levothyroxine Sodium,SYNTHROID,25 mcg,8,16
+A23-5064-03388-02,Levothyroxine Sodium,SYNTHROID,88 mcg,4,6
+A23-5064-09333-02,Levothyroxine Sodium,SYNTHROID,300 mcg,3,3
+A24-4146-03888-01,Moxonidine,PHYSIOTENS,0.2 mg,4,10
+A24-4146-03889-01,Moxonidine,PHYSIOTENS,0.4 mg,5,7
+A25-2642-05412-01,Terazosin,ITRIN,5 mg,4,13
+A25-2766-01300-02,Clarithromycin,KLACID,125 mg/5ml,3,7
+A27-3714-04941-01,Ritonavir,NORVIR,100 mg,8,25
+A27-6095-03332-01,Leuprorelin Acetate,LUCRIN,7.5 mg,5,9
+A28-3056-03331-01,Leuprorelin Acetate,LUPRON,5 mg/ml,1,3
+A29-0202-15980-01,Brimonidine Tartrate,Alphagan P,0.1 %,9,27
+A29-1283-07741-01,Divalproex Sodium (Valproate Semisodium),DEPAKOTE,125 mg,9,26
+A29-5470-06079-01,Venetoclax,VENCLEXTA,100 mg,7,13
+A29-5470-06079-02,Venetoclax,VENCLEXTA,100 mg,7,8
+A29-A400-11004-01,Pilocarpine Hydrochloride,VUITY ,12.5 mg/ml,5,7
+A29-B221-07499-01,Linaclotide,Linzess,72 mcg,8,27
+A29-D251-17322-01,Oxybutynin Hydrochloride,OXYBUTYNIN TRANSDERMAL SYSTEM,3.9 mg/Patch,3,8
+A29-D283-17351-01,Eluxadoline,VIBERZI,75 mg,2,5
+A30-1526-03356-01,"Carbidopa,Levodopa",DUODOPA,"5 mg/ml,20 mg/ml",5,10
+A30-5050-04278-01,Palivizumab,SYNAGIS,50 mg/0.5ml,2,4
+A31-0914-03344-01,Levobupivacaine Hydrochloride,CHIROCAINE,2.5 mg/ml,5,12
+A31-5050-04277-01,Palivizumab,SYNAGIS,50 mg,2,4
+A31-5745-04378-01,Paricalcitol,ZEMPLAR,5 mcg/ml,3,7
+A31-5745-04378-02,Paricalcitol,ZEMPLAR,5 mcg/ml,3,9
+A31-7933-07753-01,Upadacitinib,RINVOQ 15mg,15 mg,4,10
+A34-5170-05471-01,Thiamine (Vitamin B1),THIAMINE,100 mg/ml,6,11
+A36-0236-00285-01,Amitriptyline Hydrochloride,AMITRIPTYLINE,25 mg,2,6
+A36-2499-02953-01,Imipramine Hydrochloride,IMIPRAMINE,10 mg,10,19
+A36-4237-04665-01,Pravastatin Sodium,PRAVASTATIN,20 mg,5,6
+A36-4249-04682-01,Prednisolone,PREDNISOLONE,20 mg,4,6
+A36-8076-04472-02,Phenobarbital,PHENOBARBITAL ACCORD,30 mg,5,15
+A36-8790-02349-02,Flecainide Acetate,FLECAINIDE ACETATE,100 mg,8,19
+A36-9922-10337-03,Pegfilgrastim (PELGRAZ),PELGRAZ,6 mg,3,8
+A36-A201-10728-01,Paracetamol (Acetaminophen),Fizamol,500 mg,3,6
+A36-B105-08163-02,Bortezomib,Bortezomib Accord 2.5 mg/mL,2.5 mg/ml,1,1
+A36-B968-11221-02,"Buprenorphine Hydrochloride,Naloxone Hydrochloride",Buprenorphine & Naloxone SL,"8 mg,2 mg",9,19
+A36-C307-04941-01,Ritonavir,RITONAVIR,100 mg,3,6
+A36-E119-04664-01,Pravastatin Sodium,PRAVASTATIN SODIUM,10 mg,1,1
+A37-2074-00179-01,Alfuzosin Hydrochloride,FUZOCIM,10 mg,1,1
+A37-2640-03203-01,Itraconazole,ITRACIM,100 mg,3,8
+A37-2640-03203-02,Itraconazole,ITRACIM,100 mg,7,16
+A37-2640-03203-07,Itraconazole,ITRACIM,100 mg,5,13
+A37-2774-04579-01,"Polyethylene Glycol (Macrogol 3350),Potassium Chloride,Sodium Bicarbonate,Sodium chloride",KLEAN-PREP,"13.125 g,46.6 mg,178.5 mg,350.7 mg",4,9
+A37-3204-03597-01,Mefloquine Hydrochloride,MEPHAQUIN,250 mg,1,1
+A37-3619-05484-01,"Cyanocobalamin (Vitamin B12),Pyridoxine Hydrochloride (Vitamin B6),Thiamine (Vitamin B1)",NEURORUBINE FORTE LACTABS,"1 mg,50 mg,200 mg",7,16
+A37-3831-01790-01,Diclofenac Sodium,OLFEN,50 mg,5,13
+A37-4016-19339-01,Pantoprazole Sodium Sesquihydrate 22.57mg corresponding to Pantoprazole,PANTOZOL,20 mg/1 Tablet,2,3
+A37-5402-04063-01,Nitrofurantoin,UVAMIN RETARD,100 mg,9,25
+A37-5723-01095-01,Cefuroxime Axetil,ZAMUR,250 mg,1,2
+A37-5723-01097-01,Cefuroxime Axetil,ZAMUR,500 mg,9,16
+A37-6793-06894-01,Doxazosin Mesilate (Mesylate),DOXACIN,4 mg,1,3
+A37-B631-13346-01,Paracetamol,PARACONICA,10 mg/ml,17,34
+A40-1269-03188-01,Isotretinoin,DECUTAN,20 mg,1,2
+A40-2384-01119-01,Cetirizine Hydrochloride,HISTASIN,10 mg,6,13
+A40-3161-05350-01,Sumatriptan Succinate,MEDYGRAINE,50 mg,1,1
+A40-5529-05849-01,Vinorelbine Tartrate,VINORELBINE ACTAVIS,10 mg/ml,7,16
+A41-0522-00594-01,Baclofen,BACLOFEN,10 mg,9,25
+A41-1187-04750-01,Progesterone,CYCLOGEST,200 mg,3,7
+A41-1187-04751-01,Progesterone,CYCLOGEST,400 mg,3,9
+A41-5292-05626-01,Trimethoprim,TRIMETHOPRIM,50 mg/5ml,1,3
+A41-C319-04342-01,"Codeine,Paracetamol (Acetaminophen)",Co-Dydramol Tablet,"10 mg,500 mg",3,7
+A41-C319-16130-02,"Dihydrocodeine Tartrate,Paracetamol (Acetaminophen)",Co-Dydramol Tablet,"10 mg,500 mg",1,3
+A43-0711-00818-01,Buspirone,BUSPIRONE,10 mg,12,29
+A43-4096-04454-01,Permethrin,PERMETHRIN,5 %,2,4
+A43-4432-04807-01,Pyrethrin,PYRETHRIN,5 %,5,10
+A44-3888-03532-02,Macitentan,OPSUMIT,10 mg,3,13
+A44-5378-06296-01,Selexipag,UPTRAVI,1000 mcg,1,2
+A44-5378-07519-01,Selexipag,UPTRAVI,1600 mcg,4,10
+A45-5733-03814-01,Miglustat,ZAVESCA,100 mg,2,2
+A46-2722-04581-01,Polysiloxane& Silicon Dioxide,KELO-COTE,Combination,3,5
+A47-5520-02746-01,Herbal-Combination,VIGRX FOR MEN,Combination,4,6
+A49-0781-02357-01,Fluconazole,CANDIVAST,150 mg,2,3
+A49-3401-03614-01,Meloxicam,MOVEN,7.5 mg,1,2
+A49-5792-00575-01,Azithromycin (Dihydrate),ZOCIN,200 mg/5ml,6,12
+A50-2266-05920-01,"Iron (Ferric Ammonium Citrate),Vitamin D3 (Cholecalciferol),Vitmain A,Zinc (Zinc Gluconate)",GROWLYN,"15 mg/5ml,400 IU/5ml,1500 IU/5ml,2 mg/5ml",3,14
+A51-1962-02350-01,Flucloxacillin,FLUCLOXACILLIN,125 mg/5ml,2,4
+A51-1962-02352-01,Flucloxacillin,FLUCLOXACILLIN,250 mg,13,26
+A51-3126-02924-01,"Ibuprofen,Paracetamol (Acetaminophen)",MAXIGESIC,"150 mg,500 mg",8,11
+A51-4029-04328-01,Paracetamol (Acetaminophen),PARASUSTAIN,665 mg,5,13
+A52-3241-03732-01,Methylcellulose,METHYLCELLULOSE,1000 g,4,8
+A53-1374-01770-01,Diclofenac Sodium,DICLOFENAC SODIUM,0.1 %,4,9
+A53-1713-02112-01,Erythromycin,ERYTHROMYCIN,0.5 %,2,2
+A53-2252-02894-01,Hypromellose,GONAK,25 mg/ml,8,20
+A53-2425-02816-02,Hydralazine Hydrochloride,HYDRALAZINE HYDROCHLORIDE,20 mg/ml,4,7
+A53-3242-03754-01,Methylthioninium Chloride (Methylene Blue),METHYLENE BLUE,10 mg/ml,3,7
+A53-4148-04515-01,Physostigmine Salicylate,PHYSOSTIGMINE SALICYLATE,1 mg/ml,11,40
+A54-0244-01403-01,Co-amoxiclav,AMOCLAN,375 mg,5,7
+A54-0245-01399-01,Co-amoxiclav,AMOCLAN BID,1 g,5,8
+A54-0245-01400-01,Co-amoxiclav,AMOCLAN BID,228.5 mg/5ml,3,8
+A54-0245-01404-01,Co-amoxiclav,AMOCLAN BID,457 mg/5ml,10,29
+A54-0246-01402-01,Co-amoxiclav,AMOCLAN FORTE,312.5 mg/5ml,3,6
+A54-0246-01409-01,Co-amoxiclav,AMOCLAN FORTE,625 mg,5,10
+A54-0847-01022-01,Cefazolin Sodium,CEFAMEZIN,1000 mg,8,18
+A54-0863-01040-01,Cefotaxime Sodium,CEFTAX,1 g,9,17
+A54-0863-01047-01,Cefotaxime Sodium,CEFTAX,500 mg,3,6
+A54-0970-01265-01,Ciprofloxacin,CIPROLON,250 mg,6,15
+A54-2083-02506-01,Gabapentin,GABATREX,400 mg,5,10
+A54-2187-02566-01,Glibenclamide,GLIBIL,5 mg,4,6
+A54-2367-00612-01,Bemiparin Sodium,HIBOR,10000 IU,7,14
+A54-2367-00613-01,Bemiparin Sodium,HIBOR,2500 IU,6,13
+A54-2367-00617-01,Bemiparin Sodium,HIBOR,7500 IU,4,4
+A54-2371-03810-01,Midazolam Hydrochloride,HIKMA MIDAZOLAM,5 mg/ml,12,32
+A54-2372-06033-01,Zoledronic Acid,HIKMA ZOLEDRONIC ACID,4 mg,1,2
+A54-2373-02725-01,Heparin Sodium,HIKMA-HEPARIN,1000 IU/ml,1,1
+A54-2373-02727-01,Heparin Sodium,HIKMA-HEPARIN,25000 IU/ml,1,3
+A54-2468-00511-01,Atenolol,HYPOTEN,100 mg,6,10
+A54-2915-01016-01,Cefalexin,LEXIN,125 mg/5ml,7,13
+A54-2915-01017-01,Cefalexin,LEXIN,1 g,4,7
+A54-2915-01020-01,Cefalexin,LEXIN,500 mg,4,5
+A54-3646-03776-01,Metronidazole,NIDAZOLE,125 mg/5ml,4,9
+A54-3646-03779-02,Metronidazole,NIDAZOLE,250 mg,2,6
+A54-3862-01028-01,Cefdinir,OMNICEF,300 mg,6,11
+A54-4064-00334-02,Amoxicillin Trihydrate,PENAMOX,500 mg,2,6
+A54-4239-00214-01,Alprazolam,PRAZIN,0.5 mg,8,14
+A54-4322-05373-01,Tacrolimus,PROGRAF,5 mg,1,2
+A54-4590-04700-01,Prifinium Bromide,RIABAL,15 mg/2ml,2,3
+A54-4590-04701-02,Prifinium Bromide,RIABAL,30 mg,1,1
+A54-4708-01079-01,Ceftriaxone Sodium,SAMIXON,1 g,4,10
+A54-5030-01034-02,Cefixime,SUPRAX,100 mg/5ml,5,10
+A54-5631-01785-01,Diclofenac Sodium,VOTREX,25 mg,6,13
+A54-5631-01790-01,Diclofenac Sodium,VOTREX,50 mg,3,8
+A54-5631-01796-01,Diclofenac Sodium,VOTREX,75 mg/3ml,2,4
+A54-5632-01773-01,Diclofenac Sodium,VOTREX RETARD,100 mg,3,5
+A54-6073-06266-01,Infliximab (REMSIMA),REMSIMA,100 mg,5,13
+A54-7051-07094-01,Isavuconazole,CRESEMBA,100 mg,6,13
+A54-7051-07095-01,Isavuconazole,CRESEMBA,200 mg,6,19
+A54-7072-07110-01,Ceftobiprole,ZEVTERA,500 mg,8,21
+A54-7270-00944-01,Capecitabine,DIROGIT,500 mg,4,13
+A54-7890-01278-01,Cisatracurium Besilate,SISACURE,2 mg/ml,7,15
+A54-D152-15101-01,TORIPALIMAB,TUOYI,240 mg,3,7
+A55-0624-00198-01,"Allium Sativum,Berberies Vulgaris,Cinnamon (Cinnamomum Zeylanicum),Foeniculum Vulgare (Fennel Oil),Honey,Nigella Sativa",BIO GASTRIC SYRUP,"1.95 g/10ml,0.0125 g/10ml,0.0125 g/10ml,0.0125 g/10ml,9.7 g/10ml,0.81 g/10ml",4,8
+A57-0274-04249-01,Oxymetholone,ANADROL,50 mg,8,18
+A58-0046-00091-01,Acetylcholine,ACETYLCHOLINE,1 %,8,18
+A58-0965-01277-01,"Ciprofloxacin,Hydrocortisone",CIPROBAY HC OTIC,"2 mg/ml,10 mg/ml",6,9
+A58-1081-02546-01,Gentamicin Sulfate,COLIRCUSI GENTAMICIN,3 mg/ml,8,16
+A58-1081-02550-01,Gentamicin Sulfate,COLIRCUSI GENTAMICIN,6 mg/ml,3,4
+A58-1172-05198-01,Sodium Cromoglicate (Cromolyn Sodium),CUSICROM,40 mg/ml,6,14
+A58-3823-02124-01,Erythromycin,OFTALMOLOSA CUSI ERYTHROMYCIN,5 mg/g,5,13
+A58-3824-02545-01,Gentamicin Sulfate,OFTALMOLOSA CUSI GENTAMICIN,3 mg/g,5,11
+A58-5214-05538-01,Tobramycin,TOBREX,3 mg/g,6,19
+A58-7859-05317-01,Sterile Eye Lubricant Gel Combination,SYSTANE GEL DROPS,Combination,9,20
+A58-7860-07707-01,Hydroxy Propyl guar 8A; Propylene glycol; Polyethylene glycol 400; Sorbitol; Boric Acid,SYSTANE ULTRA (LUBRICANT EYE DROPS),Combination,4,13
+A58-8326-08101-02,Polyethylene Glycol (400),SYSTANE HYDRATION LUBRICANT EYE DROPS,3 %,4,8
+A60-0529-00880-01,"Calcium Chloride,Magnesium Chloride,Potassium Chloride,Sodium Acetate,Sodium chloride,Sodium Citrate",BALANCED SALT SOLUTION,"0.4 mg/ml,0.3 mg/ml,0.75 mg/ml,3.9 mg/ml,6.4 mg/ml,1.7 mg/ml",2,3
+A60-0582-04636-01,Povidone Iodine,BETADINE,5 %,2,4
+A60-0609-00693-01,Betaxolol Hydrochloride,BETOPTIC S,0.25 %,4,12
+A60-0695-00902-02,Calcium&amp; Magnesium&amp; Potassium&amp; Sodium Salts,BSS (BALANCED SALT SOLUTION),Combination,5,10
+A60-0948-01272-01,Ciprofloxacin Hydrochloride,CILOXAN,3 mg/ml,7,13
+A60-1190-01541-01,"Cyclopentolate Hydrochloride,Phenylephrine Hydrochloride",CYCLOMYDRIL,"0.2 %,0.1 %",4,6
+A60-1572-04689-01,Prednisolone acetate,ECONOPRED PLUS,10 mg/ml,7,17
+A60-1615-02028-01,Emedastine Fumarate (Difumarate),EMADINE,0.5 mg/ml,4,9
+A60-1982-02381-01,Fluorescein,FLUORESCITE,100 mg/ml,5,21
+A60-2250-02893-01,Hypromellose,GONAC,25 mg/ml,5,18
+A60-2628-02789-01,Homatropine Hydrobromide,ISOPTO HOMATROPINE,2 %,12,28
+A60-3323-00953-01,Carbachol,MIOSTAT,0.1 mg/ml,4,6
+A60-4815-04804-01,Purified Dimethylpolysiloxane,SILIKON,100 %,8,24
+A60-5121-01685-01,Dextran 70& Hydroxypropylmethyl cellulose (Hypromellose),TEARS NATURALE II,Combination,5,13
+A60-5284-05611-01,Triamcinolone Acetonide,TRIESENCE,40 mg/ml,4,6
+A60-7613-07510-01,"Hydroxypropyl Guar,Heavy Mineral oil,Propylene Glycol",SYSTANE BALANCE LUBRICANT EYE DROPS,"0.5 mg/ml,10 mg/ml,6 mg/ml",2,5
+A60-8276-04577-01,"Polyethylene Glycol (400),Propylene Glycol",SYSTANE HYDRATION UD LUBRICANT EYE DROPS,"4 mg/ml,3 mg/ml",2,2
+A60-8276-08101-02,Polyethylene Glycol (400),SYSTANE HYDRATION UD LUBRICANT EYE DROPS,3 %,6,10
+A60-D431-17837-01,7 combination,Systane ULTRA UD Lubricant,7 Combination,11,27
+A61-2146-00985-01,"Carobmer,Hydroxypropylmethyl cellulose (Hypromellose)",GENTEAL,"2.2 mg/g/gm,3 mg/gm",9,17
+A62-2581-00418-01,Apraclonidine Hydrochloride,IOPIDINE,0.5 %,2,6
+A63-1529-05596-01,"Timolol Maleate,Travoprost",DUOTRAV,"5 mg/ml,40 mcg/ml",2,5
+A64-0163-04787-01,Proxymetacaine Hydrochloride (Proparacaine),ALCAINE,5 mg/ml,3,4
+A64-0608-00693-01,Betaxolol Hydrochloride,BETOPTIC,0.25 %,3,9
+A64-1432-05188-01,"Sodium Chondroitin Sulfate,Sodium Hyaluronate",DISCOVISC OPHTHALMIC VISCOSURGICAL DEVICE,"40 mg/ml,16.5 mg/ml",3,5
+A64-2627-04523-01,Pilocarpine Hydrochloride,ISOPTO CARPINE,20 mg/ml,3,9
+A64-4038-04146-01,Olopatadine Hydrochloride,PATANOL,1 mg/ml,5,9
+A64-5211-05543-01,"Dexamethasone,Tobramycin",TOBRADEX,"1 mg/g,3 mg/g",5,10
+A64-6324-04146-01,Olopatadine Hydrochloride,OLOPAN,1 mg/ml,6,15
+A65-2669-04107-01,Ocriplasmin,JETREA,0.5 mg/0.2ml,4,8
+A67-0173-04188-01,"Dextrose,Fructose,ORS-Citric Acid,Potassium Citrate,Sodium chloride,Sodium Citrate",ALFALYTE PEDIATRIC ELECTROLYTE,"22.4 g/1000ml,5.1 g/1000ml,57.64 g/1000ml,2.1627 g/1000ml,2.0454 g/1000ml,0.98 g/1000ml",3,9
+A67-0175-05193-01,"Citric Acid,Dextrose,Fructose,Potassium Citrate,Sodium chloride,Sodium Citrate",ALFALYTE PEDIATRIC ELECTROLYTE BUBBLE GUM FLAVOR,"57.64 mg/1000ml,22.4 g/1000ml,5.1 g/1000ml,2.1627 g/1000ml,2.0454 g/1000ml,0.98 g/1000ml",1,2
+A67-0176-01294-01,"Citric Acid,Dextrose,Fructose,Potassium Citrate,Sodium chloride,Sodium Citrate",ALFALYTE PEDIATRIC ELECTROLYTE STRAWBERRY FLAVOR,"57.64 g/1000ml,22.4 g/1000ml,5.1 g/1000ml,2.1627 g/1000ml,2.0454 g/1000ml,0.98 g/1000ml",1,1
+A68-0105-02276-01,Febuxostat,ADENURIC,120 mg,4,9
+A68-0558-05872-01,Vitamin B Complex,BEFORTE,Combination,2,6
+A68-0793-00949-01,Captopril,CAPTACE,12.5 mg,6,13
+A68-1264-01643-01,Dexamethasone,DECADRON,0.1 mg/ml,4,11
+A68-1521-00318-01,Ammonium Chloride& Carbinoxamine Maleate& Ephedrine Hydrochloride& Menthol,DULSANA,Combination,4,8
+A68-1927-02057-01,"Aminacrine Hydrochloride,Ephedrine Hydrochloride",FLAVEDRIN MILD,"1 mg/ml,3 mg/ml",1,1
+A68-1935-01537-01,Cyclobenzaprine Hydrochloride,FLEXIBAN,10 mg,2,7
+A68-3003-02304-01,Fenticonazole Nitrate,LOMEXIN,20 mg/ml,2,3
+A68-3003-02305-01,Fenticonazole Nitrate,LOMEXIN,20 mg/ml,6,21
+A68-3708-04089-01,Norfloxacin,NOROXIN,400 mg,7,17
+A68-4816-05089-01,Silodosin,SILOSIN,8 mg,8,30
+A68-5290-04862-01,Ramipril,TRILTEC,10 mg,5,10
+A68-5386-02347-01,Flavoxate Hydrochloride,URISPAS,200 mg,4,7
+A68-5724-03325-01,"Enalapril Maleate,Lercanidipine Hydrochloride",ZANIPRESS,"20 mg,10 mg",5,13
+A68-5984-06180-01,Diclofenac acid,ZORVOLEX,35 mg,8,16
+A70-1044-01343-02,Clonidine Hydrochloride,CLONISTADA,0.15 mg,7,13
+A70-9575-00949-01,Captopril,CAPTOPRIL AL,12.5 mg,8,16
+A70-9894-04047-02,Nifedipine,NIFEDIPINE AL,10 mg,6,13
+A72-3873-04176-02,Ondansetron Hydrochloride,ONDEM,2 mg/ml,5,12
+A72-5116-01067-01,Ceftazidime Pentahydrate,TAZID,1 g,5,13
+A72-5791-01098-01,Cefuroxime Sodium,ZOCEF,1.5 g,14,24
+A72-6079-05367-01,Tacrolimus,TRANSGRAF,0.5 mg,3,7
+A72-6922-04918-03,Riluzole,RILUKEM,50 mg,5,17
+A72-7660-03203-01,Itraconazole,FUNGIKEM,100 mg,3,6
+A72-7660-03203-05,Itraconazole,FUNGIKEM,100 mg,6,12
+A72-A651-02925-01,"Ibuprofen,Paracetamol (Acetaminophen)",ALCETA PLUS,"200 mg,500 mg",4,5
+A72-A653-04848-01,Rabeprazole Sodium,RAPEED,20 mg,1,2
+A72-A835-03684-01,Metformin Hydrochloride,FORKEM XR,1000 mg,3,5
+A72-A835-03686-01,Metformin Hydrochloride,FORKEM XR,500 mg,1,1
+A72-E356-00862-01,Calcium Carbonate,CALPROTECT,600 mg,6,12
+A73-4437-01412-01,"Coccinia indica extract,Vitamin D3 (Cholecalciferol)",QCCINIAHERB,"500 mg,2.5 mcg",3,9
+A74-2851-00162-01,Alcaftadine,LASTACAFT,2.5 mg/ml,8,16
+A74-4736-14992-02,Milnacipran,SAVELLA,12.5 mg,4,7
+A74-5821-02527-01,Gatifloxacin,ZYMAR,3 mg/ml,1,2
+A75-1110-03447-01,Linaclotide,CONSTELLA,145 mcg,4,11
+A75-5118-05386-01,Tazarotene,TAZORAC,0.05 %,3,4
+A76-0202-00758-01,Brimonidine Tartrate,ALPHAGAN P,1.5 mg/ml,11,35
+A76-4509-00976-01,Carboxymethyl Cellulose Sodium,REFRESH LIQUIGEL,10 mg/ml,4,10
+A76-4510-00977-01,Carboxymethyl Cellulose Sodium,REFRESH PLUS,5 mg/ml,6,15
+A77-1089-00760-01,"Brimonidine Tartrate,Timolol Maleate",COMBIGAN,"2 mg/ml,5 mg/ml",2,4
+A77-2000-02389-01,Fluorometholone,FML LIQUIFILM,1 mg/ml,6,19
+A77-3055-00711-01,Bimatoprost,LUMIGAN,0.3 mg/ml,1,1
+A77-3819-04128-01,Ofloxacin,OFLOX,3 mg/ml,4,9
+A77-4244-04689-01,Prednisolone acetate,PRED FORTE,10 mg/ml,8,16
+A77-5990-06186-02,"Sodium Hyaluronate,Carboxymethyl Cellulose Sodium,Glycerin,Erythritol",OPTIVE FUSION,"1 mg/ml,5 mg/ml,9 mg/ml,5 mg/ml",2,6
+A77-6241-06186-01,"Sodium Hyaluronate,Carboxymethyl Cellulose Sodium,Glycerin,Erythritol",OPTIVE FUSION UD,"1 mg/ml,5 mg/ml,9 mg/ml,5 mg/ml",10,20
+A78-4427-00725-01,"Bismuth Subcitrate Potassium,Metronidazole,Tetracycline Hydrochloride",PYLERA,"140 mg,125 mg,125 mg",4,7
+A78-6241-19666-01,"Sodium Carboxymethylcellulose,Glycerin",OPTIVE FUSION UD,"5 mg/ml,1 mg/ml",4,16
+A78-D448-17844-01,"Carboxymethyl Cellulose Sodium,Glycerin,Polysorbate 80",Optive OMEGA UD,"0.5 %,1 %,0.5 %",6,15
+A78-D449-17845-01,"Carboxymethyl Cellulose Medium Viscosity,Glycerin,Carboxymethyl Cellulose High Viscosity",Optive GEL DROPS,"0.65 %,0.9 %,0.35 %",8,19
+A78-E149-19665-01,"Sodium Carboxymethylcellulose,Glycerin",Optive FUSION MD,"5 mg/ml,9 mg/ml",5,8
+A79-4771-05047-01,Selenium (Sodium Selenite),SELENIUM,100 mcg/2.5ml,7,9
+A80-0441-02876-01,Hydroxyzine Hydrochloride,ATARAX,25 mg,13,33
+A80-0481-01174-01,Chloroquine Phosphate,AVLOCLOR,250 mg,5,16
+A80-3253-03792-01,Metyrapone,METOPIRONE,250 mg,5,14
+A80-5049-05445-01,Tetracosactide,SYNACTHEN DEPOT,1 mg/ml,4,11
+A80-5066-02104-01,"Ergometrine Maleate,Synthetic Oxytocin",SYNTOMETRINE,"500 mcg,5 IU",4,15
+A82-0150-00084-02,Aceclofenac,AIRTAL,100 mg,1,1
+A82-0657-00511-02,Atenolol,BLOKIUM,100 mg,3,7
+A82-0657-00513-01,Atenolol,BLOKIUM,50 mg,6,20
+A82-7488-00599-01,Balsalazide Disodium,COLAZIDE,750 mg,3,6
+A83-4017-04906-01,Ribavirin,PANVIRIN,400 mg,3,6
+A84-2003-02450-01,Folic Acid,FOLIC ACID,5 mg,7,16
+A84-2801-03247-01,Labetalol Hydrochloride,LABETALOL,200 mg,1,3
+A84-4343-04774-01,Propranolol Hydrochloride,PROPRANOLOL,10 mg,4,8
+A84-7180-07185-01,Nifedipine,ADEFIN XL,30 mg,5,12
+A84-7762-04047-01,Nifedipine,NIFEDIPINE,10 mg,2,3
+A84-7764-00580-01,Azithromycin (Dihydrate),AZITHROMYCIN,500 mg,7,11
+A84-B480-05771-02,Valganciclovir Hydrochloride,VALGANCICLOVIR,450 mg,2,4
+A85-1524-03775-01,Metronidazole,DUMOZOL,10 mg/g,4,8
+A86-4120-04472-01,Phenobarbital,PHENOBARBITAL,30 mg,3,6
+A87-2820-04076-01,Nonoxynol-9,LADY CONTRACEPTIVE VAGINAL OVULES,120 mg,4,7
+A88-1714-02131-01,Erythromycin Lactobionate,ERYTROCIN,500 mg,1,3
+A90-1183-01536-01,Cyclizine Lactate,CYCLIZINE LACTATE,50 mg/ml,4,13
+A90-2612-02676-01,Guanethidine Monosulfate,ISMELIN,10 mg/ml,5,11
+A90-3388-03877-01,Morphine Sulfate,MORPHGESIC SR,10 mg,2,4
+A90-3388-03880-01,Morphine Sulfate,MORPHGESIC SR,30 mg,1,1
+A91-0229-00274-01,Aminophylline,AMINOPHYLLINE,250 mg/10ml,11,20
+A91-0748-00897-01,Calcium Gluconate,CALCIUM GLUCONATE,10 %,5,9
+A91-3242-03754-01,Methylthioninium Chloride (Methylene Blue),METHYLENE BLUE,10 mg/ml,3,7
+A91-4215-04595-01,Potassium Acetate,POTASSIUM ACETATE,2 mmol/ml,3,7
+A91-4895-05246-01,Sodium Phosphate,SODIUM PHOSPHATE,3 mmol,5,16
+A92-1166-04728-01,Probiotics- Lactobacillus GG,CULTURELLE,10 ^9CFU,17,39
+A94-0368-01584-02,Darbepoetin alfa (ARANESP),ARANESP,100 mcg/ml,5,13
+A94-0368-01585-01,Darbepoetin alfa (ARANESP),ARANESP,200 mcg/ml,7,13
+A94-0368-01587-01,Darbepoetin alfa (ARANESP),ARANESP,40 mcg/ml,1,1
+A94-0368-01588-02,Darbepoetin alfa (ARANESP),ARANESP,500 mcg/ml,7,13
+A94-0368-01588-03,Darbepoetin alfa (ARANESP),ARANESP,500 mcg/ml,6,17
+A94-0368-07975-01,Darbepoetin alfa (ARANESP),ARANESP,30 mcg,8,29
+A94-0368-07979-01,Darbepoetin alfa (ARANESP),ARANESP,80 mcg,1,3
+A94-0368-07982-01,Darbepoetin alfa (ARANESP),ARANESP,20 mcg/0.5ml,5,20
+A94-4543-02253-02,Evolocumab,REPATHA,140 mg/ml,9,25
+A94-5465-04294-02,Panitumumab,VECTIBIX,20 mg/ml,13,32
+A94-5885-06083-03,Apremilast,OTEZLA,10 & 20 & 30 mg,10,29
+A94-5885-06084-02,Apremilast,OTEZLA,30 mg,2,4
+A94-6046-06240-01,Etelcalcetide Hydrochloride,PARSABIV,5 mg,6,13
+A94-6809-06904-01,Adalimumab (AMGEVITA),AMGEVITA,40 mg,11,36
+A94-6809-06904-02,Adalimumab (AMGEVITA),AMGEVITA,40 mg,8,22
+A94-7095-07137-01,Trastuzumab(KANJINTI ),KANJINTI,150 mg,5,14
+A94-D132-16921-01,Tarlatamab,Imdelltra,10 mg,1,2
+A95-9279-09404-01,Sotorasib,LUMAKRAS,120 mg,1,3
+A96-0320-04524-01,Pilocarpine Hydrochloride,APICARPIN,40 mg/ml,3,4
+A96-0321-01149-01,Chloramphenicol,APICOL,10 mg/g,2,5
+A96-0323-04689-01,Prednisolone acetate,APICORT FORTE,10 mg/ml,2,4
+A96-0330-02551-01,"Dexamethasone Sodium phosphate,Gentamicin Sulfate",APIGEN - D,"1 mg/ml,1 mg/ml",4,6
+A96-0331-00379-01,"Antazoline Phosphate,Naphazoline Hydrochloride",APIHIST,"5 mg/ml,0.25 mg/ml",9,24
+A96-0333-05521-01,Timolol Maleate,APIMOL,5 mg/ml,6,15
+A96-0335-05171-01,Sodium Chloride (Normal Saline),APISAL,0.9 %,1,3
+A96-0337-00540-01,Atropine Sulfate,APITROPIN,10 mg/ml,3,7
+A96-0338-03982-01,Naphazoline Hydrochloride,APIZOLIN,1 mg/ml,11,25
+A96-1268-05983-01,Xylometazoline Hydrochloride,DECOZAL,0.5 mg/ml,5,7
+A96-1268-05985-01,Xylometazoline Hydrochloride,DECOZAL,1 mg/ml,4,10
+A96-1305-02496-01,Fusidic acid,DERMOFUCIN,20 mg/g,1,1
+A96-1699-02112-01,Erythromycin,EROCIN,0.5 %,6,16
+A96-2428-05217-01,Sodium Hyaluronate,HYDREA,1 mg/ml,6,9
+A96-2493-00109-01,Aciclovir (Acyclovir),IMAVIR,50 mg/g,12,21
+A96-2493-00109-02,Aciclovir (Acyclovir),IMAVIR,50 mg/g,2,4
+A96-6733-05143-01,Sodium chloride,APISAL JET NASAL,0.74 %w/w,4,6
+A96-7079-01951-01,"Dorzolamide Hydrochloride,Timolol Maleate",APISOPT PLUS,"20 mg/ml,5 mg/ml",8,14
+A96-7140-03300-01,Latanoprost,LOPROST,50 mcg/ml,8,21
+A96-7708-05175-02,Sodium Chloride (Normal Saline),APISAL SINGLES,0.9 %,6,13
+A96-9410-09526-01,Dead Sea salts,APISAL JET DEAD SEA HYPER TONIC NASAL SPRAY,3.85 %/125ml,3,7
+A96-E271-07536-01,Mometasone Furoate,Sinocort Nasal Spray,0.5 mg/ml,5,8
+A96-E281-09119-01,Ondansetron,VOMIDO,4 mg/5ml,7,14
+A97-1831-02279-01,Felbamate,FELBAMATE,600 mg,4,4
+A97-6621-01537-01,Cyclobenzaprine Hydrochloride,CYCLOBENZAPRINE HYDROCHLORIDE,10 mg,5,7
+A97-9666-04082-01,Norethisterone,NORLYDA,0.35 mg,6,15
+A98-0251-04016-01,Neostigmine,AMOSTIGMINE,0.5 mg/ml,7,13
+A98-0379-05339-01,"Dexpanthenol,Sulfadiazine Silver",ARGIDERM P,"50 mg/g,10 mg/g",7,12
+A98-0516-00627-01,"Benzocaine,Benzydamine Hydrochloride,Cetalkonium Chloride",B.B.C,"1.5 %,0.15 %,0.04 %",3,9
+A98-0605-01527-01,Cyanocobalamin,BETO-12,1 mg/ml,3,7
+A98-2709-05588-01,Tranexamic acid,KAPRON,100 mg/ml,3,5
+A98-2709-05590-01,Tranexamic acid,KAPRON,500 mg,7,12
+A98-6961-02372-01,"Clioquinol,Flumethasone",VIOTIC,"10 mg/g,0.2 mg/g",1,3
+A98-8386-04053-01,Nifuroxazide,Antinal,200 mg,5,8
+A98-9367-09461-01,Piracetam,STIMULAN,200 mg/ml,5,13
+A98-A156-10657-01,Albendazole,Vermizole,40 mg/ml,5,18
+A98-D364-17638-01,Phytomenadione BP,HAEMOKION,10 mg/1ml,7,12
+A98-D535-18144-01,Nalbuphine Hydrochloride,NALUFIN,20 mg/1ml,6,9
+AA6-A100-10555-01,"Sodium Hyaluronate (HMW),Lactobacillus Acidophilus",Nagflor Forte,"0.01 %/ 1 Suppository,0.0003 %/ 1 Suppository",5,8
+AB0-8788-08660-01,"Nifedipine,Lidocaine Hydrochloride",ANTROLIN,"0.3 %,1.5 %",5,12
+AB2-3179-03608-03,Melatonin,MELATONIN,3 mg,4,6
+AB3-D346-03254-01,Lacosamide,Cosagen,200 mg,5,13
+AB4-8834-08730-02,Iodine (Potassium Iodide),YODAFAR,0.2 mg,1,2
+AB5-8803-08687-01,Cyanocobalamin (Vitamin B12),B-12 CYANOCOBALAMIN,500 mcg,9,14
+AB5-C974-16464-01,"GLUCOSAMINE HCL GRANULAR,HYDROLYZED COLLAGEN PROTEIN,CHONDROITIN SULFATE POWDER,Herbal Combination",GLUCOFLEX 24,"395 mg/ tablet,145 mg/tablet,55 mg/tablet,7 Combination",8,15
+AB7-1455-01926-02,Docusate Sodium,DOCUSATE SODIUM,100 mg,5,15
+AB8-8807-01633-01,Desmopressin,MINURIN,4 mcg/ml,6,11
+AC0-9620-10052-01,"Potassium (Potassium Citrate 2.162g),Magnesium ( Magnesium Citrate 0.827g),Pyridoxine(Pyridoxine Hydrochloride 0.031g)",Alkasolv URACTIV,780,4,8
+AC0-A404-10997-01,Each Sachet contain Macrogol 4000 (PEG 4000) as  functional ingredient,LAXIT med,5 g,3,5
+AC0-A404-10998-01,Each Sachet contain Macrogol 4000 (PEG 4000) as  functional ingredien,LAXIT med,5 g,3,6
+AC0-C970-16688-01,"Dry Ginger Rhizome (Zingiber Officinalis) extract (Standardized in Gingerols),Vitamin B6 (Pyridoxine Hydrochloride 1.48mg)",Alinan Emetix Kids Suspension,"20 mg/1ml,1.2 mg",4,7
+AC3-4903-00283-02,Amisulpride,SOLIAN,200 mg,4,8
+AC6-B041-12566-01,"HyaPoly Sodium Hyaluronate,Aloe vera glycolic extract",Aftifix Oral Gel,"0.2 g/100g,2 g/100g",3,5
+AC9-9120-01267-01,Ciprofloxacin,Pro-Ciprofloxacin,2 mg/ml,5,11
+AD1-8851-08759-01,Ravulizumab,ULTOMIRIS,300 mg,6,12
+AD2-9704-03337-01,Levetiracetam,ELEPSIDOL,100 mg/ml,2,4
+AD2-A378-10949-01,Lorazepam,Anximed,1 mg/ml,5,9
+AD2-B647-13380-02,Propranolol Hydrochloride,Syripralol,10 mg/5ml,4,11
+AD2-D030-16028-01,Captopril,Sytopril,25 mg/5ml,9,29
+AF4-A325-10950-01,Dexmedetomidine Hydrochloride,Dexmedetomidine Kalceks,100 mcg/ml,5,19
+AF4-A414-01278-02,Cisatracurium Besilate,Cisatracurium Kalceks,2 mg/ml,8,15
+AF4-A414-01278-03,Cisatracurium Besilate,Cisatracurium Kalceks,2 mg/ml,8,19
+AG0-0409-08800-02,Mesalazine,ASACOL,1600 mg,13,27
+AG3-8800-08743-01,"Magnesium Oxide Monohydrate,Vitamin E (Alpha Tocopheryl Acetate),Pyridoxine Hydrochloride (Vitamin B6)",Magnox Anti Leg Cramps,"190 mg,50 mg,10 mg",2,3
+AG5-3927-08827-02,"Lumacaftor,Ivacaftor",ORKAMBI,"150 mg,188 mg",4,9
+AG6-2622-03157-02,Isoniazid,ISONIAZID,100 mg,2,5
+AG6-2622-07503-03,Isoniazid,ISONIAZID,300 mg,5,10
+AG6-6579-07161-02,Clonazepam,CLONAZEPAM,1 mg,7,25
+AG6-7856-07704-02,Levalbuterol Hydrochloride,LEVALBUTEROL,0.63 mg/3ml,3,6
+AG8-7478-08009-02,Clonidine Hydrochloride,CLONIDINE,0.2 mg,6,12
+AG9-D499-18004-01,Riboflavin sodium phosphate 75 mg/100 g -Sodium hyaluronate 100 mg/100 g -L-Proline (Pyrrolidine-2-carboxylic acid) 1 mg/100 g-Glycine 1 mg/100 g-L-leucine .8 mg/100 g-L-Lysine Hcl .5 mg/100 g,DROP therapeutic,6 Combination,5,18
+AH4-8864-08822-01,"Saccharomyces Boulardii &amp; Maltodextrins,Simethicone (Simeticone)",COMIL Oral Drops,"2 g,13.66 %",8,18
+AH4-8950-08823-01,"Magnesium carbonate,Potassium Citrate,Fructo-Oligosaccharides,Calcium Glycerophosphate,Magnesium Glycerophosphate,Iron Gluconate,Calcium Carbonate",Mariflor A+B,"838 mg,830 mg,500 mg,200 mg,125 mg,79 mg,282 mg",6,13
+AH4-A333-10873-01,"Policarbophil,Phosphatidylcholine,18-beta-glycyrrhetinic acid,Hyaluronic acid sodic salt,Vitamin E,Vitamin A,Tea tree oil",ROZAMED vaginal ovules,"60 mg/1 Ovule,2 mg/1 Ovule,15 mg/1 Ovule,10 mg/1 Ovule,5 mg/1 Ovule,2 mg/1 Ovule,2 mg/1 Ovule",4,8
+AH4-B199-12413-01,Zinc Bisglycinate,Zincpro Drops,10 mg/ml,5,10
+AH4-B278-12767-01,"Hyaluronic Acid,Magnesium Alginate,simethicone",REFLUMAG,"0.1 %w/w,1.6666 %w/w,0.2667 %w/w",4,10
+AH4-C114-14470-01,"N-acetyl-L-cysteine,Methylsulfonylmethane (MSM),Sodium chloride",RINOFAST FLU,"1 % w/w/20ml,1 % w/w/20ml,0.9 %w/w",10,29
+AH4-C115-14338-01,"Boric Acid,Polycarbophil",GINOX ovules,"300 mg,60 mg/1 Ovule",3,10
+AH4-D930-19232-01,"Methyl Sulfonyl Methane,N-Acetyl cysteine,Sodium chloride",Mucolyse Nasal spray,"1 % w/w,1 % w/w,0.9 % w/w",3,7
+AH6-8919-08872-02,"Potassium Citrate,Magnesium Citrate,Inulin,Phyllanthus niruri",RUPEDIR OX,"1685 mg,689 mg,500 mg,300 mg",3,8
+AI2-8986-09009-01,Wintergreen Oil ( Methyl Salicylate),SANYPLAST,0 Combination,5,8
+AI2-8986-09010-01,Methyl salicylate,SANYPLAST,0 Combination,5,10
+AJ1-7345-09958-02,Fish Oil and Multivitamin Combo,GESTAGYN PLUS,0 Combination,3,11
+AJ1-8961-04774-01,Propranolol Hydrochloride,INDELOC,10 mg,3,7
+AJ1-8982-09118-01,Dexamethasone phosphate,DEXAKERN,4 mg/ml,6,11
+AJ1-B142-05376-01,Tadalafil,Citax ,20 mg,2,9
+AJ1-B142-05377-01,Tadalafil,Citax ,5 mg,3,9
+AJ1-B419-09453-01,Pregabalin,LARIREST,75 mg,5,11
+AJ1-D605-09772-01,"Etonogestrel,Ethinylestradiol",GYNERING,"11.7 mg,2.7 mg",6,10
+AJ3-9221-09388-01,ETEPLIRSEN,EXONDYS 51 ,50 mg/ml,6,11
+AJ4-0947-01253-02,Cilostazol,CILOSTAZOL,50 mg,3,5
+AJ4-A323-01634-01,Desmopressin Acetate,DESMOPRESSIN,10 mcg,2,6
+AJ5-8949-05618-01,Trientine Hydrochloride,SAMENTINE,250 mg,6,12
+AK2-8968-01973-01,Doxycycline,ORAYCEA,40 mg,7,15
+AK4-8973-08907-01,Sodium Hyaluronate,OPTIVISC SINGLE 3ML,90 mg/3ml,6,19
+AK6-8975-08909-01,Encorafinib,BRAFTOVI,75 mg,5,15
+AK8-A475-11139-01,Mosunetuzumab,Lunsumio,30 mg/1 vial,3,6
+AL1-8732-12136-02,RISDIPLAM,EVRYSDI,0.75 mg/1 ml,8,17
+AM8-5397-05681-02,Ursodeoxycholic Acid,URSODEOXYCHOLIC ACID,150 mg,3,8
+AM8-9004-04474-02,Phenobarbital,PHENOBARBITAL TEVA,60 mg,7,15
+AM8-9289-06589-01,Bisoprolol Fumarate,BISOPROLOL FUMARATE,1.25 mg,9,13
+AM8-B592-01955-01,Doxazosin Mesilate (Mesylate),DOXAZOSIN,1 mg,4,10
+AM8-D343-17563-01,Rivaroxaban,ROXATEBAN,20 mg/1 Tablet,5,9
+AM8-D592-05411-01,Terazosin,TERAZOSIN,2 mg,9,15
+AM8-D887-14771-01,Sugammadex sodium 108.80 mg equivalent to Sugammadex 100 mg,SUGARELAX TV,100 mg/ml,4,11
+AM9-8999-03543-01,"Magnesium Dihydrate Lactate,Pyridoxine Hydrochloride (Vitamin B6)",Mag6,"470 mg,5 mg",5,7
+AM9-9009-09486-02,"Iron Protein Succinylate,Folic Acid",Emelin FF,"250 mg,400 mcg",9,17
+AM9-9010-09096-01,Fish Oil (EPA (Eicosapentaenoic Acid)&amp;amp;amp; DHA (Docosahexaenoic Acid),BioPure Max,1250 mg,32,71
+AM9-9010-09710-02,"Omega 3 Fatty Acids,EPA (Eicosapentaenoic Acid),DHA (Docosahexaenoic Acid)",BioPure Max,"840 mg,465 mg,375 mg",1,3
+AN8-9008-07922-01,Povidone Iodine,GERMIDINE,0.45 %,2,4
+AO6-9008-04640-01,Povidone Iodine,GERMIDINE,10 %,1,3
+AP0-9008-06612-01,Povidone Iodine,GERMIDINE,1 %,7,14
+AQ6-C313-14867-01,Andusomeran (Total RNA CX-038839),Spikevax XBB,0.1 mg/ ml,2,8
+AQ6-D171-17023-01,Respiratory Syncytial Virus mRNA vaccine,mRESVIA,0.1 mg/ ml,6,15
+AQ7-9041-09044-01,Rimegepant,NURTEC ODT,75 mg,10,20
+AR6-7371-09774-02,"N-acetyl-L-cysteine,Ascorbic Acid (Vitamin C),Promelase (Serrazimes),Riboflavin (Vitamin B2)",VISCOFLU,"300 mg,246.154 mg,33 mg,5.091 mg",5,12
+AR6-7371-10512-02,"Sodium chloride,N-Acetyl cysteine",VISCOFLU,"3 % /30ml,6 % /30ml",6,11
+AS3-9217-09287-02,"Iron(Microencapsulated Iron saccharate 79 mg),Vitamin C,Cyanocobalamin ( Vitamin B12),Vitamin B6,Folic Acid",EMACRIT,"30 mg,70 mg,10 mcg,3 mg,300 mcg",1,3
+AS5-2238-02646-03,Glycopyrrolate,GLYCOPYRROLATE,0.2 mg/ml,7,18
+AS5-9418-04489-02,Phenylephrine Hydrochloride,Phenylephrine Hydrochloride,10 mg/ml,7,24
+AS5-D917-03248-01,Labetalol Hydrochloride,Labetalol Hcl CAPLIN,5 mg/ml,6,9
+AS7-1656-00784-02,Budesonide,ENTOCORT,2 mg,1,1
+AS9-9073-08192-01,Nifedipine,NIFEDIPRESS MR 10,10 mg,5,16
+AT0-9112-06739-02,Morphine Sulfate,VERMOR,15 mg/ml,4,13
+AT1-2597-03112-01,Irinotecan Hydrochloride. 3 H2O,IRINOTECAN,20 mg/ml,7,17
+AT1-9597-04210-01,Oxaliplatin,OXALIPLATIN AQVIDA,5 mg/ml,4,13
+AT1-9597-04210-02,Oxaliplatin,OXALIPLATIN AQVIDA,5 mg/ml,4,14
+AT2-9111-02658-02,Goserelin Acetate,GOLEXIN,10.8 mg,13,31
+AT2-9111-02659-02,Goserelin Acetate,GOLEXIN,3.6 mg,4,8
+AU9-5449-09128-02,Varicella Zoster Immunoglobulin (Human),VARIZIG,125 IU,5,15
+AU9-5658-10102-02,Rho (D) Immunoglobulin (Human),WINRHO SDF,1500,8,22
+AU9-9366-09460-01,Hepatitis B Immunoglobulin (Human),HEPAGAM B,312 IU/ml,4,7
+AW2-9062-09144-01,Polyethylene Glycol (Macrogol 4000),MACROSTIP SACHETS,10 g/Sachet,3,5
+AW3-1452-09149-02,Docetaxel (Anhydrous),DOCETAXEL,20 mg/ml,5,12
+AW6-9165-09287-01,"Iron(Microencapsulated Iron saccharate 79 mg),Vitamin C,Cyanocobalamin ( Vitamin B12),Vitamin B6,Folic Acid",Emacrit Capsules,"30 mg,70 mg,10 mcg,3 mg,300 mcg",3,7
+AW9-8604-19329-01,"Tyndallized Lactobacillus Plantarum,Xylo-oligosaccharides (XOS),Lactic acid,Polyethylene Glycol (Macrogol 3350),Lauryl glucoside",Ginestra,"70 mg,35 mg,50.505 mg/tablet,25 mg,2 mg",7,16
+AW9-D068-17130-01,"Liposomal Magnesium Oxide,Magnesium Oxide,Magnesium Glycerophosphate",MagSafe Sachets,"500 mg/sachet,406.09 mg/sachet,95.24 mg/sachet",4,10
+AX6-9121-09794-01,Alimemazine,Alfresed,7.5 mg/5ml,6,16
+AX7-9839-05892-01,Vitamin D3 (Cholecalciferol),HI DEE,10000 IU,1,5
+AX7-9839-05904-01,Vitamin D3 (Cholecalciferol),HI DEE,50000 IU,3,5
+AX7-A966-09134-01,Omeprazole,OMISEC,20 mg,5,9
+AX7-B019-05532-01,Tirofiban Hydrochloride,RIBOFAN,0.25 mg/ml,3,6
+AX8-A561-11338-01,Hydroxypropylmethylcellulose,Zyvex Hypertonic Nasal Spray,90 mg/30ml,4,10
+AX9-8954-09230-01,Sodium Hyaluronate,Epibiot ,300 mg/ 30g,3,12
+AY0-A134-10627-01,"Paracetamol,Ascorbic Acid (Vitamin C),Pheniramine Maleate",FLUCAVEX,"500 mg,200 mg,25 mg",7,10
+AY7-8134-08010-02,ENTRECTINIB,ROZLYTREK,200 mg,6,15
+AY7-8134-09176-02,ENTRECTINIB,ROZLYTREK,100 mg,3,3
+AZ7-9252-09288-01,"Sodium chloride,Belzalkonium Chloride",SNUFFLEBABE NASAL SPRAY,"0.9 %w/w,0.08 %",5,11
+B00-0267-03784-01,Metronidazole,AMRIZOLE,5 mg/ml,5,6
+B00-0267-03791-01,Metronidazole Benzoate,AMRIZOLE,40 mg/5ml,2,4
+B00-A641-04053-01,Nifuroxazide,NIFUNAL,200 mg,6,12
+B01-2249-03929-01,Multivitamin& Minerals,GOLDEN BEAN,Combination,3,8
+B02-2582-04624-01,Potassium Iodide,IOSTAT,130 mg,2,6
+B04-5040-05358-01,Suxamethonium Chloride,SUXAMETHONIUM CHLORIDE,100 mg/2ml,4,12
+B08-0042-00086-01,Acetazolamide,ACETAZOLAMIDE,250 mg,4,7
+B08-0086-00101-01,Aciclovir (Acyclovir),ACYCLOVIR,200 mg,5,8
+B08-0340-00511-01,Atenolol,APO-ATENOL,100 mg,13,34
+B08-0341-00774-01,Bromocriptine Mesilate (Mesylate),APO-BROMOCRIPTINE,2.5 mg,4,13
+B08-0342-01056-01,Cefprozil,APO-CEFPROZIL FCT,500 mg,4,7
+B08-0343-01159-01,Chlordiazepoxide,APO-CHLORDIAZEPOXIDE,10 mg,6,11
+B08-0345-02953-01,Imipramine Hydrochloride,APO-IMIPRAMINE,10 mg,5,15
+B08-0346-03352-02,"Carbidopa,Levodopa",APO-LEVOCARB,"10 mg,100 mg",12,30
+B08-0346-03354-01,"Carbidopa,Levodopa",APO-LEVOCARB,"50 mg,200 mg",4,7
+B08-0350-04670-01,Prazosin Hydrochloride,APO-PRAZO,2 mg,11,30
+B08-0947-01252-01,Cilostazol,CILOSTAZOL,100 mg,1,3
+B08-1882-02315-01,Ferrous Gluconate,FERROUS GLUCONATE,300 mg,1,2
+B08-2903-03352-01,"Carbidopa,Levodopa",LEVODOPA / CARBIDOPA,"10 mg,100 mg",9,24
+B08-3471-03967-01,Nadolol,NADOLOL,40 mg,10,31
+B08-3977-04226-01,Oxybutynin Hydrochloride,OXYBUTYNIN,5 mg/5ml,2,6
+B08-4159-04528-01,Pimozide,PIMOZIDE,4 mg,3,9
+B08-4769-05044-01,Selegiline Hydrochloride,SELEGILINE HYDROCHLORIDE,5 mg,3,6
+B08-5836-05622-01,Trifluoperazine,APO-TRIFLUOPERAZINE,5 mg,4,13
+B08-5995-00180-01,Alfuzosin Hydrochloride,ALFOSIN XR,10 mg,1,2
+B08-6711-02568-01,Gliclazide,CLAZ MR,60 mg,5,17
+B08-6826-02819-01,Hydrochlorothiazide,APO-HYDRO,25 mg,7,17
+B08-6986-02441-01,Fluvoxamine Maleate,APO-FLUVOXAMINE,100 mg,4,8
+B08-7090-05962-01,Warfarin,APO-WARFARIN,2.5 mg,2,4
+B08-7152-09334-02,Mometasone Furoate,MASTASONE,50 mcg,3,9
+B08-7197-00986-01,Carvedilol,APO-CARVEDILOL,12.5 mg,1,1
+B08-7455-03834-01,Mirtazapine,MIRTAZA,30 mg,10,18
+B08-7455-07174-01,Mirtazapine,MIRTAZA,15 mg,9,17
+B08-7458-05965-01,Warfarin,COUFATEX,5 mg,12,32
+B08-7458-05966-01,Warfarin Sodium,COUFATEX,1 mg,12,23
+B08-7576-03813-01,Midodrine Hydrochloride,Pr APO-MIDODRINE,5 mg,2,5
+B08-7600-07180-01,Trazodone Hydrochloride,APO TRAZODONE,50 mg,4,12
+B08-7679-03592-01,Medroxyprogesterone Acetate,APO-Medroxy,2.5 mg,6,15
+B08-7716-07587-02,Esomeprazole Magnesium,ESURAL,20 mg,3,6
+B08-7716-07588-02,Esomeprazole Magnesium,ESURAL,40 mg,5,9
+B08-7746-07617-01,"Doxylamine,Pyridoxine Hydrochloride (Vitamin B6)",APO-DOXYLAMINE/B6,"10 mg,10 mg",4,9
+B08-7895-07738-01,Midodrine Hydrochloride,APO-MIDODRINE,2.5 mg,4,9
+B08-8433-05295-01,Sotalol,APO-SOTALOL,80 mg,1,2
+B08-8672-00213-01,Alprazolam,APO-ALPRAZ,0.25 mg,6,20
+B08-A023-01106-01,Celecoxib,Qualcox,200 mg,7,16
+B08-A061-02946-01,Imatinib Mesylate,KETOVA ,100 mg,4,8
+B08-A061-02947-01,Imatinib Mesylate,KETOVA ,400 mg,3,5
+B08-A304-01603-02,Deferasirox,IROREST,180 mg,2,4
+B08-A304-01604-02,Deferasirox,IROREST,250 mg,4,14
+B08-A341-05800-02,Varenicline Tartrate,APO-VARENICLINE,0.5 mg,6,13
+B08-A341-05801-01,Varenicline Tartrate,APO-VARENICLINE,1 mg,6,15
+B08-B094-02035-02,Enalapril,APO-ENALAPRIL,10 mg,6,14
+B08-B621-00078-01,Abiraterone Acetate,CYPROST ,250 mg,9,25
+B08-D475-17914-01,"Metformin Hydrochloride Ph. Eur.,Sitagliptin Hydrochloride 54.48 mg ( corresponds to Sitagliptin Hydrochloride monohydrate 56.69 mg)corresponds to Sitagliptin 50 mg",SITAMET,"1000 mg/1Tablet,50 mg/1Tablet",3,9
+B09-3284-03811-01,MIDODRINE,MIDODRINE,2.5 mg,2,6
+B10-7926-02450-01,Folic Acid,APO-FOLIC,5 mg,5,8
+B11-0353-05015-01,Salbutamol Sulfate  (Albuterol),APO-SALBUTAMOLE,5 mg/2.5ml,9,18
+B11-6623-04668-01,Prazosin Hydrochloride,APO-PRAZOSIN,1 mg,12,21
+B11-6623-04670-02,Prazosin Hydrochloride,APO-PRAZOSIN,2 mg,1,1
+B11-6711-02567-01,Gliclazide,CLAZ MR,30 mg,7,15
+B11-6986-02441-03,Fluvoxamine Maleate,APO-FLUVOXAMINE,100 mg,15,42
+B11-7985-07850-01,"Paracetamol (Acetaminophen),Codeine Phosphate",APO-PARACETAMOL/CODEINE 500/30,"500 mg,30 mg",5,8
+B11-8239-02569-01,Gliclazide,APO-GLICLAZIDE,80 mg,6,20
+B12-0264-00356-01,"Ampicillin Sodium,Sulbactam Sodium",AMPICILLIN AND SULBACTAM,"2 g,1 g",2,4
+B13-0509-00583-01,Aztreonam,AZTREONAM,1 g,1,1
+B13-3090-03559-01,Magnesium Sulfate,MAGNESIUM SULPHATE,500 mg/ml,2,9
+B14-5040-05357-01,Suxamethonium Chloride,SUXAMETHONIUM CHLORIDE,100 mg,3,7
+B16-2227-02613-01,Glycerol,GLYCERIN,3 g,6,10
+B18-3203-05078-01,Shark Cartilage Powder,MEPACO SHARK CARE,740 mg,4,14
+B19-0367-03626-01,"Meningococcus antigen (Conjugated) polysaccharide type A,Meningococcus antigen (Conjugated) polysaccharide type C,Meningococcus antigen (Conjugated) polysaccharide type W,Meningococcus antigen (Conjugated) polysaccharide type Y",ARAMEN,"10 mcg/0.5ml,5 mcg/0.5ml,5 mcg/0.5ml,5 mcg/0.5ml",4,10
+B21-0373-01644-01,Dexamethasone,ARCODEXAN,0.5 mg,4,9
+B21-0374-03928-02,Multivitamin& Minerals,ARCOSTRONG,Combination,2,4
+B21-5027-03928-02,Multivitamin& Minerals,SUPRAL,Combination,8,15
+B22-2196-03135-01,Iron (Integrated in Haemoglobin Powder),GLOBIFER FORTE,18 mg,2,4
+B23-2484-04591-01,Ponatinib,ICLUSIG,45 mg,10,30
+B24-4149-05309-01,Standardized Soya Extract,PHYTO SOYA,175 mg,6,10
+B26-2622-03157-01,Isoniazid,ISONIAZID,100 mg,3,5
+B28-5706-04535-01,"Piperacillin Sodium,Tazobactam Sodium",YANOVEN,"2 g,0.25 g",3,5
+B28-6709-03661-01,Meropenem,AROPEM,1 g,5,9
+B28-7159-04300-01,Pantoprazole Sodium,LUGANOR,40 mg,6,10
+B28-9506-02945-02,Imatinib Mesylate,SAGITTA,100 mg,3,7
+B29-1356-00088-01,Acetazolamide,DIAMOX,500 mg,5,9
+B29-3107-05965-01,Warfarin,MAREVAN,5 mg,4,9
+B29-4170-05810-01,Vasopressin,PITRESSIN,20 IU/ml,4,17
+B30-0263-00354-01,Ampicillin Sodium,AMPICILLIN,2 g,7,18
+B30-0415-02273-01,Famotidine,ASIAMODIN,20 mg,2,3
+B30-0417-03935-01,Multivitamin& Minerals,ASIAVIT - M,Combination,4,8
+B30-0846-01011-01,Cefadroxil,CEFADROXIL,250 mg,5,23
+B30-2191-02571-01,Glimepiride,GLIMARYL,2 mg,3,6
+B30-3790-04104-01,Nystatin,NYSTATIN,500000 IU,2,2
+B30-4676-01083-01,Ceftriaxone Sodium,ROZIFAX,250 mg,6,9
+B30-5624-01764-01,Diclofenac,VOLTARILE,50 mg,13,26
+B30-5626-01790-01,Diclofenac Sodium,VOLTFENAC,50 mg,7,16
+B31-2839-01825-01,Digoxin,LANOXIN,0.125 mg,4,9
+B31-2839-01828-01,Digoxin,LANOXIN,0.25 mg/ml,14,25
+B31-2932-03406-01,Lidocaine Hydrochloride,LIDOCAINE HYDROCHLORIDE,20 mg/g,8,16
+B31-4783-01505-01,Cotrimoxazole,SEPTRIN,240 mg/5ml,5,12
+B31-4783-01505-02,Cotrimoxazole,SEPTRIN,240 mg/5ml,5,7
+B31-4783-01508-03,Cotrimoxazole,SEPTRIN,480 mg,10,20
+B31-5260-03247-01,Labetalol Hydrochloride,TRANDATE,200 mg,9,23
+B31-5820-00199-01,Allopurinol,ZYLORIC,100 mg,5,9
+B31-5820-00199-02,Allopurinol,ZYLORIC,100 mg,4,9
+B31-5820-00200-01,Allopurinol,ZYLORIC,300 mg,5,18
+B32-1319-01650-01,Dexamethasone,DEXAMETHASONE,4 mg,6,12
+B32-2517-00562-01,Azathioprine,IMURAN,25 mg,4,8
+B33-1319-01649-01,Dexamethasone,DEXAMETHASONE,2 mg,3,7
+B33-1949-02368-01,Fludrocortisone Acetate,FLORINEF,100 mcg,9,28
+B33-4121-04471-01,Phenobarbital,PHENOBARBITONE,200 mg/ml,3,7
+B33-6509-01432-01,Colchicine,COLGOUT,0.5 mg,5,15
+B33-D345-04683-01,Prednisolone,PREDSOL retention enema,20 mg/100ml,5,10
+B34-1140-05965-01,Warfarin,COUMADIN,5 mg,4,6
+B36-4371-05371-01,Tacrolimus,PROTOPIC,1 mg/g,10,35
+B37-0129-05370-01,Tacrolimus,ADVAGRAF,1 mg,5,13
+B37-3466-03832-02,Mirabegron,MYRBETRIQ,25 mg,5,10
+B38-1278-00724-01,Bismuth Subcitrate (colloidal),DE-NOL,120 mg,5,12
+B38-1603-03328-01,Leuprorelin Acetate,ELIGARD,22.5 mg,10,27
+B38-1603-08086-02,Leuprorelin Acetate,ELIGARD,7.5 mg,9,16
+B38-4464-00947-01,Capsaicin,QUTENZA,179 mg,3,8
+B38-4741-05980-01,"Glycerol,Hard Paraffin,Light Liquid Paraffin,Oleic Acid,Palmitic Acid,White Soft Parafin",SBR,"5 g,5.1 g,5 g,0.5 g,0.5 g,43.75 g",2,8
+B38-9959-10359-02,Roxadustat,EVRENZO,100 mg,7,12
+B38-D377-17683-01,Zolbetuximab,Vyloy,100 mg/Vial,1,1
+B39-4610-00620-01,Bendamustine Hydrochloride,RIBOMUSTIN,25 mg,4,19
+B40-3466-03833-01,Mirabegron,MYRBETRIQ,25 mg,6,23
+B41-0600-03832-01,Mirabegron,BETMIGA,25 mg,3,6
+B41-3364-05375-02,Tacrolimus Monohydrate,MODIGRAF,0.2 mg,5,8
+B41-5496-18263-01,Solifenacin Succinate,VESICARE,1 mg/ml,2,4
+B43-0129-05374-01,Tacrolimus,ADVAGRAF,5 mg,12,23
+B44-0225-00164-01,Alefacept,AMEVENE,15 mg/ml,3,7
+B45-0990-02282-01,"Felypressin (as Octapressin soln.),Prilocaine Hydrochloride",CITANEST + OCTAPRESSIN,"0.57 mcg/ml,30 mg/ml",1,3
+B46-0439-00938-01,Candesartan Cilexetil,ATACAND,32 mg,3,9
+B46-0440-00941-01,"Candesartan Cilexetil,Hydrochlorothiazide",ATACAND PLUS,"16 mg,12.5 mg",2,3
+B46-0676-05512-01,Ticagrelor,BRILINTA,90 mg,3,5
+B46-1513-00115-01,"Aclidinium Bromide,Formoterol Fumarate Dihydrate",DUAKLIR GENUAIR,"400 mcg,12 mcg",5,15
+B46-1629-03444-01,"Lidocaine,Prilocaine",EMLA,"25 mg/g,25 mg/g",4,9
+B46-2024-01574-01,Dapagliflozin Propanediol,FORXIGA,10 mg,5,10
+B46-2024-01575-01,Dapagliflozin Propanediol,FORXIGA,5 mg,6,22
+B46-2495-03173-01,Isosorbide Mononitrate,IMDUR,60 mg,8,16
+B46-3033-04168-01,Omeprazole Magnesium,LOSEC MUPS,10 mg,8,16
+B46-3104-00807-01,Bupivacaine Hydrochloride,MARCAINE,5 mg/ml,12,39
+B46-3628-02156-01,Esomeprazole,NEXIUM,20 mg,4,10
+B46-3628-02156-02,Esomeprazole,NEXIUM,20 mg,6,21
+B46-3628-02166-01,Esomeprazole Sodium,NEXIUM,40 mg,3,8
+B46-3970-02471-01,Formoterol,OXIS,6 mcg,6,13
+B46-4582-00785-01,Budesonide,RHINOCORT AQUA,32 mcg,4,10
+B46-4582-00787-01,Budesonide,RHINOCORT AQUA,64 mcg,4,12
+B46-5084-04202-01,Osimertinib,TAGRISSO,40 mg,2,4
+B46-5522-03992-02,"Esomeprazole Magnesium,Naproxen",VIMOVO,"20 mg,500 mg",4,8
+B46-5682-01577-01,"Dapagliflozin Propanediol,Metformin Hydrochloride",XIGDUO XR,"10 mg,500 mg",6,16
+B46-5682-01579-01,"Dapagliflozin Propanediol,Metformin Hydrochloride",XIGDUO XR,"5 mg,500 mg",3,11
+B46-5697-03406-01,Lidocaine Hydrochloride,XYLOCAINE,20 mg/g,5,9
+B46-5779-01063-01,Ceftaroline Fosamil Acetate,ZINFORO,600 mg,4,6
+B47-0674-05420-02,Terbutaline Sulfate,BRICANYL,0.5 mg/ml,3,8
+B47-0827-00707-01,Bicalutamide,CASODEX,250 mg,4,9
+B48-0383-00373-01,Anastrozole,ARIMIDEX,1 mg,9,16
+B48-0674-05420-01,Terbutaline Sulfate,BRICANYL,0.5 mg/ml,3,8
+B48-0827-00706-01,Bicalutamide,CASODEX,150 mg,3,9
+B48-1158-04971-01,Rosuvastatin Calcium,CRESTOR,20 mg,3,4
+B48-1817-02486-02,Fulvestrant,FASLODEX,50 mg/ml,5,12
+B48-2028-02478-01,Foscarnet,FOSCAVIR,24 mg/ml,3,6
+B48-2028-02478-02,Foscarnet,FOSCAVIR,24 mg/ml,8,31
+B48-2309-04779-01,Propranolol Hydrochloride,HALF-INDERAL,80 mg,8,13
+B48-2524-04774-02,Propranolol Hydrochloride,INDERAL,10 mg,10,24
+B48-2524-04774-03,Propranolol Hydrochloride,INDERAL,10 mg,3,7
+B48-3677-05379-01,Tamoxifen Citrate,NOLVADEX,10 mg,10,16
+B48-5137-00514-01,"Atenolol,Chlorthalidone (Chlortalidone)",TENORETIC,"100 mg,25 mg",3,7
+B48-5138-00510-01,Atenolol,TENORMIN,0.5 mg/ml,8,16
+B48-5759-03474-01,Lisinopril,ZESTRIL,10 mg,10,37
+B48-5759-03477-01,Lisinopril Dihydrate,ZESTRIL,10 mg,2,3
+B48-5797-02660-01,Goserelin Acetate,ZOLADEX DEPOT,3.6 mg,2,5
+B48-5798-02658-01,Goserelin Acetate,ZOLADEX LA,10.8 mg,5,10
+B48-6802-06900-01,Durvalumab,IMFINZI,50 mg/ml,4,9
+B48-6802-06900-02,Durvalumab,IMFINZI,50 mg/ml,2,5
+B48-6812-12708-02,Acalabrutinib,CALQUENCE,100 mg,15,35
+B48-8000-10793-02,Trastuzumab deruxtecan (DS-8201a) 107 mg excess fill in 5.35 ml equivalent to 100 mg in 5 ml,ENHERTU,100 mg/1 vial,2,5
+B49-0472-01174-01,Chloroquine Phosphate,AVACLOR,250 mg,9,25
+B50-4125-06196-01,Penicillin V (Phenoxymethylpenicillin Potassium),PHENOXYMETHYLPENICILLIN POTASSIUM,250 mg/5ml,7,13
+B51-3206-04519-01,Phytonadione (Vitamin K1),MEPHYTON,5 mg,2,6
+B52-4893-02201-01,Ethacrynic Acid,SODIUM EDECRIN,50 mg,5,9
+B53-0049-00101-01,Aciclovir (Acyclovir),ACICLOSINA,200 mg,4,6
+B53-0958-00327-01,Amoxicillin,CIPAMOX,500 mg,5,8
+B53-0960-01270-01,Ciprofloxacin Hydrochloride,CIPLOX,250 mg,7,14
+B53-0960-01274-01,Ciprofloxacin Hydrochloride,CIPLOX,500 mg,6,11
+B53-5814-00200-01,Allopurinol,ZURIM,300 mg,5,7
+B55-0419-02146-01,Escitalopram Oxalate,ASITALOX,10 mg,5,16
+B55-0470-04179-01,Ondansetron Hydrochloride,AURODANZ,8 mg,3,10
+B55-0648-00730-01,Bisoprolol Fumarate,BISODAC,5 mg,4,7
+B55-0648-00730-03,Bisoprolol Fumarate,BISODAC,5 mg,1,3
+B55-1479-01959-01,Doxepin Hydrochloride,DOXEPIN,25 mg,2,5
+B55-2389-04452-01,Perindopril ter-butylamine,HITEN,8 mg,5,13
+B55-6317-01106-01,Celecoxib,CELDOL,200 mg,4,6
+B55-6598-05350-01,Sumatriptan Succinate,SUMAFIX,50 mg,5,14
+B55-E361-05771-01,Valganciclovir Hydrochloride,VALAVEX,450 mg,1,3
+B56-7468-02096-01,Eptifibatide,EPTIFIBATIDE,2 mg/ml,10,19
+B57-0118-06187-01,Epinephrine Bitartrate,ADRENALINE,0.1 mg/ml,1,2
+B57-2926-03394-01,Lidocaine,LIDOCAINE,20 mg/ml,2,5
+B57-6538-06656-01,Acetylcysteine,ACETYLCYSTEINE MARTINDALE,200 mg/ml,6,11
+B58-3674-03350-01,Levocetirizine Hydrochloride (Dihydrochloride),NOCEDAN,5 mg,3,6
+B58-5090-05381-01,Tamsulosin Hydrochloride,TAMICTOR,0.4 mg,4,6
+B58-5673-02254-01,Exemestane,XEMESTAN,25 mg,4,7
+B60-5108-04127-01,Ofloxacin,TARIVID,200 mg,6,9
+B61-0063-05709-01,Vaccine-H.influenzae Type B Polysaccharide conjugated to tetanus protein,ACT-HIB VACCINE,10 mcg,4,7
+B61-1219-05704-01,"Pertussis Vaccine,Tetanus Vaccine,Vaccine-Diphtheria",D.T.P VACCINE,"4 IU/0.5ml,60 IU/0.5ml,30 IU/0.5ml",3,5
+B61-1420-05704-01,"Pertussis Vaccine,Tetanus Vaccine,Vaccine-Diphtheria",DIPHTHERIA + TETANUS + PERTUSSIS,"4 IU/0.5ml,60 IU/0.5ml,30 IU/0.5ml",1,3
+B61-2511-05743-01,"POLIOMYELITIS VACCINE Type2,POLIOMYELITIS VACCINE Type3,Vaccine-POLIOMYELITIS VACCINE Type1",IMOVAX POLIO,"8 U,32 U,40 U",5,10
+B61-4230-05648-01,TUBERCULIN PPD (MANTOUX TEST),PPD,5 TU/0.1ml,2,5
+B61-5153-05689-01,"Diphtheria anatoxin (purified),H. influenzae type b polysaccharide conjugated to tetanus protein (Vial),Tetanus anatoxin (purified) (Syringe),Vaccine-B. pertussis (inactivated)",TETRACT- HIB VACCINE,"30 IU/Syringe,10 mcg,60 IU/Syringe,4 IU/Syringe",2,6
+B61-5296-06120-01,"Vaccine-Measles virus (live attenuated Schwarz strain),Vaccine-Mumps virus (live attenuated Urabe AM 9 strain),Vaccine-Rubella virus (live attenuated Wistar RA 27/3M strain)",TRIMOVAX VACCINE,"1000 CCID50,5000 CCID50,1000 CCID50",4,6
+B61-5349-05760-01,Vaccine-Typhoid (Polysaccharide of Salmonella typhi Strain type 2),TYPHIM VI VACCINE,0.025 mg,1,1
+B63-0077-04929-01,Risedronate Sodium,ACTONEL,5 mg,3,5
+B64-1023-02044-04,Enoxaparin Sodium,CLEXANE,100 mg/ml,1,2
+B65-1984-02386-01,Fluoride,FLUORETTEN,0.25 mg,2,3
+B65-3229-03767-01,Metolazone,METENIX,5 mg,9,28
+B66-1129-01504-01,Cortisone Acetate,CORTISONE ROUSSEL,5 mg,8,27
+B67-4710-02665-01,Granisetron,SANCUSO,34.3 mg,4,10
+B69-3248-05597-01,Tremarit,METIXENE,5 mg,6,16
+B70-4427-00725-01,"Bismuth Subcitrate Potassium,Metronidazole,Tetracycline Hydrochloride",PYLERA,"140 mg,125 mg,125 mg",1,3
+B72-0723-00835-01,Calamine,CALAMINE,Combination,5,10
+B72-1555-05946-01,Volatile Oil Combination,EAR ACHE,Combination,7,13
+B74-4014-04299-01,Pantoprazole Sodium,PANTOPRAZOLE AZEVEDOS,40 mg,4,11
+B74-5886-05790-02,Vancomycin Hydrochloride,VANCOMICINA AZEVEDOS,1 g,7,19
+B74-5886-05792-01,Vancomycin Hydrochloride,VANCOMICINA AZEVEDOS,500 mg,5,13
+B75-2102-05197-01,Sodium Cromoglicate (Cromolyn Sodium),GASTROCROM,20 mg/ml,6,15
+B78-0230-03067-01,INTRAVEOUS Amino Acids (AMINOPLASMAL E),AMINOPLASMAL E,5 %,8,25
+B78-0230-03068-01,INTRAVEOUS Amino Acids (AMINOPLASMAL E),AMINOPLASMAL E,10 %,5,10
+B78-1751-02228-01,Etomidate,ETOMIDATE LIPURO,2 mg/ml,1,1
+B78-2216-02599-01,Glucose Monohydrate,GLUCOSE,50 %w/v,5,11
+B78-2926-03409-02,Lidocaine Hydrochloride,LIDOCAINE,20 mg/ml,7,12
+B78-2932-03394-01,Lidocaine,LIDOCAINE HYDROCHLORIDE,20 mg/ml,3,11
+B78-2959-03050-01,INTRAVENOUS LIPID MCT/ LCT (LIPOFUNDIN),LIPOFUNDIN MCT/LCT,20 %,10,32
+B78-4101-04458-02,Pethidine (Meperidine),PETHIDINE,50 mg/ml,6,13
+B78-4216-04602-01,Potassium Chloride,POTASSIUM CHLORIDE,15 %,3,6
+B78-4216-04612-01,Potassium Chloride,POTASSIUM CHLORIDE,40 mmol/20ml,5,9
+B78-4217-04605-01,Potassium Chloride,POTASSIUM CHLORIDE CONCENTRATE,150 mg/ml,4,7
+B78-4981-05974-01,Water,STERILE WATER FOR IRRIGATION,100 %,3,7
+B78-5254-03061-01,INTRAVENOUS Trace Elements  (TRACUTIL CONCENTRATE OF TRACE ELEMENTS ADULT),TRACUTIL CONCENTRATE OF TRACE ELEMENTS,Combination,3,8
+B78-B324-12609-02,Ethanol,ALKOHOL-KONZENTRAT,95 %,6,9
+B80-2331-02780-01,HetaStarch,HEMOHES,6 %,4,9
+B85-1724-02516-01,Gamma Benzene Hexachloride& Dicophane,ESODERM,Combination,8,24
+B85-3660-02636-01,Glyceryl Trinitrate,NITROCONTIN CONTINUS,2.6 mg,5,8
+B85-3957-05661-01,Tyrothricin& Neomycin& Macrogol,OTOSEPTIL,Combination,3,8
+B85-5692-05059-01,Sennosides A & B,X-PREP,10 mg/5ml,5,15
+B86-3443-03875-01,Morphine,MXL,90 mg,4,15
+B86-3978-04228-01,Oxycodone,OXYCONTIN,20 mg,6,14
+B86-3978-04231-01,Oxycodone Hydrochloride,OXYCONTIN,10 mg,3,6
+B86-3978-04236-01,Oxycodone Hydrochloride,OXYCONTIN,20 mg,7,14
+B86-3978-04239-01,Oxycodone Hydrochloride,OXYCONTIN,40 mg,3,4
+B87-4139-00277-01,Aminophylline Hydrate,PHYLLOCONTIN CONTINUS,100 mg,1,5
+B87-4139-00278-02,Aminophylline Hydrate,PHYLLOCONTIN CONTINUS,225 mg,1,2
+B87-4139-00278-03,Aminophylline Hydrate,PHYLLOCONTIN CONTINUS,225 mg,7,10
+B88-4301-04740-01,Prochlorperazine,PROCHLORPERAZINE,5 mg,1,2
+B90-4670-04982-01,Royal Jelly,ROYAL,340 mg,9,18
+B91-0312-00406-01,"Antipyrine,Benzocaine",ANTIPYRINE + BENZOCAINE,"5.4 %,1.4 %",7,26
+B91-3034-06384-01,Loteprednol Etabonate,LOTEMAX,0.5 %,7,17
+B91-3436-05160-01,Sodium chloride,MURO-128,50 mg/ml,3,7
+B91-6469-06598-01,"Loteprednol Etabonate,Tobramycin",ZYLET,"5 mg/ml,3 mg/ml",1,1
+B91-6551-06666-01,lifitegrast,XIIDRA,50 mg/ml,1,2
+B91-9139-09131-01,Brimonidine Tartrate,LUMIFY,0.025 %,9,35
+B94-0887-02809-01,Human Protein C,CEPROTIN,500 IU,3,7
+B95-0132-04112-01,Octocog alfa (Coagulation Factor VIII),ADVATE,500 IU,3,6
+B95-0887-02809-01,Human Protein C,CEPROTIN,500 IU,7,17
+B95-0887-06248-01,Human Protein C,CEPROTIN,1000 IU,6,17
+B95-5206-02331-03,"Aprotinin (synthetic),Calcium Chloride,Fibrinogen (human),Thrombin (human)",TISSEEL,"3000 U/ml,5.88 mg/ml,91 mg/ml,500 IU/ml",5,22
+B97-0437-00410-01,Antithrombin III,AT III,500 IU,2,4
+B97-0672-02153-01,Esmolol Hydrochloride,BREVIBLOC,10 mg/ml,4,7
+B97-1032-03053-01,INTRAVENOUS LIPID Olive oil refined (80%)& Soyabean oil refined (20%) (CLINOLEIC),CLINOLEIC,20 %,2,3
+B97-1331-01694-01,Dextrose,DEXTROSE,100 mg/ml,3,7
+B97-1331-01700-02,Dextrose,DEXTROSE,50 mg/ml,8,25
+B97-1331-01701-01,Dextrose,DEXTROSE,50 mg/ml,2,4
+B97-1331-01701-02,Dextrose,DEXTROSE,50 mg/ml,6,17
+B97-1331-01701-03,Dextrose,DEXTROSE,50 mg/ml,10,16
+B97-1331-01701-04,Dextrose,DEXTROSE,50 mg/ml,4,8
+B97-1332-01718-01,"Dextrose (anhydrous),Sodium chloride",DEXTROSE + SODIUM CHLORIDE INJECTION,"50 mg/ml,2.25 mg/ml",2,3
+B97-1332-01718-02,"Dextrose (anhydrous),Sodium chloride",DEXTROSE + SODIUM CHLORIDE INJECTION,"50 mg/ml,2.25 mg/ml",3,6
+B97-1332-01718-03,"Dextrose (anhydrous),Sodium chloride",DEXTROSE + SODIUM CHLORIDE INJECTION,"50 mg/ml,2.25 mg/ml",3,4
+B97-1332-01722-01,"Dextrose (anhydrous),Sodium chloride",DEXTROSE + SODIUM CHLORIDE INJECTION,"50 mg/ml,9 mg/ml",11,23
+B97-1334-01701-02,Dextrose,DEXTROSE 5% MINI-BAG INJECTION USP MULTI PACK,50 mg/ml,3,5
+B97-1448-01915-01,Dobutamine,DOBUTAMINE,1 mg/ml,10,21
+B97-1448-01916-01,Dobutamine,DOBUTAMINE,4 mg/ml,3,9
+B97-1477-01954-01,Doxapram Hydrochloride,DOXAPRAM,20 mg/ml,7,19
+B97-1721-02153-01,Esmolol Hydrochloride,ESMOLOL,10 mg/ml,8,25
+B97-1721-02154-01,Esmolol Hydrochloride,ESMOLOL,250 mg/ml,1,1
+B97-1800-02267-01,Factor VIII Recombinant (Antihemophilic Factor),FACTOR VIII,500 IU,3,7
+B97-1851-02295-01,FENTANYL,FENTANYL,50 mcg/ml,4,12
+B97-1851-02295-02,FENTANYL,FENTANYL,50 mcg/ml,5,21
+B97-1964-02360-01,Fluconazole,FLUCONAZOLE,2 mg/ml,8,17
+B97-2234-02643-01,Glycine,GLYCINE,15 mg/ml,2,3
+B97-2234-02643-02,Glycine,GLYCINE,15 mg/ml,4,9
+B97-2238-02646-02,Glycopyrrolate,GLYCOPYRROLATE,0.2 mg/ml,6,7
+B97-2543-03059-01,INTRAVENOUS Multivitamin (INFUVIT ADULT),INFUVIT,Combination,3,6
+B97-2810-00882-01,"Calcium Chloride,Potassium Chloride,Sodium chloride,Sodium lactate",LACTATED RINGER'S USP,"0.2 mg/ml,0.3 mg/ml,6 mg/ml,3.1 mg/ml",4,9
+B97-2810-00882-03,"Calcium Chloride,Potassium Chloride,Sodium chloride,Sodium lactate",LACTATED RINGER'S USP,"0.2 mg/ml,0.3 mg/ml,6 mg/ml,3.1 mg/ml",9,19
+B97-3389-03872-02,Morphine,MORPHINE,10 mg/ml,5,8
+B97-3631-00280-01,Amiodarone Hydrochloride,NEXTERONE,1.8 mg/ml,5,18
+B97-4128-04499-02,Phenytoin,PHENYTOIN,50 mg/ml,4,7
+B97-4867-05179-03,Sodium Chloride (Normal Saline),SODIUM CHLORIDE,0.9 %,7,15
+B97-5012-05329-01,Sufentanil,SUFENTANIL,50 mcg/ml,3,7
+B97-5265-03078-01,INTRAVEOUS Amino Acids (TRAVASOL),TRAVASOL,10 %,4,6
+B97-6021-06223-01,Sevoflurane,SEVOFLURANE,99.99 %,6,11
+B97-6521-06638-01,"Immune Globulin Infusion (Human),Recombinant Human Hyaluronidase",HYQVIA,"30 g/300ml,2400 IU/15ml",8,12
+B97-6521-06639-01,"Immune Globulin Infusion (Human),Recombinant Human Hyaluronidase",HYQVIA,"20 g/200ml,1600 IU/10ml",2,5
+B97-6521-06640-01,"Immune Globulin Infusion (Human),Recombinant Human Hyaluronidase",HYQVIA,"10 g/100ml,800 IU/5ml",2,4
+B97-6625-09126-02,Thrombin Topical (Recombinant),RECOTHROM,500 IU,2,4
+B97-6625-19408-01,Thrombin Topical (Recombinant),RECOTHROM,5000 IU,4,6
+B98-4638-02646-01,Glycopyrrolate,ROBINUL,0.2 mg/ml,6,12
+B99-1789-02930-01,"Calcium Chloride,Icodextrine,Magnesium Chloride,Sodium chloride,Sodium lactate",EXTRANEAL,"0.257 mg/ml,75 mg/ml,0.051 mg/ml,5.4 mg/ml,4.5 mg/ml",7,12
+BA1-9260-09298-01,"Disodium Phosphate,Phosphoric Acid 75%",FLEET READY TO USE ENEMA FOR CHILDREN,"10.01 g/100g,6.58 g/100g",12,30
+BA2-5579-02859-02,Hydroxocobalamin Acetate (Vitamin B12),VITAMIN B12 DEPOT,1 mg/ml,10,22
+BA4-B650-13432-01,"Lysozyme,Hydroxyethylcellulose",Zyme,"75 mg/30ml,30 mg/30ml",9,20
+BA5-B523-03960-02,Mycophenolate Mofetil,MycoVista,200 mg/ml,3,7
+BA5-D882-05108-01,Sirolimus,SIROLIMUS,1 mg/ml,5,7
+BA6-9282-06594-03,Colistimethate Sodium,COLISTIMETHATE SODIUM,1000000 IU,7,27
+BA7-3492-09335-02,Natamycin,NATACYN,5 %,3,5
+BB6-5729-02221-02,Ethosuximide,ZARONTIN,250 mg/5ml,4,11
+BB8-9304-09365-01,"Dimethyl Siloxane,Dimethyl vinyl Terminated,Dimethyl methylcyclosiloxane,Dimethyl Siloxane,Hydrogen Terminated,Dimethyl methyl hydrogen siloxane",New Gel+Clear Silicone Strips,"60 %/1w/w,1 %/1w/w,30 %/1w/w,10 %/1w/w",7,21
+BB8-9465-09580-01,"Dimethyl Siloxane,Dimethyl vinyl Terminated,Dimethyl methylcyclosiloxane,Dimethyl methyl hydrogen siloxane,Dimethyl Siloxane,Hydrogen Terminated",New Gel Beige Silicon Large Abdomen Sheet,"60 %,1 %,10 %,30 %",7,21
+BB8-9713-09365-01,"Dimethyl Siloxane,Dimethyl vinyl Terminated,Dimethyl methylcyclosiloxane,Dimethyl Siloxane,Hydrogen Terminated,Dimethyl methyl hydrogen siloxane",New Gel+Beige Silicone Strips,"60 %/1w/w,1 %/1w/w,30 %/1w/w,10 %/1w/w",1,3
+BB8-9714-09477-01,"Dimethyl Siloxane,Dimethyl vinyl Terminated,Dimethyl methylcyclosiloxane,Dimethyl Siloxane,Hydrogen Terminated,Dimethyl methyl hydrogen siloxane",New Gel+Beige Silicone Dots,"60 %/1w/w,1 %/1w/w,30 %/1w/w,10 %/1w/w",2,4
+BC0-9317-09386-01,"Algal oil (Total Omega 3s 1050mg (EPA 285mg,DHA 575mg & Other Omega 3s 190mg)”",NORDIC NATURALS Baby's DHA Vegetarian,1790 mg/2ml,5,21
+BC0-D354-18120-02,"Vitamin C,Sodium",NORDIC NATURALS Vitamin C Gummies,"125 mg/1 Gummy,5 mg/1 Gummy",12,28
+BC2-9319-08595-04,Recomb. Serotype 26 Adenoviral Particles Cont. SARS-CoV 2 Prot.S Gene,SPUTNIK LIGHT,0.5 to 1.5 X 10^11 particle/dose,2,3
+BC2-9319-08595-07,Recomb. Serotype 26 Adenoviral Particles Cont. SARS-CoV 2 Prot.S Gene,SPUTNIK LIGHT,0.5 to 1.5 X 10^11 particle/dose,2,4
+BC2-9319-08595-10,Recomb. Serotype 26 Adenoviral Particles Cont. SARS-CoV 2 Prot.S Gene,SPUTNIK LIGHT,0.5 to 1.5 X 10^11 particle/dose,11,31
+BC3-9325-09392-01,Thuja Occidentalis,Thuja 30X - Dr.Reckeweg,30 X,13,23
+BC3-9867-10251-01,"Semecarpus anacardium DIL. 6X,Atropa belladonna DIL. 4X,Carbo vegetabilis DIL. 8X,Chamomilla DIL. 2X,Lycopodium clavatum DIL. 5X",R5 DR. RECKEWEG HOMEOPATHIC FORMULA,"1 ml/10ml,1 ml/10ml,1 ml/10ml,1 ml/10ml,1 ml/10ml",18,38
+BC3-9869-10252-01,"Berberis vulgaris 4X,Solanum dulcamara 4X,Equisetum hiemale 6X,Eupatorium purpureum 6X",R18 DR. RECKEWEG HOMEOPATHIC FORMULA,"1 ml/10ml,1 ml/10ml,1 ml/10ml,1 ml/10ml",7,21
+BC3-9870-10253-01,"Acidum phosphoricum 12X,Agnus castus 8X,Damiana (Turnera diffusa) 6X",R41 DR. RECKEWEG HOMEOPATHIC FORMULA,"1 ml/10ml,1 ml/10ml,1 ml/10ml",5,12
+BC3-A108-10569-01,BELLADONNA,BELLADONNA 30C - DR. RECKEWEG,30 C,4,6
+BC3-A115-10715-01,Nux Vomica,Nux Vomica 30C - Dr. Reckeweg,30 C,5,13
+BC3-A204-10718-01,Sulfur,Sulfur 30C - Dr. Reckeweg,30 C,4,6
+BC3-A546-11226-01,Arsenum jodatum,Arsenum jodatum 30C - Dr. Reckeweg,30 C,1,2
+BC3-A548-11229-01,Acidum nitricum,Acidum nitricum 30C - Dr. Reckeweg,30 C,3,7
+BC3-A554-11235-01,Aconitum napellus,Aconitum 30C - Dr. Reckeweg,30 C,6,14
+BC3-A639-11379-01,Cephaelis ipecacuanha,Ipecacuanha 30C - Dr. Reckeweg,30 C,4,8
+BC3-A985-12120-01,(Homeopathy) Eupatorium perfoliatum,Eupatorium perfoliatum 30C - Dr. Reckeweg,30 C,3,8
+BC3-C106-00003-01,(Homeopathy),Five Phos 6X BC 29 Dr Reckeweg,Combination,4,12
+BC3-C118-14347-01,(Homeopathy) Magnesium phosphoricum 6x (in Lactosum monohydricum),Magnesium Phosphoricum 6X Dr Reckeweg,100 mg,4,11
+BC3-C122-14579-01,(Homeopathy) Calcarea Fluoratum 12x (in Lactosum monohydricum),Calcarea Fluoratum 12X Dr Reckeweg,100 mg,3,6
+BC9-3610-04391-01,Pegfilgrastim (NEULASTIM),NEULASTIM,6 mg,9,28
+BC9-9288-09065-01,Pegfilgrastim,NEULASTIM ONPRO,6 mg,7,9
+BD0-9346-08419-02,Favipiravir,AVIGAN,200 mg,4,13
+BD1-4867-09419-02,Sodium chloride,SODIUM CHLORIDE,7 %,12,26
+BD1-A269-10808-01,Racepinephrine,ASTHMANEFRIN,2.25 %,4,8
+BD2-9348-07471-01,Enoxaparin Sodium,ENOXAPARIN LEDRAXEN,60 mg/0.6ml,2,4
+BE6-9353-01843-01,Diltiazem Hydrochloride,DILTIAZEM ABZ,60 mg,8,18
+BE7-6613-06726-02,Estradiol,ESTRADOT 50,50 mcg/24 hrs,5,9
+BE7-7176-20339-01,Trametinib Dimethyl Sulfoxide,MEKINIST,0.05 mg/ml,4,7
+BF0-9354-09440-01,"lnulin (Fibruline OS2),Probio-Tec LA-5,Probio-Tec BB-12",Omni Lactis® 10 Caps,"230 mg,15 mg,15 mg",4,15
+BF1-D145-12254-01,"Citric Acid Monohydrate,Glucose,Potassium Citrate,Sodium chloride",Hydralyte Apple Blackcurrant Flavoured Electrolyte Ice Blocks,"4.8 mg/1ml,16 mg/1ml,2.2 mg/1ml,2.5 mg/1ml",9,19
+BG0-9378-09557-02,Aducanumab,ADUHELM,300 mg/3ml,7,27
+BG4-3540-05849-02,Vinorelbine Tartrate,NAVELBINE,10 mg/ml,4,8
+BG5-9416-09531-01,"Glycerine 99.5%,Propylene Glycol,Hydroxyethylcellulose",CLINIJEL LUBRICATING JELLY,"5 %w/w,5 %w/w,1.95 %w/w",10,25
+BG6-B006-12141-01,"Lidocaine Hydrochloride,Cetylpyridinium Chloride",DENTINOX TEETHING GEL,"0.33 g/100g,0.1 g/100g",3,9
+BG7-9357-09533-01,"Glucose Monohydrate,Sodium Citrate,Sodium chloride,Potassium Chloride",iDRATA ,"15.95 mg/ml,2.6 mg/ml,1.77 mg/ml,1.5 mg/ml",3,4
+BH2-9470-09587-01,"Iron (Lipofer® (Microencapsulated iron (Pyrophosphate iron coated with corn starch & Sunflower lecithin) 361.45 mg),Ascorbic Acid (Vitamin C)",KENTOFER FORTE,"30 mg/ 1 capsule,70 mg/ 1 capsule",6,10
+BH2-C419-02756-01,Herbal-Combination,REVIVEN,Combination,6,12
+BH6-0621-12279-02,Bilastine,BILAXTEN,10 mg/1 Tablet,4,8
+BH6-2539-19527-01,Calfactant equivalent to 35 mg of Phospholipids,INFASURF,35 mg/ml,6,13
+BH6-9195-09611-02,"Amlodipine (as besilate),Candesartan Cilexetil",UNISIA,"5 mg,8 mg",6,19
+BH6-9195-09611-03,"Amlodipine (as besilate),Candesartan Cilexetil",UNISIA,"5 mg,8 mg",6,13
+BH6-D114-16863-01,Vancomycin Hydrochloride 1025.16 mg equivalent to Vancomycin 1000 mg,Vanco,1000 mg/Vial,3,6
+BH6-D269-03254-01,Lacosamide,TREPADIO,200 mg,5,12
+BH6-D269-03255-01,Lacosamide,TREPADIO,50 mg,9,21
+BH6-D944-04447-01,"Amlodipine Besilate,Indapamide,Perindopril Arginine",PRATIMA TRIO,"10 mg,2.5 mg,10 mg",1,4
+BH6-D944-04448-01,"Amlodipine Besilate,Indapamide,Perindopril Arginine",PRATIMA TRIO,"5 mg,2.5 mg,10 mg",5,12
+BH6-D944-04449-01,"Amlodipine Besilate,Indapamide,Perindopril Arginine",PRATIMA TRIO,"10 mg,1.25 mg,5 mg",4,17
+BH6-E063-19457-01,Testosterone Cypionate USP,Axelus,200 mg/1 vial,1,1
+BH8-6557-07450-01,"Fluticasone Furoate,Umeclidinium Bromide,Vilanterol Trifenatate",TRELEGY ELLIPTA,"100 mcg,62.5 mcg,25 mcg",6,13
+BI1-B604-05290-01,Sorafenib Tosilate,SORACARE,200 mg,9,23
+BI1-B723-05353-01,Sunitinib Malate,RENAL-TIB,12.5 mg,5,16
+BI4-9509-09665-01,"Lactoferrin,Iron fumarate",FERRIKTO,"100 mg,3.18 mg",4,6
+BI4-A017-10444-01,"Lactoferrin,Hyaluronic Acid",INPRO Suppositories,"30 mg,20 mg",6,11
+BI4-D386-18546-01,"Betacarotene,Vitamin B1(Thiamine hydrochloride),Vitamin B2 (Riboflavin),Vitamin B6 (Pyridoxine HCL),Vitamin B12 (Cyanocobalamin),Vitamin C ( Ascorbic Acid 60 mg),Vitamin E (Corresponding to 32mg of DL-alpha-tocopheryl acetate)",ASD SUSTAINED VIT TABLETS,"82.5 mg/tablet,0.89 mg/tablet,0.72 mg/tablet,1.76 mg/tablet,0.0144 mg/1Tablet,43.2 mg/tablet,15.77 mg/tablet",4,9
+BI4-D958-19181-01,"Coenzyme Q10 (Ubiquinone),Zinc Combination",Zinco Q ten Capsules,"100 mg/Capsule,25 mg/Capsule",5,15
+BI4-E190-19864-01,ferric Succinylate microencapsulated,ASD SemiFer fourteen,14 mg,6,8
+BI4-E192-19865-01,Ferric sucromaltose,ASD SemiFer forty,40 mg,3,7
+BI4-E235-19867-01,Glycinated ferrous chelate (II),ASD CHELAZEN CAPSULES,20 mg,4,8
+BI4-E365-20224-01,Magnesium,ASD Magneflex Sixty Capsules,4 mmol,6,16
+BL0-9515-09760-01,Zinc-L-Carnosine,HEPILOR CAPSULE,39.53 mg,5,11
+BL0-9517-09844-01,Zinc-L-Carnosine,HEPILOR LIQUID ,0.39 g,8,17
+BN5-9525-09842-01,"Sodium Hyaluronate,Colostrum,Aloe Barbadensis Leaf Juice,Algin",LIETOFIX REPAIR CREAM,"0.2 %,1.5 %,4 %,0.3 %",10,22
+BN5-9526-09714-01,"Psyllium Fibre (plantago ovata forsk,seed husk),Psyllium Fiber",PSYLLOGEL Fibra,"3633.2 mg,3633.2 mg",1,1
+BN6-9502-09726-01,Lactase,EASYCOL BABY,500 mg/15ml,9,20
+BN8-9537-09739-01,"Mecobalamin,Fursultiamine hydrochloride,Tocopherol Calcium Succinate,Pyridoxine Hydrochloride (Vitamin B6),Nicotinamide,Calcium Pantothenate,Folic Acid",Mebarumin,"500 mcg/tablet,36.4 mg/tablet,34.5 mg/tablet,33.3 mg/tablet,20 mg/tablet,15.4 mg/tablet,300 mcg/tablet",1,2
+BO0-1722-09748-02,Esmolol Hydrochloride,ESMOLOL HYDROCHLORIDE,10 mg/ml,4,11
+BO1-9563-03222-02,Ketamine Hydrochloride,KETAMAINE GL,50 mg/ml,9,16
+BO2-9550-09754-01,IRON (IRON BISGLYCINATE 105.81mg) 20mg/ 1 tablet, Multizan Ferrum 20 mg,20,2,4
+BO2-B434-05556-01,Tongkat Ali Extract(Eurycoma Longifolia),Testo Plus,125 mg,5,15
+BO2-D583-10961-01,Cholecalciferol (Vitamin D3),QUESTD Liquid,400 IU/ Drop,15,29
+BO2-E277-20078-01,simethicone,GasXP,120 mg,3,6
+BO5-A322-10856-01,"Elderflower extract (thereof 5% rutin),Quercetln powder (thereof 95% auercetin),Grape Seed Extract",Ester C Gold,"100 mg/Capsule,10 mg,10 mg",7,10
+BO5-A343-10897-01,L-glutamine Selinium combination,Mucosa Formula,500 mg,7,18
+BO5-B817-13708-01,"Herbal-Cynara scolymus (Artichoke leaves dry extract),SUNFLOWER OIL,DANDELION,Ginger",BIOGENA LiverDX Formula,"150 mg,78.2 mg,75 mg,75 mg",3,7
+BQ1-9573-09301-02,Recombinant COVID-19 Vaccine Protien Antigen,Sinopharm-CHO-G2,20 mcg,10,17
+BQ2-3052-03087-01,Iodine and Potassium Iodide,LUGOL'S SOLUTION,5 %,6,11
+BQ4-9636-09864-01,Paracetamol,Paracetamol - Pharco B International 1%,1000 mg/100ml,11,24
+BR2-9604-09811-02,Belumosudil,REZUROCK,200 mg,7,10
+BR5-9600-01495-01,Conjugated Estrogen,CONJUGATED ESTROGEN,0.625 mg/g,4,8
+BR6-9602-00554-02,Azacitidine,AZACITIDINE KOANAA,100 mg,4,5
+BR6-B345-00944-01,Capecitabine,SHILCAP ,500 mg,4,6
+BR6-C978-00746-01,Bortezomib,BORTEZOMIB KOANNA,3.5 mg,1,2
+BR7-9604-13267-02,Belumosudil,REZUROCK,200 mg,3,9
+BS0-9605-09829-01,"Vitamin B6 (as pyridoxal 5-phosphate),Thiamine  Hydrochloride (Vitamin B1),Calcium",Nutrifem P-M-S Formula&reg;,"10 mg,1.1 mg,300 mg",5,13
+BS9-A743-11869-01,"Iron (Ferrous Bisglycinate),L Methyl Folate",Multizan Ferrum L,"30 mg,400 mcg",7,23
+BT0-9633-09860-02,"Alendronic Acid 70 mg,Chloecalciferol ( Vit D3) 5600IU",ACLONIA,1 tablet,6,15
+BT0-9633-09861-02,"Alendronic Acid 70 mg,Chloecalciferol ( Vit D3) 2800IU",ACLONIA,1 tablet,8,15
+BT2-8957-09854-02,"Hyaluronic Acid,Ginkgo Biloba L Hydroglycolic extract",Trium Free,"0.15 % / 10 ml,0.05 % / 10 ml",10,23
+BT2-8959-09294-02,"Hyaluronic acid sodium salt,Ginkgo Biloba L Hydroglycolic extract",Trium UD,"0.15 % / 0.35ml,0.05 % / 0.35ml",11,29
+BT2-8960-09050-02,"Hyaluronic acid sodium salt,L Proline,Glycine,L Lysine monohydrochloride,L Leucine",Hyalfid,"0.15 10ml,0.0752 10ml,0.1 10ml,0.014 10ml,0.0108 10ml",6,10
+BT2-9237-09257-02,"Hyaluronic acid sodium salt,L Proline,Glycine,L Lysine monohydrochloride,L Leucine",HYALFID GEL MONODOSE,"0.3 % / 0.35ml,0.0752 % / 0.35ml,0.1 % / 0.35ml,0.014 % / 0.35ml,0.0108 % / 0.35ml",5,10
+BT9-7489-02819-03,Hydrochlorothiazide,HYDROCHLOROTHIAZIDE,25 mg,5,8
+BU3-9740-09998-01,"Highly dispersed Silicon dioxide,Citric Acid,Sodium Selenite",DeflaGyn Vaginal Gel,"10 mg/5ml,24.8 mg/5ml,0.83 mg/5ml",8,23
+BU9-9651-09905-02,"SARS-CoV-2 AstraZeneca ChAdOx1,Recomb chimp adenovirus expressing Spike (S) surface of SARS COV2",AZD1222,5 X 10^10 VP/ 0.5 mL,2,6
+BV0-9664-09943-01,NETARSUDIL,RHOPRESSA,0.02 %,8,26
+BV2-1615-02028-02,Emedastine Fumarate (Difumarate),EMADINE,0.5 mg/ml,7,20
+BV2-6783-06881-02,Glycerol Phenyl Butyrate,RAVICITI,1.1 g/ml,4,7
+BV2-9667-08439-01,Lurbinectedin,ZEPZELCA ,4 mg,4,9
+BV2-D174-17031-01,Pegzilarginase,LOARGYS,5 mg/ml,4,9
+BV3-9670-09932-01,"Vitamin C(L Ascorbic acid),Zinc Sulfate",Fast & Up Vitamin C+Zinc,"1000 mg/1Tablet,10 mg/1Tablet",2,5
+BV6-A230-10755-01,Hexamidine Diisethionate,Hexa Trans,0.15 g/100g,10,31
+BV6-B235-12487-01,"Chlorhexidine Gluconate Solution 20%,Hyaluronic Acid (as Sodium Hyaluronate)",VEDOX DOUBLE  ACTION GEL,"1.065 g/100ml,1 g/100ml",4,8
+BV6-B253-03883-01,Mouth Wash Combination,Vedox Calm Mouthwash - Gargle,Combination,5,11
+BV6-B323-12570-02,Povidone Iodine,SEVADEEN 1% Mouthwash / Gargle,1 g/100ml,4,8
+BV7-9679-09938-01,CarboxyMethyl -Chitosan,KioMedine VS One,60 mg/3ml,5,13
+BV9-9732-10093-01,Delafoxacin Meglumine 300 mg Powder for Solution for Infusion ,BAXDELA,300,8,24
+BV9-9956-11081-01,Ondansetron hydrochloride dihydrate,Zemitron,4 mg/2ml,2,3
+BV9-A779-11586-01,"Xanthan Gum,BENTONITE VEEGUM",PREVALIN ALLERGY KIDS,"0.04 g,0.16 g",4,15
+BV9-B485-12966-01,Teicoplanin,TEICOPLANIN HIKMA,200 mg/1 vial,8,15
+BW0-B829-13746-01,capivasertib,TRUQAP,200 mg,3,11
+BW1-4220-04628-02,Potassium Phosphate,POTASSIUM PHOSPHATE,3 mmole/ml,6,13
+BW5-6520-06222-02,Isoflurane,AERRANE,99.99 %,2,2
+BW6-9694-10086-02,"Hypoallergenic anhydrous lanolin,White soft paraffin,Light Liquid Paraffin",HypoBase Cream,"1 g/100g,14.5 g/100g,12.6 g/100g",9,14
+BW6-9694-10090-02,"Hypoallergenic anhydrous lanolin,White soft paraffin,Light Liquid Paraffin",HypoBase Cream,"1 g/100g,14.5 g/100g,12.6 g/100g",8,11
+BW7-9697-09947-01,Lactic acid bacteria,PROVAG,5 mg,2,2
+BW7-9945-10352-01,Lactic acid bacteria,LACTORAL IBD,4.8 mg,3,8
+BW8-9698-00896-01,Calcium Gluconate,C-GEL,2.5 %,4,9
+BX0-9758-07300-02,Ursodeoxycholic Acid,URSOSAN,500 mg,10,23
+BY1-9723-09972-01,native type I horse Collagen,BIOSPRAY,10 g,1,2
+BY2-9724-09973-01,adsorbent polymer beads,"CYTOSORB&reg; WHOLE-BLOODADSORBER, DISPOSABLES",300 IU/ml,4,9
+BY4-9764-10048-01,Herbal Combination,Oraflogo GEL,10 ml,1,3
+BY5-9765-10107-05,Hypochlorous acid,HYDROCYN aqua,0.003 %/ ml,6,15
+BY5-9765-10109-01,Hypochlorous acid,HYDROCYN aqua,0.003 %/ ml,5,18
+C01-1800-02265-01,Factor VIII Recombinant (Antihemophilic Factor),FACTOR VIII,1000 IU,3,4
+C01-1800-02266-01,Factor VIII Recombinant (Antihemophilic Factor),FACTOR VIII,250 IU,2,6
+C01-2390-09480-02,Ifosfamide,HOLOXAN,1000 mg,2,10
+C01-3833-03082-01,INTRAVEOUS Amino Acids& Lipids & Carbohydrate TPN (OLIMEL N5E),OLIMEL,Combination,1,2
+C01-3833-03084-01,INTRAVEOUS Amino Acids& Lipids & Carbohydrate TPN (OLIMEL N9),OLIMEL,Combination,6,13
+C01-3833-03085-02,INTRAVEOUS Amino Acids& Lipids & Carbohydrate TPN (OLIMEL N9E),OLIMEL,Combination,8,16
+C01-4089-03086-02,INTRAVEOUS Amino Acids& Lipids & Carbohydrate TPN (PERIOLIMEL N4E),PERIOLIMEL N4E,Combination,1,3
+C01-4501-04111-01,Octocog alfa (Coagulation Factor VIII),RECOMBINATE,250 IU,6,13
+C01-5390-03678-01,Mesna,UROMITEXAN,100 mg/ml,2,5
+C01-E201-19790-01,"L-Arginine,L-Cysteine,Glycine,Histidine,Isoleucine,L-leucine,L-Lysine,Methionine,Eflornithine Hydrochloride,L-Phenylalanine,L-Proline,L-Serine,Taurine,Tryptophan,L-Tyrosine,Valine Amino Acid,Sodium chloride,Potassium Acetate,Calcium Chloride Dihydrate,Sodium glycerophosphate,hydrated,Glucose Monohydrate,L-Alanine,L-Aspartic acid,L-Glutamic acid,L-Threonine,Magnesium acetate tetrahydrate (= 4H2O)",Numeta G Sixteen Percent E,"27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination",3,5
+C01-E202-19792-01,"L-Alanine,L-Arginine,L-Aspartic acid,L-Cysteine,L-Glutamic acid,Glycine,L-Histidine,L-Isoleucine,L-leucine,L-Lysine monohydrate (= H2O) equivalent to Lysine,L-Methionine,L-Ornithine hydrochloride (= HCl) equivalent to Ornithine,L-Phenylalanine,L-Proline,L-Serine,Taurine,L-Threonine,L-Tryptophan,L-Tyrosine,L-Valine,Sodium chloride,Potassium Acetate,Calcium Chloride Dihydrate,Magnesium acetate tetrahydrate (= 4H2O),Sodium glycerophosphate,hydrated,Glucose monohydrate (H2O) equivalent to Glucose anhydrous",Numeta G Nineteen Percent E,"27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination,27 Combination",4,15
+C03-1645-01542-01,Cyclophosphamide,ENDOXAN,500 mg,5,9
+C03-1645-01543-01,Cyclophosphamide,ENDOXAN,50 mg,7,17
+C04-2544-03058-01,INTRAVENOUS Multivitamin  (INFUVIT PAEDIATRIC),INFUVIT PAEDIATRIC,Combination,4,12
+C05-0474-03886-02,Moxifloxacin Hydrochloride,AVALOX,400 mg/250ml,4,7
+C05-1794-13800-02,Aflibercept,EYLEA,114.3 mg/ml,3,6
+C05-4284-04084-02,Norethisterone Acetate,PRIMOLUT - NOR,10 mg,6,18
+C05-4323-02177-02,"Estradiol Valerate,Norgestrel",PROGYLUTON,"2 mg,0.5 mg",5,11
+C05-4374-03679-02,Mesterolone,PROVIRON,25 mg,12,23
+C05-4992-04892-01,Regorafenib,STIVARGA,40 mg,14,27
+C05-5665-17559-01,Rivaroxaban,XARELTO,10 mg/1 Tablet,3,8
+C05-5665-17562-02,Rivaroxaban,XARELTO,15 mg/1 Tablet,6,12
+C05-5712-02213-02,"Drospirenone,Ethinylestradiol",YAZ,"3 mg,0.02 mg",3,8
+C05-6838-04111-01,Octocog alfa (Coagulation Factor VIII),KOVALTRY,250 IU,3,8
+C05-9530-09749-01,Vericiguat micronized,VERQUVO,2.5 mg,6,11
+C05-9857-10225-01,Finerenone,KERENDIA,20 mg,6,14
+C06-1013-03501-02,Loratadine,CLARITINE,5 mg/5ml,4,8
+C06-4990-04892-01,Regorafenib,STIVAGRA,40 mg,4,8
+C07-0392-05861-01,Vitamin A,AROVIT,50000 IU,4,7
+C07-0428-00492-01,Aspirin,ASPIRIN PROTECT,100 mg,2,2
+C07-0553-03898-01,Multivitamin,BECOZYM,Combination,3,7
+C07-0553-05489-01,"Calcium Pantothenate,Nicotinamide,Pyridoxine Hydrochloride (Vitamin B6),Riboflavin (Vitamin B2),Thiamine (Vitamin B1)",BECOZYM,"3 mg,20 mg,2 mg,2 mg,5 mg",3,4
+C07-4504-00458-01,Ascorbic Acid (Vitamin C),REDOXON,1 g,5,14
+C08-0426-00494-01,Aspirin,ASPIRIN,300 mg,3,6
+C08-0578-03896-01,Multivitamin,BEROCCA WITH CALCIUM & MAGNESIUM,Combination,4,6
+C08-1013-03501-02,Loratadine,CLARITINE,5 mg/5ml,10,20
+C08-7864-07710-01,"Panthenol,Pentylene Glycol,Ceramide,Sodium pyrrolidone carboxylate,Glycerol",BEPANTHEN SENSIDERM,"3.5 %,6.25 %,0.023 %,0.72 %/ ml,8.5 %",3,9
+C09-2779-01389-01,Coagulation Factor VIII (recombinant - sucrose formulated),KOGENATE FS,250 IU,7,17
+C09-2779-01390-01,Coagulation Factor VIII (recombinant - sucrose formulated),KOGENATE FS,500 IU,3,6
+C10-0088-04051-01,Nifedipine,ADALAT LA,30 mg,2,5
+C10-0964-01275-01,Ciprofloxacin Hydrochloride,CIPROBAY,750 mg,4,8
+C11-0130-03743-01,Methylprednisolone Aceponate,ADVANTAN,1 mg/g,2,3
+C11-0130-03744-01,Methylprednisolone Aceponate,ADVANTAN,1 mg/g,1,3
+C11-4324-02176-01,Estradiol Valerate,PROGYNOVA,2 mg,4,9
+C12-0571-01674-01,Dexpanthenol,BEPANTHEN,50 mg/g,9,15
+C12-0572-01678-01,"Chlorhexidine Hydrochloride,Dexpanthenol",BEPANTHEN PLUS,"5 mg/g,50 mg/g",3,5
+C13-0242-05244-01,"Sodium Benzoate,Sodium Phenylacetate",AMMONUL,"100 mg/ml,100 mg/ml",6,12
+C13-1939-03936-01,Multivitamin& Minerals,FLINTSTONE,Combination,2,5
+C15-0102-04923-01,Riociguat (micronized),ADEMPAS,1.5 mg,4,8
+C15-0102-04925-01,Riociguat (micronized),ADEMPAS,2.5 mg,2,3
+C15-0102-04926-01,Riociguat (micronized),ADEMPAS,2 mg,3,4
+C15-4851-05389-01,Tedizolid Phosphate,SIVEXTRO,200 mg,6,16
+C16-1037-01331-01,Clodronate,CLODRONATE,400 mg,1,2
+C16-3653-04057-01,Nimodipine,NIMOTOP,30 mg,5,10
+C16-3653-04057-03,Nimodipine,NIMOTOP,30 mg,4,13
+C16-5665-13325-02,Rivaroxaban,XARELTO,1 mg/ml,5,11
+C18-0583-03033-01,Interferon Beta - 1b (BETAFERON),BETAFERON,0.3 mg(9.6MIU),4,9
+C18-0583-03035-01,Interferon Beta - 1b (BETAFERON),BETAFERON,250 mcg/ml,6,14
+C18-2902-05797-01,Vardenafil Hydrochloride,LEVITRA,10 mg,5,12
+C18-5147-05435-01,Testosterone Enanthate,TESTOVIRON,250 mg/ml,6,13
+C18-5665-04943-01,Rivaroxaban,XARELTO,10 mg,3,8
+C19-3696-03372-01,Levonorgestrel,NORGESTON,30 mcg,9,32
+C19-5145-05431-01,Testosterone,TESTOGEL,50 mg/5gm,7,16
+C20-4323-02177-01,"Estradiol Valerate,Norgestrel",PROGYLUTON,"2 mg,0.5 mg",7,10
+C22-4553-01171-01,Chloroquine,RESOCHIN,250 mg,10,24
+C23-2220-01724-01,Dextrose (monohydrate),GLUCOTABS JUICY RASPBERRY,3680 mg,6,19
+C23-2221-01726-01,Dextrose (monohydrate),GLUCOTABS TANGY ORANGE,3708 mg,4,9
+C23-2222-01725-01,Dextrose (monohydrate),GLUCOTABS ZESTY LEMON & LIME,3704 mg,3,7
+C25-2364-13849-02,"Lactobacillus Acidophilus,Bifidobacterium infantis,Lactobacillus Casei,Lactobacillus Lactis,Bifidobacterium Bifdium,Bifidobacterium longum",HEXBIO,"107 mg/sachet,107 mg/sachet,107 mg/sachet,107 mg/sachet,107 mg/sachet,107 mg/sachet",3,12
+C28-0060-00548-01,Attapulgite of Mormoiron (activated),ACTAPULGITE,3 g,3,5
+C29-2165-02558-01,"Ginkgo Biloba Extract,Heptaminol Hydrochloride,Troxerutin",GINKOR,"7 mg,200 mg,150 mg",3,11
+C29-3415-00127-01,"Activated Mormoiron Attapulgite,Guar gum",MUCIPULGITE,"25 g/100g,6 g/100g",1,2
+C30-1000-01299-02,Cladribine,CLADRIBINE,1 mg/ml,3,5
+C30-1207-01554-01,Cytarabine,CYTARABINE FOR USP,20 mg/ml,6,14

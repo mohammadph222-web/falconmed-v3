@@ -10,6 +10,7 @@ export default function InventoryOperationsPage() {
   const [selectedInventoryId, setSelectedInventoryId] = useState('')
   const [quantity, setQuantity] = useState('')
   const [notes, setNotes] = useState('')
+    const [reason, setReason] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
 
@@ -88,9 +89,10 @@ export default function InventoryOperationsPage() {
   }
 
   function resetForm() {
-    setQuantity('')
-    setNotes('')
-  }
+  setQuantity('')
+  setNotes('')
+  setReason('')
+}
 
   async function insertTransaction({
     type,
@@ -144,7 +146,9 @@ export default function InventoryOperationsPage() {
         sourcePharmacyId: null,
         destinationPharmacyIdValue: selectedPharmacyId,
         qty,
-        transactionNotes: notes || `Adjustment plus: add ${qty} units`,
+        transactionNotes:
+  notes ||
+  `Reason: ${reason || 'NOT_SPECIFIED'} | Adjustment plus: add ${qty} units`,
       })
 
       setMessage('Adjustment + saved successfully.')
@@ -193,7 +197,9 @@ export default function InventoryOperationsPage() {
         sourcePharmacyId: selectedPharmacyId,
         destinationPharmacyIdValue: null,
         qty,
-        transactionNotes: notes || `Adjustment minus: remove ${qty} units`,
+        transactionNotes:
+  notes ||
+  `Reason: ${reason || 'NOT_SPECIFIED'} | Adjustment minus: remove ${qty} units`,
       })
 
       setMessage('Adjustment - saved successfully.')
@@ -332,26 +338,26 @@ export default function InventoryOperationsPage() {
       }
 
       await insertTransaction({
-        type: 'TRANSFER_OUT',
-        sourcePharmacyId: selectedPharmacyId,
-        destinationPharmacyIdValue: destinationPharmacyId,
-        qty,
-        transactionNotes:
-          notes ||
-          `Transfer out: ${qty} units from ${selectedPharmacy?.name || 'source pharmacy'} to ${
-            destinationPharmacy?.name || 'destination pharmacy'
-          }`,
-      })
+  type: 'TRANSFER_OUT',
+  sourcePharmacyId: selectedPharmacyId,
+  destinationPharmacyIdValue: destinationPharmacyId,
+  qty,
+  transactionNotes:
+    notes ||
+    `Reason: ${reason || 'NOT_SPECIFIED'} | Transfer out: ${qty} units from ${selectedPharmacy?.name || 'source pharmacy'} to ${
+      destinationPharmacy?.name || 'destination pharmacy'
+    }`,
+})
 
       await insertTransaction({
-        type: 'TRANSFER_IN',
-        sourcePharmacyId: selectedPharmacyId,
-        destinationPharmacyIdValue: destinationPharmacyId,
-        qty,
-        transactionNotes:
-          notes ||
-          `Transfer in: ${qty} units received by ${destinationPharmacy?.name || 'destination pharmacy'}`,
-      })
+  type: 'TRANSFER_IN',
+  sourcePharmacyId: selectedPharmacyId,
+  destinationPharmacyIdValue: destinationPharmacyId,
+  qty,
+  transactionNotes:
+    notes ||
+    `Reason: ${reason || 'NOT_SPECIFIED'} | Transfer in: ${qty} units received by ${destinationPharmacy?.name || 'destination pharmacy'}`,
+})
 
       setMessage('Transfer saved successfully.')
       resetForm()
@@ -470,7 +476,45 @@ export default function InventoryOperationsPage() {
             />
           </div>
         </div>
+                  
+                {operation !== 'DISPENSE' && (
+  <div>
+    <label style={labelStyle}>Reason</label>
+    <select
+      value={reason}
+      onChange={(e) => setReason(e.target.value)}
+      style={inputStyle}
+    >
+      <option value="">Select reason</option>
 
+      {(operation === 'ADJUSTMENT_PLUS' || operation === 'ADJUSTMENT_MINUS') && (
+        <>
+          <option value="STOCK_CORRECTION">Stock Correction</option>
+          <option value="EXPIRED">Expired</option>
+          <option value="DAMAGED">Damaged</option>
+          <option value="LOST">Lost</option>
+          <option value="FOUND">Found</option>
+          <option value="OPENING_BALANCE_CORRECTION">
+            Opening Balance Correction
+          </option>
+        </>
+      )}
+
+      {operation === 'TRANSFER' && (
+        <>
+          <option value="LOW_STOCK">Low Stock</option>
+          <option value="OVERSTOCK_REBALANCING">
+            Overstock Rebalancing
+          </option>
+          <option value="EMERGENCY_REQUEST">Emergency Request</option>
+          <option value="ROUTINE_REPLENISHMENT">
+            Routine Replenishment
+          </option>
+        </>
+      )}
+    </select>
+  </div>
+)}
         {selectedItem && (
           <div style={infoBoxStyle}>
             <div><strong>Drug Code:</strong> {selectedItem.drug_code}</div>
