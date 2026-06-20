@@ -64,11 +64,7 @@ export default function ReconciliationCasesPage() {
 
     const { error: updateError } = await supabase
       .from('reconciliation_cases')
-      .update({
-        reason,
-        notes,
-        status: newStatus,
-      })
+      .update({ reason, notes, status: newStatus })
       .eq('id', selectedCase.id)
 
     if (updateError) {
@@ -101,7 +97,6 @@ export default function ReconciliationCasesPage() {
     }
 
     alert('Investigation saved successfully.')
-
     setSelectedCase(null)
     setReason('')
     setNotes('')
@@ -116,9 +111,7 @@ export default function ReconciliationCasesPage() {
 
     const { error: updateError } = await supabase
       .from('reconciliation_cases')
-      .update({
-        status: 'APPROVED',
-      })
+      .update({ status: 'APPROVED' })
       .eq('id', selectedCase.id)
 
     if (updateError) {
@@ -149,7 +142,6 @@ export default function ReconciliationCasesPage() {
     }
 
     alert('Case approved successfully.')
-
     setSelectedCase(null)
     await loadCases()
   }
@@ -161,9 +153,7 @@ export default function ReconciliationCasesPage() {
 
     const { error: updateError } = await supabase
       .from('reconciliation_cases')
-      .update({
-        status: 'REJECTED',
-      })
+      .update({ status: 'REJECTED' })
       .eq('id', selectedCase.id)
 
     if (updateError) {
@@ -194,129 +184,334 @@ export default function ReconciliationCasesPage() {
     }
 
     alert('Case rejected successfully.')
-
     setSelectedCase(null)
     await loadCases()
   }
 
-  return (
-    <div style={pageStyle}>
-      <h1>Reconciliation Cases</h1>
-      <p style={subtitleStyle}>
-        Investigate stock count variances and track reconciliation status.
-      </p>
+  const pendingCount = cases.filter((c) => c.status === 'PENDING').length
+  const underReviewCount = cases.filter((c) => c.status === 'UNDER_REVIEW').length
+  const approvedCount = cases.filter((c) => c.status === 'APPROVED').length
+  const rejectedCount = cases.filter((c) => c.status === 'REJECTED').length
 
-      {loading && <p>Loading reconciliation cases...</p>}
+  return (
+    <div>
+      <div className="fm-page-header">
+        <div className="fm-page-header-top">
+          <div>
+            <div className="fm-page-header-meta">Governance</div>
+            <h1 className="fm-page-header-title">Reconciliation cases</h1>
+            <p className="fm-page-header-desc">
+              Investigate stock count variances and track reconciliation
+              status across all pharmacies.
+            </p>
+          </div>
+          <div className="fm-page-header-actions">
+            <button className="fm-btn" onClick={loadCases}>
+              Refresh
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {!loading && cases.length > 0 && (
+        <div className="fm-grid-kpi" style={{ marginBottom: '24px' }}>
+          <ReconKpiCard
+            label="Total cases"
+            value={cases.length}
+            color="var(--color-text-accent)"
+            barColor="var(--color-primary)"
+          />
+          <ReconKpiCard
+            label="Pending"
+            value={pendingCount}
+            color="var(--color-warning-mid)"
+            barColor="var(--color-warning-mid)"
+          />
+          <ReconKpiCard
+            label="Under review"
+            value={underReviewCount}
+            color="var(--color-text-accent)"
+            barColor="var(--color-primary)"
+          />
+          <ReconKpiCard
+            label="Approved"
+            value={approvedCount}
+            color="var(--color-success)"
+            barColor="var(--color-success)"
+          />
+          <ReconKpiCard
+            label="Rejected"
+            value={rejectedCount}
+            color="var(--color-danger-mid)"
+            barColor="var(--color-danger-mid)"
+          />
+        </div>
+      )}
+
+      {loading && (
+        <div
+          className="fm-card"
+          style={{ color: 'var(--color-text-secondary)' }}
+        >
+          Loading reconciliation cases...
+        </div>
+      )}
 
       {!loading && cases.length === 0 && (
-        <div style={emptyStyle}>No reconciliation cases found.</div>
+        <div className="fm-empty-state">
+          <div className="fm-empty-state-title">No reconciliation cases</div>
+          <div className="fm-empty-state-desc">
+            Cases will appear here after a stock count generates variances.
+          </div>
+        </div>
       )}
 
       {!loading && cases.length > 0 && (
-        <table style={tableStyle}>
-          <thead>
-            <tr>
-              <th style={thStyle}>Drug Code</th>
-              <th style={thStyle}>Batch</th>
-              <th style={thStyle}>Expiry</th>
-              <th style={thStyle}>System Qty</th>
-              <th style={thStyle}>Counted Qty</th>
-              <th style={thStyle}>Variance</th>
-              <th style={thStyle}>Type</th>
-              <th style={thStyle}>Reason</th>
-              <th style={thStyle}>Status</th>
-              <th style={thStyle}>Created</th>
-              <th style={thStyle}>Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {cases.map((caseItem) => (
-              <tr key={caseItem.id}>
-                <td style={tdStyle}>{caseItem.drug_code || '-'}</td>
-                <td style={tdStyle}>{caseItem.batch_number || '-'}</td>
-                <td style={tdStyle}>{caseItem.expiry_date || '-'}</td>
-                <td style={tdStyle}>{caseItem.system_quantity}</td>
-                <td style={tdStyle}>{caseItem.counted_quantity}</td>
-                <td style={tdStyle}>
-                  <VarianceValue value={caseItem.variance} />
-                </td>
-                <td style={tdStyle}>{caseItem.variance_type || '-'}</td>
-                <td style={tdStyle}>{caseItem.reason || 'Not assigned'}</td>
-                <td style={tdStyle}>
-                  <StatusBadge status={caseItem.status} />
-                </td>
-                <td style={tdStyle}>{formatDate(caseItem.created_at)}</td>
-                <td style={tdStyle}>
-                  <button onClick={() => openCase(caseItem)} style={buttonStyle}>
-                    Open
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="fm-card" style={{ padding: 0, overflow: 'hidden' }}>
+          <div className="fm-table-wrap">
+            <table className="fm-table">
+              <thead>
+                <tr>
+                  <th>Drug code</th>
+                  <th>Batch</th>
+                  <th>Expiry</th>
+                  <th>System qty</th>
+                  <th>Counted qty</th>
+                  <th>Variance</th>
+                  <th>Type</th>
+                  <th>Reason</th>
+                  <th>Status</th>
+                  <th>Created</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cases.map((caseItem) => (
+                  <tr key={caseItem.id}>
+                    <td>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 'var(--text-xs)',
+                          color: 'var(--color-text-accent)',
+                        }}
+                      >
+                        {caseItem.drug_code || '-'}
+                      </span>
+                    </td>
+                    <td className="fm-table-muted">
+                      {caseItem.batch_number || '-'}
+                    </td>
+                    <td className="fm-table-muted">
+                      {caseItem.expiry_date || '-'}
+                    </td>
+                    <td>{caseItem.system_quantity}</td>
+                    <td>{caseItem.counted_quantity}</td>
+                    <td>
+                      <VarianceValue value={caseItem.variance} />
+                    </td>
+                    <td className="fm-table-muted">
+                      {caseItem.variance_type || '-'}
+                    </td>
+                    <td className="fm-table-muted">
+                      {caseItem.reason || (
+                        <span style={{ color: 'var(--color-text-tertiary)' }}>
+                          Not assigned
+                        </span>
+                      )}
+                    </td>
+                    <td>
+                      <StatusBadge status={caseItem.status} />
+                    </td>
+                    <td className="fm-table-muted">
+                      {formatDate(caseItem.created_at)}
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => openCase(caseItem)}
+                        className="fm-btn"
+                        style={{ fontSize: 'var(--text-xs)', padding: '4px 10px' }}
+                      >
+                        Open
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
 
       {selectedCase && (
-        <div style={caseDetailsStyle}>
-          <h2>Investigate Case</h2>
-
-          <div style={caseGridStyle}>
-            <InfoItem label="Drug Code" value={selectedCase.drug_code} />
-            <InfoItem label="Batch" value={selectedCase.batch_number} />
-            <InfoItem label="Expiry" value={selectedCase.expiry_date} />
-            <InfoItem label="System Qty" value={selectedCase.system_quantity} />
-            <InfoItem label="Counted Qty" value={selectedCase.counted_quantity} />
-            <InfoItem label="Variance" value={selectedCase.variance} />
-            <InfoItem label="Status" value={selectedCase.status} />
+        <div className="fm-card" style={{ marginTop: '20px' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '20px',
+              paddingBottom: '16px',
+              borderBottom: '1px solid var(--color-border-subtle)',
+            }}
+          >
+            <div>
+              <h2
+                style={{
+                  fontSize: 'var(--text-lg)',
+                  fontWeight: 'var(--font-medium)',
+                  color: 'var(--color-text-primary)',
+                  margin: 0,
+                }}
+              >
+                Investigate case
+              </h2>
+              <p
+                style={{
+                  fontSize: 'var(--text-sm)',
+                  color: 'var(--color-text-secondary)',
+                  margin: '4px 0 0',
+                }}
+              >
+                {selectedCase.drug_code} · Variance:{' '}
+                <VarianceValue value={selectedCase.variance} />
+              </p>
+            </div>
+            <StatusBadge status={selectedCase.status} />
           </div>
 
-          <label style={labelStyle}>Reason</label>
-          <select
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            style={selectStyle}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+              gap: '10px',
+              marginBottom: '24px',
+            }}
           >
-            <option value="">Select reason...</option>
-            {REASONS.map((reasonItem) => (
-              <option key={reasonItem} value={reasonItem}>
-                {reasonItem}
-              </option>
-            ))}
-          </select>
+            <CaseInfoItem label="Drug code" value={selectedCase.drug_code} />
+            <CaseInfoItem label="Batch" value={selectedCase.batch_number} />
+            <CaseInfoItem label="Expiry" value={selectedCase.expiry_date} />
+            <CaseInfoItem label="System qty" value={selectedCase.system_quantity} />
+            <CaseInfoItem label="Counted qty" value={selectedCase.counted_quantity} />
+            <CaseInfoItem label="Variance" value={selectedCase.variance} />
+            <CaseInfoItem label="Status" value={selectedCase.status} />
+          </div>
 
-          <label style={labelStyle}>Notes</label>
-          <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="Enter investigation notes..."
-            style={textareaStyle}
-          />
+          <div style={{ marginBottom: '16px' }}>
+            <label
+              style={{
+                display: 'block',
+                fontSize: 'var(--text-sm)',
+                fontWeight: 'var(--font-medium)',
+                color: 'var(--color-text-secondary)',
+                marginBottom: '6px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+              }}
+            >
+              Variance reason
+            </label>
+            <select
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--color-border-default)',
+                background: 'var(--color-bg-input)',
+                color: 'var(--color-text-primary)',
+                fontSize: 'var(--text-base)',
+                fontFamily: 'var(--font-sans)',
+              }}
+            >
+              <option value="">Select reason...</option>
+              {REASONS.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </select>
+          </div>
 
-          <div style={actionRowStyle}>
+          <div style={{ marginBottom: '20px' }}>
+            <label
+              style={{
+                display: 'block',
+                fontSize: 'var(--text-sm)',
+                fontWeight: 'var(--font-medium)',
+                color: 'var(--color-text-secondary)',
+                marginBottom: '6px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+              }}
+            >
+              Investigation notes
+            </label>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Enter investigation notes..."
+              style={{
+                width: '100%',
+                minHeight: '100px',
+                padding: '10px 12px',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--color-border-default)',
+                background: 'var(--color-bg-input)',
+                color: 'var(--color-text-primary)',
+                fontSize: 'var(--text-base)',
+                fontFamily: 'var(--font-sans)',
+                resize: 'vertical',
+              }}
+            />
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              gap: '10px',
+              paddingTop: '16px',
+              borderTop: '1px solid var(--color-border-subtle)',
+            }}
+          >
             <button
               onClick={saveInvestigation}
               disabled={saving}
-              style={{
-                ...buttonStyle,
-                opacity: saving ? 0.6 : 1,
-              }}
+              className="fm-btn fm-btn-primary"
+              style={{ opacity: saving ? 0.6 : 1 }}
             >
-              {saving ? 'Saving...' : 'Save Investigation'}
+              {saving ? 'Saving...' : 'Save investigation'}
             </button>
 
-            <button onClick={approveCase} style={approveButtonStyle}>
+            <button
+              onClick={approveCase}
+              className="fm-btn"
+              style={{
+                background: 'rgba(29,158,117,0.15)',
+                borderColor: 'rgba(29,158,117,0.4)',
+                color: 'var(--color-success)',
+              }}
+            >
               Approve
             </button>
 
-            <button onClick={rejectCase} style={rejectButtonStyle}>
+            <button
+              onClick={rejectCase}
+              className="fm-btn"
+              style={{
+                background: 'rgba(163,45,45,0.15)',
+                borderColor: 'rgba(163,45,45,0.4)',
+                color: 'var(--color-danger-mid)',
+              }}
+            >
               Reject
             </button>
 
             <button
               onClick={() => setSelectedCase(null)}
-              style={secondaryButtonStyle}
+              className="fm-btn"
+              style={{ marginLeft: 'auto' }}
             >
               Cancel
             </button>
@@ -327,31 +522,76 @@ export default function ReconciliationCasesPage() {
   )
 }
 
-function InfoItem({ label, value }) {
+function ReconKpiCard({ label, value, color, barColor }) {
   return (
-    <div style={infoItemStyle}>
-      <div style={infoLabelStyle}>{label}</div>
-      <div style={infoValueStyle}>{value || '-'}</div>
+    <div className="fm-kpi-card">
+      <div className="fm-kpi-label">{label}</div>
+      <div className="fm-kpi-value" style={{ color }}>
+        {Number(value || 0).toLocaleString()}
+      </div>
+      <div className="fm-kpi-bar">
+        <div
+          className="fm-kpi-bar-fill"
+          style={{ width: '60%', background: barColor }}
+        />
+      </div>
+    </div>
+  )
+}
+
+function CaseInfoItem({ label, value }) {
+  return (
+    <div
+      style={{
+        background: 'var(--color-bg-content)',
+        border: '1px solid var(--color-border-subtle)',
+        borderRadius: 'var(--radius-md)',
+        padding: '10px 12px',
+      }}
+    >
+      <div
+        style={{
+          fontSize: 'var(--text-xs)',
+          color: 'var(--color-text-tertiary)',
+          textTransform: 'uppercase',
+          letterSpacing: '0.06em',
+          marginBottom: '4px',
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          fontSize: 'var(--text-base)',
+          fontWeight: 'var(--font-medium)',
+          color: 'var(--color-text-primary)',
+        }}
+      >
+        {value ?? '-'}
+      </div>
     </div>
   )
 }
 
 function VarianceValue({ value }) {
-  const numberValue = Number(value || 0)
-
-  if (numberValue === 0) {
-    return <span style={{ color: '#22c55e', fontWeight: 700 }}>0</span>
-  }
-
-  if (numberValue > 0) {
+  const n = Number(value || 0)
+  if (n === 0)
     return (
-      <span style={{ color: '#facc15', fontWeight: 700 }}>
-        +{numberValue}
+      <span style={{ color: 'var(--color-success)', fontWeight: 'var(--font-medium)' }}>
+        0
       </span>
     )
-  }
-
-  return <span style={{ color: '#ef4444', fontWeight: 700 }}>{numberValue}</span>
+  if (n > 0)
+    return (
+      <span style={{ color: 'var(--color-warning-mid)', fontWeight: 'var(--font-medium)' }}>
+        +{n}
+      </span>
+    )
+  return (
+    <span style={{ color: 'var(--color-danger-mid)', fontWeight: 'var(--font-medium)' }}>
+      {n}
+    </span>
+  )
 }
 
 function StatusBadge({ status }) {
@@ -359,34 +599,44 @@ function StatusBadge({ status }) {
 
   const styleMap = {
     PENDING: {
-      color: '#facc15',
-      background: 'rgba(250, 204, 21, 0.12)',
-      border: '1px solid rgba(250, 204, 21, 0.4)',
+      color: 'var(--color-warning-mid)',
+      background: 'rgba(186,117,23,0.12)',
+      border: '1px solid rgba(186,117,23,0.35)',
     },
     UNDER_REVIEW: {
-      color: '#38bdf8',
-      background: 'rgba(56, 189, 248, 0.12)',
-      border: '1px solid rgba(56, 189, 248, 0.4)',
+      color: 'var(--color-text-accent)',
+      background: 'rgba(24,95,165,0.12)',
+      border: '1px solid rgba(24,95,165,0.35)',
     },
     APPROVED: {
-      color: '#22c55e',
-      background: 'rgba(34, 197, 94, 0.12)',
-      border: '1px solid rgba(34, 197, 94, 0.4)',
+      color: 'var(--color-success)',
+      background: 'rgba(29,158,117,0.12)',
+      border: '1px solid rgba(29,158,117,0.35)',
     },
     CLOSED: {
-      color: '#a855f7',
-      background: 'rgba(168, 85, 247, 0.12)',
-      border: '1px solid rgba(168, 85, 247, 0.4)',
+      color: '#c084fc',
+      background: 'rgba(168,85,247,0.12)',
+      border: '1px solid rgba(168,85,247,0.35)',
     },
     REJECTED: {
-      color: '#ef4444',
-      background: 'rgba(239, 68, 68, 0.12)',
-      border: '1px solid rgba(239, 68, 68, 0.4)',
+      color: 'var(--color-danger-mid)',
+      background: 'rgba(163,45,45,0.12)',
+      border: '1px solid rgba(163,45,45,0.35)',
     },
   }
 
   return (
-    <span style={{ ...badgeStyle, ...(styleMap[finalStatus] || styleMap.PENDING) }}>
+    <span
+      style={{
+        display: 'inline-block',
+        padding: '3px 10px',
+        borderRadius: 'var(--radius-pill)',
+        fontSize: 'var(--text-xs)',
+        fontWeight: 'var(--font-medium)',
+        whiteSpace: 'nowrap',
+        ...(styleMap[finalStatus] ?? styleMap.PENDING),
+      }}
+    >
       {finalStatus}
     </span>
   )
@@ -395,160 +645,4 @@ function StatusBadge({ status }) {
 function formatDate(value) {
   if (!value) return '-'
   return new Date(value).toLocaleString()
-}
-
-const pageStyle = {
-  background: '#0f172a',
-  padding: '30px',
-  borderRadius: '20px',
-  color: 'white',
-}
-
-const subtitleStyle = {
-  color: '#94a3b8',
-  marginTop: '-8px',
-}
-
-const tableStyle = {
-  width: '100%',
-  borderCollapse: 'collapse',
-  marginTop: '20px',
-}
-
-const thStyle = {
-  borderBottom: '1px solid #334155',
-  padding: '12px',
-  textAlign: 'left',
-  color: 'white',
-}
-
-const tdStyle = {
-  padding: '12px',
-  borderBottom: '1px solid #1e293b',
-  color: '#cbd5e1',
-  verticalAlign: 'top',
-}
-
-const buttonStyle = {
-  background: '#2563eb',
-  color: 'white',
-  border: 'none',
-  borderRadius: '10px',
-  padding: '8px 14px',
-  cursor: 'pointer',
-  fontWeight: 700,
-}
-
-const approveButtonStyle = {
-  background: '#16a34a',
-  color: 'white',
-  border: 'none',
-  borderRadius: '10px',
-  padding: '8px 14px',
-  cursor: 'pointer',
-  fontWeight: 700,
-}
-
-const rejectButtonStyle = {
-  background: '#dc2626',
-  color: 'white',
-  border: 'none',
-  borderRadius: '10px',
-  padding: '8px 14px',
-  cursor: 'pointer',
-  fontWeight: 700,
-}
-
-const secondaryButtonStyle = {
-  background: '#334155',
-  color: 'white',
-  border: 'none',
-  borderRadius: '10px',
-  padding: '8px 14px',
-  cursor: 'pointer',
-  fontWeight: 700,
-}
-
-const badgeStyle = {
-  display: 'inline-block',
-  padding: '5px 10px',
-  borderRadius: '999px',
-  fontSize: '12px',
-  fontWeight: 700,
-}
-
-const emptyStyle = {
-  marginTop: '20px',
-  padding: '20px',
-  background: '#020617',
-  borderRadius: '12px',
-  border: '1px solid #334155',
-}
-
-const caseDetailsStyle = {
-  marginTop: '28px',
-  padding: '24px',
-  background: '#020617',
-  borderRadius: '18px',
-  border: '1px solid #334155',
-}
-
-const caseGridStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(4, minmax(140px, 1fr))',
-  gap: '12px',
-  marginBottom: '20px',
-}
-
-const infoItemStyle = {
-  background: '#0f172a',
-  border: '1px solid #334155',
-  borderRadius: '12px',
-  padding: '12px',
-}
-
-const infoLabelStyle = {
-  color: '#94a3b8',
-  fontSize: '13px',
-  marginBottom: '6px',
-}
-
-const infoValueStyle = {
-  color: 'white',
-  fontWeight: 700,
-}
-
-const labelStyle = {
-  display: 'block',
-  marginTop: '14px',
-  marginBottom: '8px',
-  color: '#cbd5e1',
-  fontWeight: 700,
-}
-
-const selectStyle = {
-  width: '100%',
-  padding: '12px',
-  borderRadius: '10px',
-  border: '1px solid #334155',
-  background: '#020617',
-  color: 'white',
-  marginBottom: '12px',
-}
-
-const textareaStyle = {
-  width: '100%',
-  minHeight: '100px',
-  padding: '12px',
-  borderRadius: '10px',
-  border: '1px solid #334155',
-  background: '#020617',
-  color: 'white',
-  resize: 'vertical',
-}
-
-const actionRowStyle = {
-  display: 'flex',
-  gap: '12px',
-  marginTop: '16px',
 }
