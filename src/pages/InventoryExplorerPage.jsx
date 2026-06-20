@@ -231,23 +231,14 @@ export default function InventoryExplorerPage() {
           </div>
         </div>
 
-        <div
-          style={{
-            display: 'flex',
-            gap: '12px',
-            alignItems: 'flex-end',
-            flexWrap: 'wrap',
-          }}
-        >
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
           <div style={{ display: 'grid', gap: '5px' }}>
-            <label
-              style={{
-                fontSize: 'var(--text-xs)',
-                color: 'var(--color-text-tertiary)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-              }}
-            >
+            <label style={{
+              fontSize: 'var(--text-xs)',
+              color: 'var(--color-text-tertiary)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
+            }}>
               Pharmacy
             </label>
             <select
@@ -278,14 +269,12 @@ export default function InventoryExplorerPage() {
           </div>
 
           <div style={{ display: 'grid', gap: '5px', flex: 1, minWidth: '240px' }}>
-            <label
-              style={{
-                fontSize: 'var(--text-xs)',
-                color: 'var(--color-text-tertiary)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-              }}
-            >
+            <label style={{
+              fontSize: 'var(--text-xs)',
+              color: 'var(--color-text-tertiary)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
+            }}>
               Search
             </label>
             <input
@@ -317,15 +306,10 @@ export default function InventoryExplorerPage() {
           )}
         </div>
       </div>
-
-      {loading ? (
+{loading ? (
         <div className="fm-grid-kpi" style={{ marginBottom: '20px' }}>
           {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              key={i}
-              className="fm-kpi-card"
-              style={{ opacity: 0.35, minHeight: '88px' }}
-            />
+            <div key={i} className="fm-kpi-card" style={{ opacity: 0.35, minHeight: '88px' }} />
           ))}
         </div>
       ) : (
@@ -391,221 +375,242 @@ export default function InventoryExplorerPage() {
       )}
 
       {!loading && filteredInventory.length > 0 && (
-        <div
-          className="fm-card"
-          style={{ padding: 0, overflow: 'hidden' }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '12px 16px',
-              borderBottom: '1px solid var(--color-border-subtle)',
-              flexWrap: 'wrap',
-              gap: '8px',
-            }}
-          >
+        <div className="fm-card" style={{ padding: 0, overflow: 'hidden' }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '12px 16px',
+            borderBottom: '1px solid var(--color-border-subtle)',
+            flexWrap: 'wrap',
+            gap: '8px',
+          }}>
             <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)' }}>
               <strong>{formatNumber(filteredInventory.length)}</strong>
               <span style={{ color: 'var(--color-text-secondary)' }}>
                 {' '}records · {selectedPharmacyName}
               </span>
             </span>
-            <span
-              style={{
-                fontSize: 'var(--text-xs)',
-                color: 'var(--color-text-tertiary)',
-              }}
-            >
+            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)' }}>
               Sorted by quantity on hand
             </span>
           </div>
 
           <div style={{ maxHeight: '620px', overflow: 'auto' }}>
-            <table
-              className="fm-table"
-              style={{ minWidth: '1100px' }}
-            >
+            <table className="fm-table" style={{ minWidth: '1100px' }}>
               <thead>
                 <tr>
-                  <th
-                    style={{
-                      position: 'sticky',
-                      top: 0,
-                      zIndex: 2,
-                      background: 'var(--color-bg-card)',
-                      width: '110px',
-                    }}
-                  >
-                    Status
-                  </th>
-                  <th
-                    style={{
-                      position: 'sticky',
-                      top: 0,
-                      zIndex: 2,
-                      background: 'var(--color-bg-card)',
-                      minWidth: '280px',
-                    }}
-                  >
-                    Drug
-                  </th>
-                  <th
-                    style={{
-                      position: 'sticky',
-                      top: 0,
-                      zIndex: 2,
-                      background: 'var(--color-bg-card)',
-                      minWidth: '160px',
-                    }}
-                  >
-                    Brand
-                  </th>
-                  <th
-                    style={{
-                      position: 'sticky',
-                      top: 0,
-                      zIndex: 2,
-                      background: 'var(--color-bg-card)',
-                    }}
-                  >
-                    Stock
-                  </th>
-                  <th
-                    style={{
-                      position: 'sticky',
-                      top: 0,
-                      zIndex: 2,
-                      background: 'var(--color-bg-card)',
-                    }}
-                  >
-                    Min / Max
-                  </th>
-                  <th
-                    style={{
-                      position: 'sticky',
-                      top: 0,
-                      zIndex: 2,
-                      background: 'var(--color-bg-card)',
-                    }}
-                  >
-                    Value
-                  </th>
-                  <th
-                    style={{
-                      position: 'sticky',
-                      top: 0,
-                      zIndex: 2,
-                      background: 'var(--color-bg-card)',
-                    }}
-                  >
-                    Expiry
-                  </th>
-                  <th
-                    style={{
-                      position: 'sticky',
-                      top: 0,
-                      zIndex: 2,
-                      background: 'var(--color-bg-card)',
-                    }}
-                  >
-                    Location
-                  </th>
-                  <th
-                    style={{
-                      position: 'sticky',
-                      top: 0,
-                      zIndex: 2,
-                      background: 'var(--color-bg-card)',
-                    }}
-                  >
-                    Batch
-                  </th>
-                  <th
-                    style={{
-                      position: 'sticky',
-                      top: 0,
-                      zIndex: 2,
-                      background: 'var(--color-bg-card)',
-                    }}
-                  >
-                    Code
-                  </th>
+                  {['Status','Drug','Brand','Stock','Min / Max','Value','Expiry','Location','Batch','Code'].map((col) => (
+                    <th
+                      key={col}
+                      style={{
+                        position: 'sticky',
+                        top: 0,
+                        zIndex: 2,
+                        background: 'var(--color-bg-card)',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {col}
+                    </th>
+                  ))}
                 </tr>
               </thead>
-
               <tbody>
                 {filteredInventory.map((item) => {
                   const status = getStockStatus(item)
                   const qty = Number(item.quantity_on_hand || 0)
                   const min = Number(item.minimum_stock || 0)
                   const max = Number(item.maximum_stock || 0)
-                  const unitCost = Number(
-                    item.drug?.unit_price_to_pharmacy || 0
-                  )
+                  const unitCost = Number(item.drug?.unit_price_to_pharmacy || 0)
                   const value = qty * unitCost
 
                   return (
                     <tr key={item.id}>
-                      <td>
+                      <td style={{ whiteSpace: 'nowrap' }}>
                         <StockBadge status={status} />
                       </td>
-
-                      <td style={{ whiteSpace: 'normal' }}>
-                        <div
-                          style={{
-                            fontWeight: 'var(--font-medium)',
-                            color: 'var(--color-text-primary)',
-                            lineHeight: 1.35,
-                          }}
-                        >
+                      <td style={{ whiteSpace: 'normal', minWidth: '260px' }}>
+                        <div style={{
+                          fontWeight: 'var(--font-medium)',
+                          color: 'var(--color-text-primary)',
+                          lineHeight: 1.35,
+                        }}>
                           {item.drug?.generic_name || '-'}
                         </div>
-                        <div
-                          style={{
-                            fontSize: 'var(--text-xs)',
-                            color: 'var(--color-text-secondary)',
-                            marginTop: '2px',
-                          }}
-                        >
-                          {item.drug?.strength || '-'} ·{' '}
-                          {item.drug?.dosage_form || '-'}
+                        <div style={{
+                          fontSize: 'var(--text-xs)',
+                          color: 'var(--color-text-secondary)',
+                          marginTop: '2px',
+                        }}>
+                          {item.drug?.strength || '-'} · {item.drug?.dosage_form || '-'}
                         </div>
                       </td>
-
-                      <td
-                        style={{
-                          color: 'var(--color-text-secondary)',
-                          whiteSpace: 'normal',
-                        }}
-                      >
+                      <td style={{
+                        color: 'var(--color-text-secondary)',
+                        whiteSpace: 'normal',
+                        minWidth: '140px',
+                      }}>
                         {item.drug?.brand_name || '-'}
                       </td>
-
-                      <td>
-                        <div
-                          style={{
-                            fontSize: 'var(--text-lg)',
-                            fontWeight: 'var(--font-medium)',
-                            color: 'var(--color-text-primary)',
-                            lineHeight: 1,
-                          }}
-                        >
+                      <td style={{ whiteSpace: 'nowrap' }}>
+                        <div style={{
+                          fontSize: 'var(--text-lg)',
+                          fontWeight: 'var(--font-medium)',
+                          color: 'var(--color-text-primary)',
+                          lineHeight: 1,
+                        }}>
                           {formatNumber(qty)}
                         </div>
-                        <div
-                          style={{
-                            fontSize: 'var(--text-xs)',
-                            color: 'var(--color-text-tertiary)',
-                            marginTop: '3px',
-                          }}
-                        >
+                        <div style={{
+                          fontSize: 'var(--text-xs)',
+                          color: 'var(--color-text-tertiary)',
+                          marginTop: '3px',
+                        }}>
                           on hand
                         </div>
                       </td>
-
-                      <td className="fm-table-muted">
+                      <td className="fm-table-muted" style={{ whiteSpace: 'nowrap' }}>
                         <div>{formatNumber(min)} / {formatNumber(max)}</div>
-                        <div
-                          style={{
+                        <div style={{
+                          fontSize: 'var(--text-xs)',
+                          color: 'var(--color-text-tertiary)',
+                          marginTop: '3px',
+                        }}>
+                          min / max
+                        </div>
+                      </td>
+                      <td style={{
+                        color: 'var(--color-success)',
+                        fontWeight: 'var(--font-medium)',
+                        whiteSpace: 'nowrap',
+                      }}>
+                        AED {formatMoney(value)}
+                      </td>
+                      <td className="fm-table-muted" style={{ whiteSpace: 'nowrap' }}>
+                        {item.expiry_date || '-'}
+                      </td>
+                      <td style={{
+                        color: 'var(--color-text-primary)',
+                        fontWeight: 'var(--font-medium)',
+                        whiteSpace: 'nowrap',
+                      }}>
+                        {item.storage_location || '-'}
+                      </td>
+                      <td className="fm-table-muted">
+                        {item.batch_number || '-'}
+                      </td>
+                      <td>
+                        <span style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 'var(--text-xs)',
+                          color: 'var(--color-text-accent)',
+                        }}>
+                          {item.drug_code}
+                        </span>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ExplorerKpiCard({ label, value, sub, color, barColor }) {
+  return (
+    <div className="fm-kpi-card">
+      <div className="fm-kpi-label">{label}</div>
+      <div className="fm-kpi-value" style={{ color }}>{value}</div>
+      {sub && (
+        <div style={{
+          fontSize: 'var(--text-xs)',
+          color: 'var(--color-text-tertiary)',
+          marginTop: '3px',
+        }}>
+          {sub}
+        </div>
+      )}
+      <div className="fm-kpi-bar">
+        <div className="fm-kpi-bar-fill" style={{ width: '60%', background: barColor }} />
+      </div>
+    </div>
+  )
+}
+
+function StockBadge({ status }) {
+  const styleMap = {
+    'Out of Stock': {
+      color: 'var(--color-danger-mid)',
+      background: 'rgba(163,45,45,0.12)',
+      border: '1px solid rgba(163,45,45,0.30)',
+    },
+    'Low Stock': {
+      color: 'var(--color-warning-mid)',
+      background: 'rgba(186,117,23,0.12)',
+      border: '1px solid rgba(186,117,23,0.30)',
+    },
+    'Healthy': {
+      color: 'var(--color-success)',
+      background: 'rgba(29,158,117,0.12)',
+      border: '1px solid rgba(29,158,117,0.30)',
+    },
+  }
+
+  const style = styleMap[status.label] ?? {
+    color: 'var(--color-text-secondary)',
+    background: 'rgba(255,255,255,0.05)',
+    border: '1px solid var(--color-border-default)',
+  }
+
+  return (
+    <span style={{
+      display: 'inline-block',
+      padding: '3px 10px',
+      borderRadius: 'var(--radius-pill)',
+      fontSize: 'var(--text-xs)',
+      fontWeight: 'var(--font-medium)',
+      whiteSpace: 'nowrap',
+      ...style,
+    }}>
+      {status.label}
+    </span>
+  )
+}
+
+function getStockStatus(item) {
+  const qty = Number(item.quantity_on_hand || 0)
+  const min = Number(item.minimum_stock || 0)
+  if (qty === 0) return { label: 'Out of Stock' }
+  if (qty <= min) return { label: 'Low Stock' }
+  return { label: 'Healthy' }
+}
+
+function formatNumber(value) {
+  return Number(value || 0).toLocaleString()
+}
+
+function formatMoney(value) {
+  return Number(value || 0).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+}
+
+function formatCompact(value) {
+  return Intl.NumberFormat(undefined, {
+    notation: 'compact',
+    maximumFractionDigits: 1,
+  }).format(Number(value || 0))
+}
+
+function formatMoneyCompact(value) {
+  return Intl.NumberFormat(undefined, {
+    notation: 'compact',
+    maximumFractionDigits: 1,
+  }).format(Number(value || 0))
+}
