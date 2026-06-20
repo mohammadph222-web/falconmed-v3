@@ -40,10 +40,10 @@ const NAV_ZONES = [
   {
     label: 'Operations',
     items: [
-      { key: 'transactions', label: 'Transactions', icon: 'arrows'   },
-      { key: 'operations',   label: 'Operations',   icon: 'pill'     },
-      { key: 'patients',     label: 'Patients',     icon: 'users'    },
-      { key: 'stockcount',   label: 'Stock Count',  icon: 'clipboard'},
+      { key: 'transactions', label: 'Transactions', icon: 'arrows'    },
+      { key: 'operations',   label: 'Operations',   icon: 'pill'      },
+      { key: 'patients',     label: 'Patients',     icon: 'users'     },
+      { key: 'stockcount',   label: 'Stock Count',  icon: 'clipboard' },
     ],
   },
   {
@@ -178,9 +178,7 @@ export default function App() {
     }
 
     setLoading(true)
-
     const data = await searchDrugs(value, getFilters(overrides))
-
     setResults(data)
     setLoading(false)
   }
@@ -197,7 +195,6 @@ export default function App() {
     <div className="fm-app-shell">
 
       <aside className="fm-sidebar" role="navigation" aria-label="FalconMed navigation">
-
         <div className="fm-brand">
           <div className="fm-brand-mark">
             <svg viewBox="0 0 16 16" aria-hidden="true">
@@ -237,144 +234,140 @@ export default function App() {
             Simulated data · June 2026
           </span>
         </div>
-
       </aside>
 
       <main className="fm-content">
         <div className="fm-page">
 
-          {currentPage === 'dashboard' && <DashboardPage />}
-          {currentPage === 'inventory' && <InventoryExplorerPage />}
-          {currentPage === 'inventory-intelligence' && <InventoryIntelligencePage />}
-          {currentPage === 'supply-chain' && <SupplyChainPage />}
-          {currentPage === 'transactions' && <InventoryTransactionsPage />}
-          {currentPage === 'operations' && <InventoryOperationsPage />}
-          {currentPage === 'patients' && <PatientRegistryPage />}
-          {currentPage === 'stockcount' && <StockCountPage />}
-          {currentPage === 'reconciliation' && <ReconciliationCasesPage />}
-          {currentPage === 'reconciliation-audit' && <ReconciliationAuditPage />}
+          {currentPage === 'dashboard'             && <DashboardPage />}
+          {currentPage === 'inventory'             && <InventoryExplorerPage />}
+          {currentPage === 'inventory-intelligence'&& <InventoryIntelligencePage />}
+          {currentPage === 'supply-chain'          && <SupplyChainPage />}
+          {currentPage === 'transactions'          && <InventoryTransactionsPage />}
+          {currentPage === 'operations'            && <InventoryOperationsPage />}
+          {currentPage === 'patients'              && <PatientRegistryPage />}
+          {currentPage === 'stockcount'            && <StockCountPage />}
+          {currentPage === 'reconciliation'        && <ReconciliationCasesPage />}
+          {currentPage === 'reconciliation-audit'  && <ReconciliationAuditPage />}
 
           {currentPage === 'drug-search' && (
-            <>
-              <div style={{ display: 'flex', gap: '20px', marginBottom: '24px', flexWrap: 'wrap' }}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={thiqaOnly}
-                    onChange={(e) => {
-                      const checked = e.target.checked
-                      setThiqaOnly(checked)
-                      runSearch(search, { thiqaOnly: checked })
-                    }}
-                  /> Thiqa
-                </label>
+            <div>
+              <div className="fm-page-header">
+                <div className="fm-page-header-top">
+                  <div>
+                    <div className="fm-page-header-meta">Formulary &amp; Inventory</div>
+                    <h1 className="fm-page-header-title">Drug search</h1>
+                    <p className="fm-page-header-desc">
+                      Search 22,940 DOH-registered drugs by name, brand, code,
+                      or classification.
+                    </p>
+                  </div>
+                </div>
 
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={basicOnly}
-                    onChange={(e) => {
-                      const checked = e.target.checked
-                      setBasicOnly(checked)
-                      runSearch(search, { basicOnly: checked })
-                    }}
-                  /> Basic
-                </label>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+                  {[
+                    { label: 'Thiqa',              checked: thiqaOnly,            setter: setThiqaOnly            },
+                    { label: 'Basic',              checked: basicOnly,            setter: setBasicOnly            },
+                    { label: 'UPP',                checked: uppOnly,              setter: setUppOnly              },
+                    { label: 'Active only',        checked: activeOnly,           setter: setActiveOnly           },
+                    { label: 'Single ingredient',  checked: singleIngredientOnly, setter: setSingleIngredientOnly },
+                    { label: 'Combination only',   checked: combinationOnly,      setter: setCombinationOnly      },
+                  ].map(({ label, checked, setter }) => (
+                    <label
+                      key={label}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        fontSize: 'var(--text-sm)',
+                        color: checked
+                          ? 'var(--color-text-accent)'
+                          : 'var(--color-text-secondary)',
+                        cursor: 'pointer',
+                        userSelect: 'none',
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={(e) => {
+                          setter(e.target.checked)
+                          runSearch(search, { [Object.keys({ thiqaOnly, basicOnly, uppOnly, activeOnly, singleIngredientOnly, combinationOnly }).find(k => ({ thiqaOnly, basicOnly, uppOnly, activeOnly, singleIngredientOnly, combinationOnly })[k] === checked)]: e.target.checked })
+                        }}
+                        style={{ accentColor: 'var(--color-primary)', width: '14px', height: '14px' }}
+                      />
+                      {label}
+                    </label>
+                  ))}
 
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={uppOnly}
+                  <select
+                    value={searchMode}
                     onChange={(e) => {
-                      const checked = e.target.checked
-                      setUppOnly(checked)
-                      runSearch(search, { uppOnly: checked })
+                      setSearchMode(e.target.value)
+                      runSearch(search, { searchMode: e.target.value })
                     }}
-                  /> UPP
-                </label>
-
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={activeOnly}
-                    onChange={(e) => {
-                      const checked = e.target.checked
-                      setActiveOnly(checked)
-                      runSearch(search, { activeOnly: checked })
+                    style={{
+                      padding: '5px 10px',
+                      borderRadius: 'var(--radius-md)',
+                      border: '1px solid var(--color-border-default)',
+                      background: 'var(--color-bg-input)',
+                      color: 'var(--color-text-primary)',
+                      fontSize: 'var(--text-sm)',
+                      fontFamily: 'var(--font-sans)',
                     }}
-                  /> Active Only
-                </label>
-
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={singleIngredientOnly}
-                    onChange={(e) => {
-                      const checked = e.target.checked
-                      setSingleIngredientOnly(checked)
-                      runSearch(search, { singleIngredientOnly: checked })
-                    }}
-                  /> Single Ingredient Only
-                </label>
-
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={combinationOnly}
-                    onChange={(e) => {
-                      const checked = e.target.checked
-                      setCombinationOnly(checked)
-                      runSearch(search, { combinationOnly: checked })
-                    }}
-                  /> Combination Only
-                </label>
-
-                <select
-                  value={searchMode}
-                  onChange={(e) => {
-                    const value = e.target.value
-                    setSearchMode(value)
-                    runSearch(search, { searchMode: value })
-                  }}
-                  style={{
-                    padding: '8px',
-                    borderRadius: '8px',
-                    fontSize: '16px',
-                  }}
-                >
-                  <option value="all">All</option>
-                  <option value="generic">Generic Only</option>
-                  <option value="brand">Brand Only</option>
-                  <option value="code">Drug Code</option>
-                </select>
+                  >
+                    <option value="all">All fields</option>
+                    <option value="generic">Generic only</option>
+                    <option value="brand">Brand only</option>
+                    <option value="code">Drug code</option>
+                  </select>
+                </div>
               </div>
 
-              <input
-                value={search}
-                onChange={(e) => runSearch(e.target.value)}
-                placeholder="Search drug..."
-                style={{
-                  width: '100%',
-                  padding: '20px',
-                  borderRadius: '20px',
-                  border: 'none',
-                  fontSize: '24px',
-                  marginBottom: '16px',
-                }}
-              />
-
-              {loading && <p>Searching...</p>}
+              <div style={{ position: 'relative', marginBottom: '16px' }}>
+                <input
+                  value={search}
+                  onChange={(e) => runSearch(e.target.value)}
+                  placeholder="Search by drug name, brand, or code..."
+                  style={{
+                    width: '100%',
+                    padding: '14px 16px',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1px solid var(--color-border-default)',
+                    background: 'var(--color-bg-input)',
+                    color: 'var(--color-text-primary)',
+                    fontSize: 'var(--text-md)',
+                    fontFamily: 'var(--font-sans)',
+                    boxSizing: 'border-box',
+                  }}
+                />
+                {loading && (
+                  <span style={{
+                    position: 'absolute',
+                    right: '14px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontSize: 'var(--text-xs)',
+                    color: 'var(--color-text-tertiary)',
+                  }}>
+                    Searching...
+                  </span>
+                )}
+              </div>
 
               {results.length > 0 && !selectedDrug && (
                 <div
-                  style={{
-                    background: '#0f172a',
-                    borderRadius: '18px',
-                    border: '1px solid #1e293b',
-                    marginBottom: '30px',
-                    overflow: 'hidden',
-                  }}
+                  className="fm-card"
+                  style={{ padding: 0, overflow: 'hidden', marginBottom: '20px' }}
                 >
+                  <div style={{
+                    padding: '8px 14px',
+                    borderBottom: '1px solid var(--color-border-subtle)',
+                    fontSize: 'var(--text-xs)',
+                    color: 'var(--color-text-tertiary)',
+                  }}>
+                    {results.length} result{results.length !== 1 ? 's' : ''} · select to view full record
+                  </div>
                   {results.map((drug) => (
                     <button
                       key={drug.id}
@@ -382,29 +375,52 @@ export default function App() {
                       style={{
                         width: '100%',
                         textAlign: 'left',
-                        padding: '18px 22px',
-                        background: '#0f172a',
-                        color: 'white',
+                        padding: '12px 16px',
+                        background: 'transparent',
+                        color: 'var(--color-text-primary)',
                         border: 'none',
-                        borderBottom: '1px solid #1e293b',
+                        borderBottom: '1px solid var(--color-border-subtle)',
                         cursor: 'pointer',
-                        fontSize: '18px',
+                        fontFamily: 'var(--font-sans)',
                       }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-bg-card-hover)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >
-                      <strong>{drug.generic_name}</strong>
-                      <div style={{ color: '#38bdf8', marginTop: '6px' }}>
-                        {drug.brand_name} — {drug.strength} — {drug.dosage_form}
+                      <div style={{
+                        fontWeight: 'var(--font-medium)',
+                        fontSize: 'var(--text-base)',
+                        color: 'var(--color-text-primary)',
+                        marginBottom: '3px',
+                      }}>
+                        {drug.generic_name}
                       </div>
-                      <div style={{ color: '#94a3b8', marginTop: '4px' }}>
-                        Package: {drug.package_size} | Public: AED {drug.price_to_public} | Thiqa: {drug.insurance_thiqa ? 'Yes' : 'No'} | Basic: {drug.insurance_basic ? 'Yes' : 'No'} | UPP: {drug.upp_scope || 'No'}
+                      <div style={{
+                        fontSize: 'var(--text-sm)',
+                        color: 'var(--color-text-accent)',
+                        marginBottom: '3px',
+                      }}>
+                        {drug.brand_name} · {drug.strength} · {drug.dosage_form}
+                      </div>
+                      <div style={{
+                        fontSize: 'var(--text-xs)',
+                        color: 'var(--color-text-tertiary)',
+                        display: 'flex',
+                        gap: '12px',
+                        flexWrap: 'wrap',
+                      }}>
+                        <span>Pack: {drug.package_size}</span>
+                        <span>AED {drug.price_to_public}</span>
+                        {drug.insurance_thiqa && <span style={{ color: 'var(--color-success)' }}>Thiqa</span>}
+                        {drug.insurance_basic && <span style={{ color: 'var(--color-success)' }}>Basic</span>}
+                        {drug.upp_scope && <span>UPP: {drug.upp_scope}</span>}
                       </div>
                     </button>
                   ))}
                 </div>
               )}
 
-              {visibleDrug && <DrugCard drug={visibleDrug} />}
-            </>
+              {visibleDrug && <DrugCard drug={visibleDrug} onClose={() => { setSelectedDrug(null); setSearch('') }} />}
+            </div>
           )}
 
         </div>
@@ -414,74 +430,147 @@ export default function App() {
   )
 }
 
-function DrugCard({ drug }) {
+function DrugCard({ drug, onClose }) {
   const parsed = parsePackageSize(drug.package_size)
   const calculatedUnitPrice = calculateUnitPrice(
     drug.price_to_public,
     drug.package_size
   )
 
+  const fields = [
+    { label: 'Strength',              value: drug.strength                                      },
+    { label: 'Dosage form',           value: drug.dosage_form                                   },
+    { label: 'Package',               value: drug.package_size                                  },
+    { label: 'Detected units',        value: parsed.unitCount || '-'                            },
+    { label: 'Parse confidence',      value: parsed.confidence                                  },
+    { label: 'Status',                value: drug.is_active ? 'Active' : 'Inactive',
+      highlight: drug.is_active                                                                  },
+    { label: 'Public price',          value: `AED ${drug.price_to_public}`                      },
+    { label: 'Pharmacy price',        value: `AED ${drug.price_to_pharmacy}`                    },
+    { label: 'Calculated unit price', value: calculatedUnitPrice ? `AED ${calculatedUnitPrice.toFixed(2)}` : '-' },
+    { label: 'Unit public price',     value: drug.unit_price_to_public ? `AED ${drug.unit_price_to_public}` : '-' },
+    { label: 'Unit pharmacy price',   value: drug.unit_price_to_pharmacy ? `AED ${drug.unit_price_to_pharmacy}` : '-' },
+    { label: 'Basic insurance',       value: drug.insurance_basic ? 'Yes' : 'No'                },
+    { label: 'Thiqa',                 value: drug.insurance_thiqa ? 'Yes' : 'No'                },
+    { label: 'UPP',                   value: drug.upp_scope || '-'                              },
+    { label: 'Unit markup',           value: drug.unit_markup || '-'                            },
+    { label: 'Package markup',        value: drug.package_markup || '-'                         },
+    { label: 'Insurance plan',        value: drug.insurance_plan || '-'                         },
+    { label: 'Dispense mode',         value: drug.dispense_mode || '-'                          },
+    { label: 'Last change',           value: drug.last_change_date || '-'                       },
+  ]
+
   return (
-    <div
-      style={{
-        background: '#0f172a',
-        padding: '40px',
-        borderRadius: '28px',
-        border: '1px solid #1e293b',
-      }}
-    >
-      <h2 style={{ fontSize: '54px', marginBottom: '18px' }}>
-        {drug.generic_name}
-      </h2>
-
-      <div style={{ fontSize: '34px', color: '#38bdf8', marginBottom: '28px' }}>
-        {drug.brand_name}
+    <div className="fm-card">
+      <div style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        paddingBottom: '16px',
+        borderBottom: '1px solid var(--color-border-subtle)',
+        flexWrap: 'wrap',
+        gap: '12px',
+      }}>
+        <div>
+          <h2 style={{
+            fontSize: 'var(--text-2xl)',
+            fontWeight: 'var(--font-medium)',
+            color: 'var(--color-text-primary)',
+            margin: 0,
+            lineHeight: 1.2,
+          }}>
+            {drug.generic_name}
+          </h2>
+          <div style={{
+            fontSize: 'var(--text-lg)',
+            color: 'var(--color-text-accent)',
+            marginTop: '6px',
+          }}>
+            {drug.brand_name}
+          </div>
+        </div>
+        <button
+          onClick={onClose}
+          className="fm-btn"
+          style={{ fontSize: 'var(--text-xs)', padding: '4px 10px', flexShrink: 0 }}
+        >
+          ✕ Clear
+        </button>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '20px',
-          fontSize: '22px',
-          lineHeight: 1.8,
-          marginBottom: '30px',
-        }}
-      >
-        <div><strong>Strength:</strong> {drug.strength}</div>
-        <div><strong>Dosage Form:</strong> {drug.dosage_form}</div>
-        <div><strong>Package:</strong> {drug.package_size}</div>
-        <div><strong>Detected Units:</strong> {parsed.unitCount || '-'}</div>
-        <div><strong>Parse Confidence:</strong> {parsed.confidence}</div>
-        <div><strong>Status:</strong> {drug.is_active ? 'Active' : 'Inactive'}</div>
-        <div><strong>Public Price:</strong> AED {drug.price_to_public}</div>
-        <div><strong>Pharmacy Price:</strong> AED {drug.price_to_pharmacy}</div>
-        <div><strong>Calculated Unit Price:</strong> AED {calculatedUnitPrice ? calculatedUnitPrice.toFixed(2) : '-'}</div>
-        <div><strong>Unit Public Price:</strong> AED {drug.unit_price_to_public || '-'}</div>
-        <div><strong>Unit Pharmacy Price:</strong> AED {drug.unit_price_to_pharmacy || '-'}</div>
-        <div><strong>Basic Insurance:</strong> {drug.insurance_basic ? 'Yes' : 'No'}</div>
-        <div><strong>Thiqa:</strong> {drug.insurance_thiqa ? 'Yes' : 'No'}</div>
-        <div><strong>UPP:</strong> {drug.upp_scope || '-'}</div>
-        <div><strong>Unit Markup:</strong> {drug.unit_markup || '-'}</div>
-        <div><strong>Package Markup:</strong> {drug.package_markup || '-'}</div>
-        <div><strong>Insurance Plan:</strong> {drug.insurance_plan || '-'}</div>
-        <div><strong>Dispense Mode:</strong> {drug.dispense_mode || '-'}</div>
-        <div><strong>Last Change:</strong> {drug.last_change_date || '-'}</div>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gap: '10px',
+        marginBottom: '20px',
+      }}>
+        {fields.map(({ label, value, highlight }) => (
+          <div
+            key={label}
+            style={{
+              background: 'var(--color-bg-content)',
+              border: '1px solid var(--color-border-subtle)',
+              borderRadius: 'var(--radius-md)',
+              padding: '8px 12px',
+            }}
+          >
+            <div style={{
+              fontSize: 'var(--text-xs)',
+              color: 'var(--color-text-tertiary)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
+              marginBottom: '3px',
+            }}>
+              {label}
+            </div>
+            <div style={{
+              fontSize: 'var(--text-sm)',
+              fontWeight: 'var(--font-medium)',
+              color: highlight
+                ? 'var(--color-success)'
+                : 'var(--color-text-primary)',
+            }}>
+              {value || '—'}
+            </div>
+          </div>
+        ))}
       </div>
 
-      <div
-        style={{
-          padding: '20px',
-          background: '#020617',
-          borderRadius: '18px',
-          fontSize: '18px',
-          color: '#94a3b8',
-        }}
-      >
-        <div><strong>Manufacturer:</strong> {drug.manufacturer || 'N/A'}</div>
-        <div><strong>Agent:</strong> {drug.agent || 'N/A'}</div>
-        <div><strong>Drug Code:</strong> {drug.drug_code}</div>
-        <div><strong>Raw Source:</strong> {drug.raw_source}</div>
+      <div style={{
+        background: 'var(--color-bg-content)',
+        border: '1px solid var(--color-border-subtle)',
+        borderRadius: 'var(--radius-md)',
+        padding: '14px 16px',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gap: '10px',
+      }}>
+        {[
+          { label: 'Manufacturer', value: drug.manufacturer },
+          { label: 'Agent',        value: drug.agent        },
+          { label: 'Raw source',   value: drug.raw_source   },
+          { label: 'Drug code',    value: drug.drug_code, mono: true },
+        ].map(({ label, value, mono }) => (
+          <div key={label}>
+            <div style={{
+              fontSize: 'var(--text-xs)',
+              color: 'var(--color-text-tertiary)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
+              marginBottom: '3px',
+            }}>
+              {label}
+            </div>
+            <div style={{
+              fontSize: 'var(--text-sm)',
+              color: mono ? 'var(--color-text-accent)' : 'var(--color-text-secondary)',
+              fontFamily: mono ? 'var(--font-mono)' : 'var(--font-sans)',
+            }}>
+              {value || 'N/A'}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )
