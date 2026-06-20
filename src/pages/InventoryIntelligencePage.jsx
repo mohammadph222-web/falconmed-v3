@@ -62,27 +62,27 @@ export default function InventoryIntelligencePage() {
       ...new Set((data || []).map((item) => item.drug_code).filter(Boolean)),
     ]
 
-   let drugMap = new Map()
+    let drugMap = new Map()
 
-if (drugCodes.length > 0) {
-  for (let i = 0; i < drugCodes.length; i += 500) {
-    const chunk = drugCodes.slice(i, i + 500)
+    if (drugCodes.length > 0) {
+      for (let i = 0; i < drugCodes.length; i += 500) {
+        const chunk = drugCodes.slice(i, i + 500)
 
-    const { data: drugData, error: drugError } = await supabase
-      .from('drug_master_reference')
-      .select('drug_code, generic_name, brand_name, strength')
-      .in('drug_code', chunk)
+        const { data: drugData, error: drugError } = await supabase
+          .from('drug_master_reference')
+          .select('drug_code, generic_name, brand_name, strength')
+          .in('drug_code', chunk)
 
-    if (drugError) {
-      console.error('Drug master load error:', drugError)
-      continue
+        if (drugError) {
+          console.error('Drug master load error:', drugError)
+          continue
+        }
+
+        ;(drugData || []).forEach((drug) => {
+          drugMap.set(drug.drug_code, drug)
+        })
+      }
     }
-
-    ;(drugData || []).forEach((drug) => {
-      drugMap.set(drug.drug_code, drug)
-    })
-  }
-}
 
     let totalValue = 0
     let outCount = 0
@@ -189,7 +189,6 @@ if (drugCodes.length > 0) {
         if (a.days_to_expiry !== b.days_to_expiry) {
           return a.days_to_expiry - b.days_to_expiry
         }
-
         return b.total_value - a.total_value
       })
       .slice(0, 20)
@@ -214,163 +213,274 @@ if (drugCodes.length > 0) {
   }
 
   return (
-    <div style={pageStyle}>
-      <div style={headerStyle}>
-        <div>
-          <h1 style={titleStyle}>Inventory Intelligence</h1>
-          <p style={subtitleStyle}>
-            Phase 8 Operational Intelligence — inventory value, expiry risk,
-            storage exposure, and high-cost medication visibility.
-          </p>
+    <div>
+      <div className="fm-page-header">
+        <div className="fm-page-header-top">
+          <div>
+            <div className="fm-page-header-meta">
+              Formulary &amp; Inventory
+            </div>
+            <h1 className="fm-page-header-title">Inventory Intelligence</h1>
+            <p className="fm-page-header-desc">
+              Operational intelligence — inventory value, expiry risk,
+              storage exposure, and high-cost medication visibility.
+            </p>
+          </div>
+          <div className="fm-page-header-actions">
+            <button className="fm-btn fm-btn-primary" onClick={loadMetrics}>
+              Refresh
+            </button>
+          </div>
         </div>
-
-        <button onClick={loadMetrics} style={refreshButtonStyle}>
-          Refresh
-        </button>
       </div>
 
       {loading ? (
-        <div style={loadingStyle}>Loading inventory intelligence...</div>
+        <div className="fm-card" style={{ color: 'var(--color-text-secondary)' }}>
+          Loading inventory intelligence...
+        </div>
       ) : (
         <>
-          <div style={cardsContainerStyle}>
-            <InfoCard title="Total Inventory Value" value={`AED ${formatMoney(inventoryValue)}`} tone="green" />
-            <InfoCard title="Active Inventory Lines" value={activeItems} tone="blue" />
-            <InfoCard title="Out Of Stock Items" value={outOfStock} tone="red" />
-            <InfoCard title="Low Stock Items" value={lowStockItems} tone="amber" />
-            <InfoCard title="Expired Items" value={expiredItems} tone="red" />
-            <InfoCard title="Near Expiry Items" value={nearExpiry} tone="amber" />
-            <InfoCard title="High Value Items" value={highValueItems} tone="purple" />
+          <div className="fm-grid-kpi">
+            <IntelKpiCard
+              title="Total inventory value"
+              value={`AED ${formatMoney(inventoryValue)}`}
+              variant="success"
+            />
+            <IntelKpiCard
+              title="Active inventory lines"
+              value={formatNumber(activeItems)}
+              variant="info"
+            />
+            <IntelKpiCard
+              title="Out of stock"
+              value={formatNumber(outOfStock)}
+              variant="danger"
+            />
+            <IntelKpiCard
+              title="Low stock items"
+              value={formatNumber(lowStockItems)}
+              variant="warning"
+            />
+            <IntelKpiCard
+              title="Expired items"
+              value={formatNumber(expiredItems)}
+              variant="danger"
+            />
+            <IntelKpiCard
+              title="Near expiry"
+              value={formatNumber(nearExpiry)}
+              variant="warning"
+            />
+            <IntelKpiCard
+              title="High value items"
+              value={formatNumber(highValueItems)}
+              variant="info"
+            />
           </div>
 
-          <Section title="Top 20 Most Valuable Drugs">
-            <Table
-              columns={[
-                'Drug',
-                'Drug Code',
-                'Total Quantity',
-                'Total Value',
-                'Locations',
-                'Batches',
-              ]}
-            >
-              {topValueItems.map((item) => (
-                <tr key={item.drug_code}>
-                  <DrugCell item={item} />
-                  <td style={tdStyle}>{item.drug_code || '-'}</td>
-                  <td style={tdStyle}>{formatNumber(item.quantity)}</td>
-                  <td style={tdStyle}>AED {formatMoney(item.total_value)}</td>
-                  <td style={tdStyle}>{item.location_count}</td>
-                  <td style={tdStyle}>{item.batch_count}</td>
-                </tr>
-              ))}
-            </Table>
-          </Section>
+          <IntelSection title="Top 20 most valuable drugs">
+            <div className="fm-table-wrap">
+              <table className="fm-table">
+                <thead>
+                  <tr>
+                    <th>Drug</th>
+                    <th>Drug code</th>
+                    <th>Total quantity</th>
+                    <th>Total value</th>
+                    <th>Locations</th>
+                    <th>Batches</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {topValueItems.map((item) => (
+                    <tr key={item.drug_code}>
+                      <DrugCell item={item} />
+                      <td className="fm-table-muted">{item.drug_code || '-'}</td>
+                      <td>{formatNumber(item.quantity)}</td>
+                      <td>AED {formatMoney(item.total_value)}</td>
+                      <td>{item.location_count}</td>
+                      <td>{item.batch_count}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </IntelSection>
 
-          <Section title="High Risk Near Expiry Items">
-            <Table
-              columns={[
-                'Drug',
-                'Drug Code',
-                'Quantity',
-                'Unit Cost',
-                'Value At Risk',
-                'Expiry Date',
-                'Days Left',
-                'Storage',
-              ]}
-            >
-              {nearExpiryItems.map((item) => (
-                <tr key={`${item.drug_code}-${item.expiry_date}-${item.storage_location}`}>
-                  <DrugCell item={item} />
-                  <td style={tdStyle}>{item.drug_code || '-'}</td>
-                  <td style={tdStyle}>{formatNumber(item.quantity)}</td>
-                  <td style={tdStyle}>AED {formatMoney(item.unit_cost)}</td>
-                  <td style={tdStyle}>AED {formatMoney(item.total_value)}</td>
-                  <td style={tdStyle}>{item.expiry_date || '-'}</td>
-                  <td style={tdStyle}>
-                    <span style={riskBadgeStyle(item.days_to_expiry)}>
-                      {item.days_to_expiry}
-                    </span>
-                  </td>
-                  <td style={tdStyle}>{item.storage_location || '-'}</td>
-                </tr>
-              ))}
-            </Table>
-          </Section>
+          <IntelSection title="High risk — near expiry items">
+            <div className="fm-table-wrap">
+              <table className="fm-table">
+                <thead>
+                  <tr>
+                    <th>Drug</th>
+                    <th>Drug code</th>
+                    <th>Quantity</th>
+                    <th>Unit cost</th>
+                    <th>Value at risk</th>
+                    <th>Expiry date</th>
+                    <th>Days left</th>
+                    <th>Storage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {nearExpiryItems.map((item) => (
+                    <tr
+                      key={`${item.drug_code}-${item.expiry_date}-${item.storage_location}`}
+                    >
+                      <DrugCell item={item} />
+                      <td className="fm-table-muted">{item.drug_code || '-'}</td>
+                      <td>{formatNumber(item.quantity)}</td>
+                      <td>AED {formatMoney(item.unit_cost)}</td>
+                      <td>AED {formatMoney(item.total_value)}</td>
+                      <td className="fm-table-muted">{item.expiry_date || '-'}</td>
+                      <td>
+                        <ExpiryBadge days={item.days_to_expiry} />
+                      </td>
+                      <td className="fm-table-muted">
+                        {item.storage_location || '-'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </IntelSection>
 
-          <Section title="Storage Location Exposure">
-            <Table
-              columns={[
-                'Storage Location',
-                'Inventory Rows',
-                'Total Quantity',
-                'Total Value',
-              ]}
-            >
-              {storageSummary.map((row) => (
-                <tr key={row.storage_location}>
-                  <td style={tdStyle}>{row.storage_location}</td>
-                  <td style={tdStyle}>{formatNumber(row.item_count)}</td>
-                  <td style={tdStyle}>{formatNumber(row.quantity)}</td>
-                  <td style={tdStyle}>AED {formatMoney(row.total_value)}</td>
-                </tr>
-              ))}
-            </Table>
-          </Section>
+          <IntelSection title="Storage location exposure">
+            <div className="fm-table-wrap">
+              <table className="fm-table">
+                <thead>
+                  <tr>
+                    <th>Storage location</th>
+                    <th>Inventory rows</th>
+                    <th>Total quantity</th>
+                    <th>Total value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {storageSummary.map((row) => (
+                    <tr key={row.storage_location}>
+                      <td>{row.storage_location}</td>
+                      <td>{formatNumber(row.item_count)}</td>
+                      <td>{formatNumber(row.quantity)}</td>
+                      <td>AED {formatMoney(row.total_value)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </IntelSection>
         </>
       )}
     </div>
   )
 }
 
-function InfoCard({ title, value, tone }) {
-  const color = toneColors[tone] || toneColors.blue
+function IntelKpiCard({ title, value, variant }) {
+  const barColors = {
+    success: 'var(--color-success)',
+    warning: 'var(--color-warning-mid)',
+    danger:  'var(--color-danger-mid)',
+    info:    'var(--color-primary)',
+  }
+
+  const valueColors = {
+    success: 'var(--color-success)',
+    warning: 'var(--color-warning-mid)',
+    danger:  'var(--color-danger-mid)',
+    info:    'var(--color-text-accent)',
+  }
 
   return (
-    <div style={{ ...cardStyle, borderColor: color.border }}>
-      <div style={cardTitleStyle}>{title}</div>
-      <div style={{ ...cardValueStyle, color: color.text }}>{value}</div>
+    <div className="fm-kpi-card">
+      <div className="fm-kpi-label">{title}</div>
+      <div
+        className="fm-kpi-value"
+        style={{ color: valueColors[variant] ?? 'var(--color-text-primary)' }}
+      >
+        {value}
+      </div>
+      <div className="fm-kpi-bar">
+        <div
+          className="fm-kpi-bar-fill"
+          style={{
+            width: '60%',
+            background: barColors[variant] ?? 'var(--color-primary)',
+          }}
+        />
+      </div>
     </div>
   )
 }
 
-function Section({ title, children }) {
+function IntelSection({ title, children }) {
   return (
-    <div style={sectionStyle}>
-      <h2 style={sectionTitleStyle}>{title}</h2>
+    <div style={{ marginTop: '32px' }}>
+      <h2
+        style={{
+          fontSize: 'var(--text-lg)',
+          fontWeight: 'var(--font-medium)',
+          color: 'var(--color-text-primary)',
+          marginBottom: '12px',
+        }}
+      >
+        {title}
+      </h2>
       {children}
-    </div>
-  )
-}
-
-function Table({ columns, children }) {
-  return (
-    <div style={tableWrapperStyle}>
-      <table style={tableStyle}>
-        <thead>
-          <tr>
-            {columns.map((column) => (
-              <th key={column} style={thStyle}>
-                {column}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>{children}</tbody>
-      </table>
     </div>
   )
 }
 
 function DrugCell({ item }) {
   return (
-    <td style={tdStyle}>
-      <strong>{item.drug?.brand_name || '-'}</strong>
-      <div style={{ color: '#94a3b8', marginTop: '4px' }}>
+    <td>
+      <div
+        style={{
+          fontWeight: 'var(--font-medium)',
+          color: 'var(--color-text-primary)',
+        }}
+      >
+        {item.drug?.brand_name || '-'}
+      </div>
+      <div
+        style={{
+          fontSize: 'var(--text-sm)',
+          color: 'var(--color-text-secondary)',
+          marginTop: '2px',
+        }}
+      >
         {item.drug?.generic_name || '-'} {item.drug?.strength || ''}
       </div>
     </td>
+  )
+}
+
+function ExpiryBadge({ days }) {
+  let variant = 'info'
+  if (days <= 30) variant = 'danger'
+  else if (days <= 60) variant = 'warning'
+
+  const styles = {
+    danger:  { background: 'rgba(163,45,45,0.15)',  color: 'var(--color-danger-mid)',  border: '1px solid rgba(163,45,45,0.3)'  },
+    warning: { background: 'rgba(186,117,23,0.15)', color: 'var(--color-warning-mid)', border: '1px solid rgba(186,117,23,0.3)' },
+    info:    { background: 'rgba(24,95,165,0.15)',  color: 'var(--color-text-accent)', border: '1px solid rgba(24,95,165,0.3)'  },
+  }
+
+  return (
+    <span
+      style={{
+        ...styles[variant],
+        display: 'inline-block',
+        borderRadius: 'var(--radius-pill)',
+        padding: '3px 10px',
+        fontSize: 'var(--text-sm)',
+        fontWeight: 'var(--font-medium)',
+        minWidth: '42px',
+        textAlign: 'center',
+      }}
+    >
+      {days}d
+    </span>
   )
 }
 
@@ -383,170 +493,4 @@ function formatMoney(value) {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })
-}
-
-function riskBadgeStyle(days) {
-  if (days <= 30) {
-    return {
-      ...badgeStyle,
-      background: '#7f1d1d',
-      color: '#fecaca',
-      border: '1px solid #ef4444',
-    }
-  }
-
-  if (days <= 60) {
-    return {
-      ...badgeStyle,
-      background: '#78350f',
-      color: '#fde68a',
-      border: '1px solid #f59e0b',
-    }
-  }
-
-  return {
-    ...badgeStyle,
-    background: '#1e293b',
-    color: '#bfdbfe',
-    border: '1px solid #3b82f6',
-  }
-}
-
-const pageStyle = {
-  padding: '30px',
-  color: 'white',
-}
-
-const headerStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  gap: '20px',
-  alignItems: 'flex-start',
-  flexWrap: 'wrap',
-}
-
-const titleStyle = {
-  fontSize: '48px',
-  marginBottom: '10px',
-}
-
-const subtitleStyle = {
-  fontSize: '18px',
-  color: '#94a3b8',
-  marginBottom: '30px',
-  maxWidth: '900px',
-  lineHeight: 1.6,
-}
-
-const refreshButtonStyle = {
-  background: '#2563eb',
-  color: 'white',
-  border: 'none',
-  borderRadius: '10px',
-  padding: '12px 18px',
-  cursor: 'pointer',
-  fontWeight: 'bold',
-}
-
-const loadingStyle = {
-  background: '#111827',
-  border: '1px solid #334155',
-  borderRadius: '12px',
-  padding: '24px',
-  color: '#cbd5e1',
-}
-
-const cardsContainerStyle = {
-  display: 'flex',
-  gap: '20px',
-  flexWrap: 'wrap',
-}
-
-const cardStyle = {
-  background: '#111827',
-  border: '1px solid #334155',
-  borderRadius: '12px',
-  padding: '24px',
-  minWidth: '280px',
-}
-
-const cardTitleStyle = {
-  color: '#94a3b8',
-  fontSize: '17px',
-  marginBottom: '12px',
-}
-
-const cardValueStyle = {
-  fontSize: '34px',
-  fontWeight: '800',
-}
-
-const sectionStyle = {
-  marginTop: '42px',
-}
-
-const sectionTitleStyle = {
-  fontSize: '28px',
-  marginBottom: '16px',
-}
-
-const tableWrapperStyle = {
-  overflowX: 'auto',
-  background: '#111827',
-  border: '1px solid #334155',
-  borderRadius: '12px',
-}
-
-const tableStyle = {
-  width: '100%',
-  borderCollapse: 'collapse',
-  minWidth: '1200px',
-}
-
-const thStyle = {
-  textAlign: 'left',
-  padding: '14px',
-  background: '#1e293b',
-  color: '#cbd5e1',
-  borderBottom: '1px solid #334155',
-  whiteSpace: 'nowrap',
-}
-
-const tdStyle = {
-  padding: '14px',
-  borderBottom: '1px solid #1f2937',
-  color: '#e5e7eb',
-  verticalAlign: 'top',
-}
-
-const badgeStyle = {
-  display: 'inline-block',
-  borderRadius: '999px',
-  padding: '4px 10px',
-  fontWeight: 'bold',
-  minWidth: '42px',
-  textAlign: 'center',
-}
-
-const toneColors = {
-  blue: {
-    text: '#60a5fa',
-    border: '#334155',
-  },
-  green: {
-    text: '#34d399',
-    border: '#14532d',
-  },
-  red: {
-    text: '#f87171',
-    border: '#7f1d1d',
-  },
-  amber: {
-    text: '#fbbf24',
-    border: '#78350f',
-  },
-  purple: {
-    text: '#c084fc',
-    border: '#581c87',
-  },
 }
