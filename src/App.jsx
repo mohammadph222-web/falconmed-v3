@@ -2,6 +2,7 @@ import PatientRegistryPage from './pages/PatientRegistryPage'
 import StockCountPage from './pages/StockCountPage'
 import ReconciliationCasesPage from './pages/ReconciliationCasesPage'
 import ReconciliationAuditPage from './pages/ReconciliationAuditPage'
+import ReconCompareEngine from './pages/ReconCompareEngine'
 import { useState } from 'react'
 import { searchDrugs } from './lib/drugMasterService'
 
@@ -31,10 +32,10 @@ const NAV_ZONES = [
   {
     label: 'Formulary & Inventory',
     items: [
-      { key: 'drug-search',            label: 'Drug Search',            icon: 'search'     },
-      { key: 'inventory',              label: 'Inventory Explorer',     icon: 'package'    },
-      { key: 'inventory-intelligence', label: 'Inventory Intelligence', icon: 'chart'      },
-      { key: 'supply-chain',           label: 'Supply Chain',           icon: 'truck'      },
+      { key: 'drug-search',            label: 'Drug Search',            icon: 'search'    },
+      { key: 'inventory',              label: 'Inventory Explorer',     icon: 'package'   },
+      { key: 'inventory-intelligence', label: 'Inventory Intelligence', icon: 'chart'     },
+      { key: 'supply-chain',           label: 'Supply Chain',           icon: 'truck'     },
     ],
   },
   {
@@ -49,8 +50,9 @@ const NAV_ZONES = [
   {
     label: 'Governance',
     items: [
-      { key: 'reconciliation',       label: 'Reconciliation',       icon: 'scale' },
-      { key: 'reconciliation-audit', label: 'Reconciliation Audit', icon: 'eye'   },
+      { key: 'reconciliation',       label: 'Reconciliation',       icon: 'scale'   },
+      { key: 'reconciliation-audit', label: 'Reconciliation Audit', icon: 'eye'     },
+      { key: 'recon-compare',        label: 'File Compare',         icon: 'compare' },
     ],
   },
 ]
@@ -133,6 +135,14 @@ function NavIcon({ name }) {
       <svg viewBox="0 0 16 16" className="fm-nav-icon" aria-hidden="true">
         <path d="M1 8C1 8 3.5 3 8 3C12.5 3 15 8 15 8C15 8 12.5 13 8 13C3.5 13 1 8 1 8Z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
         <circle cx="8" cy="8" r="2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+      </svg>
+    ),
+    compare: (
+      <svg viewBox="0 0 16 16" className="fm-nav-icon" aria-hidden="true">
+        <rect x="1" y="2" width="6" height="12" rx="1" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+        <rect x="9" y="2" width="6" height="12" rx="1" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+        <path d="M4 6H3M4 8H3M4 10H3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M12 6H11M12 8H11M12 10H11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
       </svg>
     ),
   }
@@ -239,16 +249,17 @@ export default function App() {
       <main className="fm-content">
         <div className="fm-page">
 
-          {currentPage === 'dashboard'             && <DashboardPage />}
-          {currentPage === 'inventory'             && <InventoryExplorerPage />}
-          {currentPage === 'inventory-intelligence'&& <InventoryIntelligencePage />}
-          {currentPage === 'supply-chain'          && <SupplyChainPage />}
-          {currentPage === 'transactions'          && <InventoryTransactionsPage />}
-          {currentPage === 'operations'            && <InventoryOperationsPage />}
-          {currentPage === 'patients'              && <PatientRegistryPage />}
-          {currentPage === 'stockcount'            && <StockCountPage />}
-          {currentPage === 'reconciliation'        && <ReconciliationCasesPage />}
-          {currentPage === 'reconciliation-audit'  && <ReconciliationAuditPage />}
+          {currentPage === 'dashboard'              && <DashboardPage />}
+          {currentPage === 'inventory'              && <InventoryExplorerPage />}
+          {currentPage === 'inventory-intelligence' && <InventoryIntelligencePage />}
+          {currentPage === 'supply-chain'           && <SupplyChainPage />}
+          {currentPage === 'transactions'           && <InventoryTransactionsPage />}
+          {currentPage === 'operations'             && <InventoryOperationsPage />}
+          {currentPage === 'patients'               && <PatientRegistryPage />}
+          {currentPage === 'stockcount'             && <StockCountPage />}
+          {currentPage === 'reconciliation'         && <ReconciliationCasesPage />}
+          {currentPage === 'reconciliation-audit'   && <ReconciliationAuditPage />}
+          {currentPage === 'recon-compare'          && <ReconCompareEngine />}
 
           {currentPage === 'drug-search' && (
             <div>
@@ -266,12 +277,12 @@ export default function App() {
 
                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
                   {[
-                    { label: 'Thiqa',              checked: thiqaOnly,            setter: setThiqaOnly            },
-                    { label: 'Basic',              checked: basicOnly,            setter: setBasicOnly            },
-                    { label: 'UPP',                checked: uppOnly,              setter: setUppOnly              },
-                    { label: 'Active only',        checked: activeOnly,           setter: setActiveOnly           },
-                    { label: 'Single ingredient',  checked: singleIngredientOnly, setter: setSingleIngredientOnly },
-                    { label: 'Combination only',   checked: combinationOnly,      setter: setCombinationOnly      },
+                    { label: 'Thiqa',             checked: thiqaOnly,            setter: setThiqaOnly            },
+                    { label: 'Basic',             checked: basicOnly,            setter: setBasicOnly            },
+                    { label: 'UPP',               checked: uppOnly,              setter: setUppOnly              },
+                    { label: 'Active only',       checked: activeOnly,           setter: setActiveOnly           },
+                    { label: 'Single ingredient', checked: singleIngredientOnly, setter: setSingleIngredientOnly },
+                    { label: 'Combination only',  checked: combinationOnly,      setter: setCombinationOnly      },
                   ].map(({ label, checked, setter }) => (
                     <label
                       key={label}
@@ -292,9 +303,21 @@ export default function App() {
                         checked={checked}
                         onChange={(e) => {
                           setter(e.target.checked)
-                          runSearch(search, { [Object.keys({ thiqaOnly, basicOnly, uppOnly, activeOnly, singleIngredientOnly, combinationOnly }).find(k => ({ thiqaOnly, basicOnly, uppOnly, activeOnly, singleIngredientOnly, combinationOnly })[k] === checked)]: e.target.checked })
+                          runSearch(search, {
+                            [Object.keys({
+                              thiqaOnly, basicOnly, uppOnly,
+                              activeOnly, singleIngredientOnly, combinationOnly,
+                            }).find(k => ({
+                              thiqaOnly, basicOnly, uppOnly,
+                              activeOnly, singleIngredientOnly, combinationOnly,
+                            })[k] === checked)]: e.target.checked,
+                          })
                         }}
-                        style={{ accentColor: 'var(--color-primary)', width: '14px', height: '14px' }}
+                        style={{
+                          accentColor: 'var(--color-primary)',
+                          width: '14px',
+                          height: '14px',
+                        }}
                       />
                       {label}
                     </label>
@@ -383,8 +406,12 @@ export default function App() {
                         cursor: 'pointer',
                         fontFamily: 'var(--font-sans)',
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = 'var(--color-bg-card-hover)'}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background = 'var(--color-bg-card-hover)')
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background = 'transparent')
+                      }
                     >
                       <div style={{
                         fontWeight: 'var(--font-medium)',
@@ -410,8 +437,12 @@ export default function App() {
                       }}>
                         <span>Pack: {drug.package_size}</span>
                         <span>AED {drug.price_to_public}</span>
-                        {drug.insurance_thiqa && <span style={{ color: 'var(--color-success)' }}>Thiqa</span>}
-                        {drug.insurance_basic && <span style={{ color: 'var(--color-success)' }}>Basic</span>}
+                        {drug.insurance_thiqa && (
+                          <span style={{ color: 'var(--color-success)' }}>Thiqa</span>
+                        )}
+                        {drug.insurance_basic && (
+                          <span style={{ color: 'var(--color-success)' }}>Basic</span>
+                        )}
                         {drug.upp_scope && <span>UPP: {drug.upp_scope}</span>}
                       </div>
                     </button>
@@ -419,7 +450,15 @@ export default function App() {
                 </div>
               )}
 
-              {visibleDrug && <DrugCard drug={visibleDrug} onClose={() => { setSelectedDrug(null); setSearch('') }} />}
+              {visibleDrug && (
+                <DrugCard
+                  drug={visibleDrug}
+                  onClose={() => {
+                    setSelectedDrug(null)
+                    setSearch('')
+                  }}
+                />
+              )}
             </div>
           )}
 
@@ -438,26 +477,25 @@ function DrugCard({ drug, onClose }) {
   )
 
   const fields = [
-    { label: 'Strength',              value: drug.strength                                      },
-    { label: 'Dosage form',           value: drug.dosage_form                                   },
-    { label: 'Package',               value: drug.package_size                                  },
-    { label: 'Detected units',        value: parsed.unitCount || '-'                            },
-    { label: 'Parse confidence',      value: parsed.confidence                                  },
-    { label: 'Status',                value: drug.is_active ? 'Active' : 'Inactive',
-      highlight: drug.is_active                                                                  },
-    { label: 'Public price',          value: `AED ${drug.price_to_public}`                      },
-    { label: 'Pharmacy price',        value: `AED ${drug.price_to_pharmacy}`                    },
-    { label: 'Calculated unit price', value: calculatedUnitPrice ? `AED ${calculatedUnitPrice.toFixed(2)}` : '-' },
-    { label: 'Unit public price',     value: drug.unit_price_to_public ? `AED ${drug.unit_price_to_public}` : '-' },
-    { label: 'Unit pharmacy price',   value: drug.unit_price_to_pharmacy ? `AED ${drug.unit_price_to_pharmacy}` : '-' },
-    { label: 'Basic insurance',       value: drug.insurance_basic ? 'Yes' : 'No'                },
-    { label: 'Thiqa',                 value: drug.insurance_thiqa ? 'Yes' : 'No'                },
-    { label: 'UPP',                   value: drug.upp_scope || '-'                              },
-    { label: 'Unit markup',           value: drug.unit_markup || '-'                            },
-    { label: 'Package markup',        value: drug.package_markup || '-'                         },
-    { label: 'Insurance plan',        value: drug.insurance_plan || '-'                         },
-    { label: 'Dispense mode',         value: drug.dispense_mode || '-'                          },
-    { label: 'Last change',           value: drug.last_change_date || '-'                       },
+    { label: 'Strength',              value: drug.strength                                                           },
+    { label: 'Dosage form',           value: drug.dosage_form                                                        },
+    { label: 'Package',               value: drug.package_size                                                       },
+    { label: 'Detected units',        value: parsed.unitCount || '-'                                                 },
+    { label: 'Parse confidence',      value: parsed.confidence                                                       },
+    { label: 'Status',                value: drug.is_active ? 'Active' : 'Inactive', highlight: drug.is_active      },
+    { label: 'Public price',          value: `AED ${drug.price_to_public}`                                           },
+    { label: 'Pharmacy price',        value: `AED ${drug.price_to_pharmacy}`                                         },
+    { label: 'Calculated unit price', value: calculatedUnitPrice ? `AED ${calculatedUnitPrice.toFixed(2)}` : '-'    },
+    { label: 'Unit public price',     value: drug.unit_price_to_public   ? `AED ${drug.unit_price_to_public}`  : '-'},
+    { label: 'Unit pharmacy price',   value: drug.unit_price_to_pharmacy ? `AED ${drug.unit_price_to_pharmacy}`: '-'},
+    { label: 'Basic insurance',       value: drug.insurance_basic ? 'Yes' : 'No'                                     },
+    { label: 'Thiqa',                 value: drug.insurance_thiqa ? 'Yes' : 'No'                                     },
+    { label: 'UPP',                   value: drug.upp_scope    || '-'                                                },
+    { label: 'Unit markup',           value: drug.unit_markup  || '-'                                                },
+    { label: 'Package markup',        value: drug.package_markup || '-'                                              },
+    { label: 'Insurance plan',        value: drug.insurance_plan || '-'                                              },
+    { label: 'Dispense mode',         value: drug.dispense_mode  || '-'                                              },
+    { label: 'Last change',           value: drug.last_change_date || '-'                                            },
   ]
 
   return (
@@ -527,9 +565,7 @@ function DrugCard({ drug, onClose }) {
             <div style={{
               fontSize: 'var(--text-sm)',
               fontWeight: 'var(--font-medium)',
-              color: highlight
-                ? 'var(--color-success)'
-                : 'var(--color-text-primary)',
+              color: highlight ? 'var(--color-success)' : 'var(--color-text-primary)',
             }}>
               {value || '—'}
             </div>
