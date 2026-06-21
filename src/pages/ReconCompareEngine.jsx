@@ -1,23 +1,25 @@
 import { useRef, useState } from 'react'
 import * as XLSX from 'xlsx'
 
-const KNOWN_KEY_COLS     = ['drug_code','item_code','barcode','sku','code','id']
-const KNOWN_QTY_COLS     = ['quantity','qty','quantity_on_hand','system_qty','physical_qty','count','stock','units']
-const KNOWN_COST_COLS    = ['unit_cost','cost','price','unit_price','cost_price']
-const KNOWN_NAME_COLS    = ['drug_name','item_name','name','description','generic_name','brand_name','product_name']
+const KNOWN_KEY_COLS  = ['drug_code','item_code','barcode','sku','code','id']
+const KNOWN_QTY_COLS  = ['quantity','qty','quantity_on_hand','system_qty','physical_qty','count','stock','units']
+const KNOWN_COST_COLS = ['unit_cost','cost','price','unit_price','cost_price']
+const KNOWN_NAME_COLS = ['drug_name','item_name','name','description','generic_name','brand_name','product_name']
 
 const DIR_META = {
-  MATCHED:          { label: 'Matched',           color: 'var(--color-success)',     bg: 'rgba(29,158,117,0.12)', border: 'rgba(29,158,117,0.30)'  },
-  SHORTAGE:         { label: 'Shortage',           color: 'var(--color-danger-mid)',  bg: 'rgba(163,45,45,0.12)',  border: 'rgba(163,45,45,0.30)'   },
-  EXCESS:           { label: 'Excess',             color: 'var(--color-warning-mid)', bg: 'rgba(186,117,23,0.12)', border: 'rgba(186,117,23,0.30)'  },
-  MISSING_PHYSICAL: { label: 'Missing in physical',color: 'var(--color-danger-mid)',  bg: 'rgba(163,45,45,0.12)',  border: 'rgba(163,45,45,0.30)'   },
-  EXTRA_PHYSICAL:   { label: 'Extra in physical',  color: 'var(--color-text-accent)', bg: 'rgba(24,95,165,0.12)',  border: 'rgba(24,95,165,0.30)'   },
+  MATCHED:          { label: 'Matched',            color: 'var(--color-success)',     bg: 'rgba(29,158,117,0.12)', border: 'rgba(29,158,117,0.30)'  },
+  SHORTAGE:         { label: 'Shortage',            color: 'var(--color-danger-mid)',  bg: 'rgba(163,45,45,0.12)',  border: 'rgba(163,45,45,0.30)'   },
+  EXCESS:           { label: 'Excess',              color: 'var(--color-warning-mid)', bg: 'rgba(186,117,23,0.12)', border: 'rgba(186,117,23,0.30)'  },
+  MISSING_PHYSICAL: { label: 'Missing in physical', color: 'var(--color-danger-mid)',  bg: 'rgba(163,45,45,0.12)',  border: 'rgba(163,45,45,0.30)'   },
+  EXTRA_PHYSICAL:   { label: 'Extra in physical',   color: 'var(--color-text-accent)', bg: 'rgba(24,95,165,0.12)',  border: 'rgba(24,95,165,0.30)'   },
 }
+
+// ─── helpers ──────────────────────────────────────────────────────────────────
 
 function detectCol(headers, candidates) {
   const lower = headers.map(h => h.toLowerCase().trim())
   for (const c of candidates) {
-    const idx = lower.findIndex(h => h === c || h.replace(/[\s-]/g,'_') === c)
+    const idx = lower.findIndex(h => h === c || h.replace(/[\s\-]/g, '_') === c)
     if (idx !== -1) return headers[idx]
   }
   return ''
@@ -42,65 +44,91 @@ function parseFile(file) {
   })
 }
 
+// ─── AGGREGATION ──────────────────────────────────────────────────────────────
+// Groups all rows that share the same key value.
+// Quantities are SUMMED across rows.
+// Unit cost: uses the first non-zero value found (costs don't sum).
+// Item name: uses the first non-empty value found.
+// Returns a Map of key → { qty, unitCost, itemName, rowCount }
+
+function aggregateRows(rows, mapping) {
+  const index = new Map()
+
+  for (const row of rows) {
+    const rawKey = String(row[mapping.key] ?? '').trim()
+    if (!rawKey) continue                          // skip blank keys silently
+
+    const qty      = Number(row[mapping.qty]  ?? 0) || 0
+    const cost     = mapping.cost ? (Number(row[mapping.cost] ?? 0) || 0) : 0
+    const name     = mapping.name ? String(row[mapping.name] ?? '').trim() : ''
+
+    if (!index.has(rawKey)) {
+      index.set(rawKey, { qty: 0, unitCost: 0, itemName: '', rowCount: 0 })
+    }
+
+    const entry = index.get(rawKey)
+    entry.qty      += qty
+    entry.rowCount += 1
+    // keep first non-zero cost and first non-empty name
+    if (!entry.unitCost && cost)   entry.unitCost  = cost
+    if (!entry.itemName && name)   entry.itemName  = name
+  }
+
+  return index
+}
+
+// ─── COMPARISON ───────────────────────────────────────────────────────────────
+// Both files are aggregated first, then compared key-by-key.
+
 function runComparison({ systemRows, physicalRows, sysMap, physMap }) {
-  const sysIndex  = new Map()
-  const physIndex = new Map()
+  const sysIndex  = aggregateRows(systemRows,   sysMap)
+  const physIndex = aggregateRows(physicalRows, physMap)
 
-  for (const row of systemRows) {
-    const key = String(row[sysMap.key] ?? '').trim()
-    if (!key) continue
-    sysIndex.set(key, row)
-  }
-
-  for (const row of physicalRows) {
-    const key = String(row[physMap.key] ?? '').trim()
-    if (!key) continue
-    physIndex.set(key, row)
-  }
-
-  const results = []
   const allKeys = new Set([...sysIndex.keys(), ...physIndex.keys()])
+  const results = []
 
   for (const key of allKeys) {
-    const sysRow  = sysIndex.get(key)
-    const physRow = physIndex.get(key)
+    const sysEntry  = sysIndex.get(key)
+    const physEntry = physIndex.get(key)
 
-    const sysQty  = sysRow  ? Number(sysRow[sysMap.qty]   ?? 0) : null
-    const physQty = physRow ? Number(physRow[physMap.qty]  ?? 0) : null
+    const sysQty  = sysEntry  ? sysEntry.qty  : null
+    const physQty = physEntry ? physEntry.qty : null
 
-    const unitCost = sysRow && sysMap.cost
-      ? Number(sysRow[sysMap.cost] ?? 0)
-      : physRow && physMap.cost
-      ? Number(physRow[physMap.cost] ?? 0)
-      : null
+    // prefer system cost; fall back to physical cost
+    const unitCost = sysEntry?.unitCost || physEntry?.unitCost || null
+    const itemName = sysEntry?.itemName || physEntry?.itemName || ''
 
-    const itemName = sysRow && sysMap.name
-      ? String(sysRow[sysMap.name] ?? '')
-      : physRow && physMap.name
-      ? String(physRow[physMap.name] ?? '')
-      : ''
+    // row counts for transparency
+    const sysRows  = sysEntry?.rowCount  ?? 0
+    const physRows = physEntry?.rowCount ?? 0
 
     let direction
-    if (sysRow && !physRow)       direction = 'MISSING_PHYSICAL'
-    else if (!sysRow && physRow)  direction = 'EXTRA_PHYSICAL'
-    else if (sysQty === physQty)  direction = 'MATCHED'
-    else if (physQty < sysQty)    direction = 'SHORTAGE'
-    else                          direction = 'EXCESS'
+    if  (sysEntry  && !physEntry)    direction = 'MISSING_PHYSICAL'
+    else if (!sysEntry && physEntry) direction = 'EXTRA_PHYSICAL'
+    else if (sysQty === physQty)     direction = 'MATCHED'
+    else if (physQty < sysQty)       direction = 'SHORTAGE'
+    else                             direction = 'EXCESS'
 
-    const varianceQty   = direction === 'MISSING_PHYSICAL' ? null
-                        : direction === 'EXTRA_PHYSICAL'   ? physQty
-                        : physQty - sysQty
+    const varianceQty = direction === 'MISSING_PHYSICAL' ? null
+                      : direction === 'EXTRA_PHYSICAL'   ? physQty
+                      : physQty - sysQty
 
-    const varianceValue = varianceQty !== null && unitCost ? varianceQty * unitCost : null
+    const varianceValue = varianceQty !== null && unitCost
+      ? varianceQty * unitCost
+      : null
 
     results.push({
-      key, itemName, sysQty, physQty,
-      varianceQty, varianceValue, unitCost, direction,
+      key, itemName,
+      sysQty, physQty,
+      varianceQty, varianceValue,
+      unitCost, direction,
+      sysRows, physRows,          // extra metadata shown in aggregation badge
     })
   }
 
+  // sort: most critical first
   results.sort((a, b) => {
-    const order = { MISSING_PHYSICAL:0, SHORTAGE:1, EXTRA_PHYSICAL:2, EXCESS:3, MATCHED:4 }
+    const order = { MISSING_PHYSICAL: 0, SHORTAGE: 1, EXTRA_PHYSICAL: 2, EXCESS: 3, MATCHED: 4 }
     return (order[a.direction] ?? 5) - (order[b.direction] ?? 5)
   })
 
@@ -108,32 +136,34 @@ function runComparison({ systemRows, physicalRows, sysMap, physMap }) {
 }
 
 function buildKpis(results) {
-  const total            = results.length
-  const matched          = results.filter(r => r.direction === 'MATCHED').length
-  const shortage         = results.filter(r => r.direction === 'SHORTAGE').length
-  const excess           = results.filter(r => r.direction === 'EXCESS').length
-  const missingPhysical  = results.filter(r => r.direction === 'MISSING_PHYSICAL').length
-  const extraPhysical    = results.filter(r => r.direction === 'EXTRA_PHYSICAL').length
-  const totalVarianceVal = results.reduce((s,r) => s + Math.abs(r.varianceValue ?? 0), 0)
+  const total           = results.length
+  const matched         = results.filter(r => r.direction === 'MATCHED').length
+  const shortage        = results.filter(r => r.direction === 'SHORTAGE').length
+  const excess          = results.filter(r => r.direction === 'EXCESS').length
+  const missingPhysical = results.filter(r => r.direction === 'MISSING_PHYSICAL').length
+  const extraPhysical   = results.filter(r => r.direction === 'EXTRA_PHYSICAL').length
+  const totalVarianceVal = results.reduce((s, r) => s + Math.abs(r.varianceValue ?? 0), 0)
   return { total, matched, shortage, excess, missingPhysical, extraPhysical, totalVarianceVal }
 }
+
+// ─── COMPONENT ────────────────────────────────────────────────────────────────
 
 export default function ReconCompareEngine() {
   const sysRef  = useRef()
   const physRef = useRef()
 
-  const [sysFile,  setSysFile]  = useState(null)
-  const [physFile, setPhysFile] = useState(null)
-  const [sysData,  setSysData]  = useState(null)
-  const [physData, setPhysData] = useState(null)
-  const [sysMap,   setSysMap]   = useState({ key:'', qty:'', cost:'', name:'' })
-  const [physMap,  setPhysMap]  = useState({ key:'', qty:'', cost:'', name:'' })
-  const [results,  setResults]  = useState(null)
-  const [kpis,     setKpis]     = useState(null)
-  const [dirFilter,setDirFilter]= useState('ALL')
-  const [search,   setSearch]   = useState('')
-  const [error,    setError]    = useState('')
-  const [parsing,  setParsing]  = useState('')
+  const [sysFile,   setSysFile]   = useState(null)
+  const [physFile,  setPhysFile]  = useState(null)
+  const [sysData,   setSysData]   = useState(null)
+  const [physData,  setPhysData]  = useState(null)
+  const [sysMap,    setSysMap]    = useState({ key: '', qty: '', cost: '', name: '' })
+  const [physMap,   setPhysMap]   = useState({ key: '', qty: '', cost: '', name: '' })
+  const [results,   setResults]   = useState(null)
+  const [kpis,      setKpis]      = useState(null)
+  const [dirFilter, setDirFilter] = useState('ALL')
+  const [search,    setSearch]    = useState('')
+  const [error,     setError]     = useState('')
+  const [parsing,   setParsing]   = useState('')
 
   async function handleFile(file, side) {
     if (!file) return
@@ -150,13 +180,9 @@ export default function ReconCompareEngine() {
         name: detectCol(parsed.headers, KNOWN_NAME_COLS),
       }
       if (side === 'sys') {
-        setSysFile(file)
-        setSysData(parsed)
-        setSysMap(auto)
+        setSysFile(file); setSysData(parsed); setSysMap(auto)
       } else {
-        setPhysFile(file)
-        setPhysData(parsed)
-        setPhysMap(auto)
+        setPhysFile(file); setPhysData(parsed); setPhysMap(auto)
       }
     } catch (e) {
       setError(`Failed to parse ${side === 'sys' ? 'System Count' : 'Physical Count'} file: ${e.message}`)
@@ -167,27 +193,25 @@ export default function ReconCompareEngine() {
   function compare() {
     setError('')
     if (!sysData || !physData) { setError('Please upload both files before comparing.'); return }
-    if (!sysMap.key)           { setError('Please map the Key column for the System Count file.');  return }
-    if (!physMap.key)          { setError('Please map the Key column for the Physical Count file.'); return }
-    if (!sysMap.qty)           { setError('Please map the Quantity column for the System Count file.'); return }
-    if (!physMap.qty)          { setError('Please map the Quantity column for the Physical Count file.'); return }
+    if (!sysMap.key)  { setError('Please map the Key column for the System Count file.');   return }
+    if (!physMap.key) { setError('Please map the Key column for the Physical Count file.'); return }
+    if (!sysMap.qty)  { setError('Please map the Quantity column for the System Count file.');   return }
+    if (!physMap.qty) { setError('Please map the Quantity column for the Physical Count file.'); return }
 
     const res  = runComparison({ systemRows: sysData.rows, physicalRows: physData.rows, sysMap, physMap })
-    const kpis = buildKpis(res)
     setResults(res)
-    setKpis(kpis)
+    setKpis(buildKpis(res))
     setDirFilter('ALL')
     setSearch('')
   }
 
   function reset() {
-    setSysFile(null); setPhysFile(null)
-    setSysData(null); setPhysData(null)
-    setSysMap({ key:'', qty:'', cost:'', name:'' })
-    setPhysMap({ key:'', qty:'', cost:'', name:'' })
-    setResults(null); setKpis(null)
-    setDirFilter('ALL'); setSearch('')
-    setError('')
+    setSysFile(null);  setPhysFile(null)
+    setSysData(null);  setPhysData(null)
+    setSysMap({ key: '', qty: '', cost: '', name: '' })
+    setPhysMap({ key: '', qty: '', cost: '', name: '' })
+    setResults(null);  setKpis(null)
+    setDirFilter('ALL'); setSearch(''); setError('')
   }
 
   function exportCSV() {
@@ -195,23 +219,37 @@ export default function ReconCompareEngine() {
     const rows = filteredResults.map(r => ({
       key:            r.key,
       item_name:      r.itemName,
-      system_qty:     r.sysQty  ?? 'N/A',
-      physical_qty:   r.physQty ?? 'N/A',
-      variance_qty:   r.varianceQty  ?? 'N/A',
-      unit_cost:      r.unitCost     ?? 'N/A',
+      system_qty:     r.sysQty   ?? 'N/A',
+      physical_qty:   r.physQty  ?? 'N/A',
+      variance_qty:   r.varianceQty   ?? 'N/A',
+      unit_cost:      r.unitCost      ?? 'N/A',
       variance_value: r.varianceValue != null ? r.varianceValue.toFixed(2) : 'N/A',
       direction:      r.direction,
       status:         DIR_META[r.direction]?.label ?? r.direction,
+      sys_row_count:  r.sysRows,
+      phys_row_count: r.physRows,
     }))
     const ws = XLSX.utils.json_to_sheet(rows)
     const wb = XLSX.utils.book_new()
     XLSX.utils.book_append_sheet(wb, ws, 'Recon Variance')
-    XLSX.writeFile(wb, `falconmed_recon_compare_${new Date().toISOString().slice(0,10)}.csv`)
+    XLSX.writeFile(wb, `falconmed_recon_compare_${new Date().toISOString().slice(0, 10)}.csv`)
   }
+
+  // ── total aggregated rows across both files (for info badge)
+  const totalSysRows  = sysData?.rows?.length  ?? 0
+  const totalPhysRows = physData?.rows?.length ?? 0
+  const totalSysKeys  = results
+    ? new Set(results.filter(r => r.sysRows  > 0).map(r => r.key)).size : 0
+  const totalPhysKeys = results
+    ? new Set(results.filter(r => r.physRows > 0).map(r => r.key)).size : 0
+  const aggregationActive = results
+    && (sysData.rows.length > totalSysKeys || physData.rows.length > totalPhysKeys)
 
   const filteredResults = results ? results.filter(r => {
     const matchDir    = dirFilter === 'ALL' || r.direction === dirFilter
-    const matchSearch = !search.trim() || r.key.toLowerCase().includes(search.toLowerCase()) || r.itemName.toLowerCase().includes(search.toLowerCase())
+    const matchSearch = !search.trim() ||
+      r.key.toLowerCase().includes(search.toLowerCase()) ||
+      r.itemName.toLowerCase().includes(search.toLowerCase())
     return matchDir && matchSearch
   }) : []
 
@@ -226,7 +264,8 @@ export default function ReconCompareEngine() {
             <h1 className="fm-page-header-title">Recon file compare</h1>
             <p className="fm-page-header-desc">
               Upload a system count file and a physical count file to generate a
-              variance analysis. Client-side only — no data is written to the database.
+              variance analysis. Multiple rows per drug are automatically aggregated
+              before comparison. Client-side only — no data is written to the database.
             </p>
           </div>
           {results && (
@@ -238,58 +277,61 @@ export default function ReconCompareEngine() {
         </div>
       </div>
 
-      <div
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '8px',
-          fontSize: 'var(--text-xs)',
-          color: 'var(--color-text-accent)',
+      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '20px' }}>
+        <span style={{
+          display: 'inline-flex', alignItems: 'center', gap: '8px',
+          fontSize: 'var(--text-xs)', color: 'var(--color-text-accent)',
           background: 'rgba(24,95,165,0.10)',
           border: '1px solid rgba(24,95,165,0.25)',
-          borderRadius: 'var(--radius-md)',
-          padding: '5px 12px',
-          marginBottom: '20px',
-        }}
-      >
-        <span style={{ fontWeight: 'var(--font-medium)' }}>Educational tool</span>
-        · Simulation-safe · No Supabase writes · No inventory changes
+          borderRadius: 'var(--radius-md)', padding: '5px 12px',
+        }}>
+          <span style={{ fontWeight: 'var(--font-medium)' }}>Educational tool</span>
+          · Simulation-safe · No Supabase writes · No inventory changes
+        </span>
+
+        {aggregationActive && (
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            fontSize: 'var(--text-xs)', color: 'var(--color-success)',
+            background: 'rgba(29,158,117,0.10)',
+            border: '1px solid rgba(29,158,117,0.25)',
+            borderRadius: 'var(--radius-md)', padding: '5px 12px',
+          }}>
+            Aggregation active — {totalSysRows} system rows → {totalSysKeys} unique keys ·{' '}
+            {totalPhysRows} physical rows → {totalPhysKeys} unique keys
+          </span>
+        )}
       </div>
 
       {error && (
         <div style={{
-          background: 'rgba(163,45,45,0.12)',
-          border: '1px solid rgba(163,45,45,0.30)',
-          borderRadius: 'var(--radius-md)',
-          padding: '10px 14px',
-          fontSize: 'var(--text-sm)',
-          color: 'var(--color-danger-mid)',
-          marginBottom: '16px',
+          background: 'rgba(163,45,45,0.12)', border: '1px solid rgba(163,45,45,0.30)',
+          borderRadius: 'var(--radius-md)', padding: '10px 14px',
+          fontSize: 'var(--text-sm)', color: 'var(--color-danger-mid)', marginBottom: '16px',
         }}>
           ✕ {error}
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: '16px', marginBottom: '20px' }}>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)',
+        gap: '16px',
+        marginBottom: '20px',
+      }}>
         <FileUploadCard
           label="System count file"
           subtitle="Your ERP / pharmacy system export"
-          file={sysFile}
-          data={sysData}
-          mapping={sysMap}
-          parsing={parsing === 'sys'}
-          inputRef={sysRef}
+          file={sysFile} data={sysData} mapping={sysMap}
+          parsing={parsing === 'sys'} inputRef={sysRef}
           onFile={f => handleFile(f, 'sys')}
           onMap={(field, val) => setSysMap(prev => ({ ...prev, [field]: val }))}
         />
         <FileUploadCard
           label="Physical count file"
           subtitle="Manual or scanner count results"
-          file={physFile}
-          data={physData}
-          mapping={physMap}
-          parsing={parsing === 'phys'}
-          inputRef={physRef}
+          file={physFile} data={physData} mapping={physMap}
+          parsing={parsing === 'phys'} inputRef={physRef}
           onFile={f => handleFile(f, 'phys')}
           onMap={(field, val) => setPhysMap(prev => ({ ...prev, [field]: val }))}
         />
@@ -310,41 +352,42 @@ export default function ReconCompareEngine() {
       {kpis && (
         <>
           <div className="fm-grid-kpi" style={{ marginBottom: '20px' }}>
-            <ReconKpi label="Total items"         value={kpis.total}           color="var(--color-text-accent)"  bar="var(--color-primary)"     />
-            <ReconKpi label="Matched"             value={kpis.matched}         color="var(--color-success)"      bar="var(--color-success)"      />
-            <ReconKpi label="Shortage"            value={kpis.shortage}        color="var(--color-danger-mid)"   bar="var(--color-danger-mid)"   />
-            <ReconKpi label="Excess"              value={kpis.excess}          color="var(--color-warning-mid)"  bar="var(--color-warning-mid)"  />
-            <ReconKpi label="Missing in physical" value={kpis.missingPhysical} color="var(--color-danger-mid)"   bar="var(--color-danger-mid)"   />
-            <ReconKpi label="Extra in physical"   value={kpis.extraPhysical}   color="var(--color-text-accent)"  bar="var(--color-primary)"      />
+            <ReconKpi label="Total items"         value={kpis.total}           color="var(--color-text-accent)"  bar="var(--color-primary)"    />
+            <ReconKpi label="Matched"             value={kpis.matched}         color="var(--color-success)"      bar="var(--color-success)"     />
+            <ReconKpi label="Shortage"            value={kpis.shortage}        color="var(--color-danger-mid)"   bar="var(--color-danger-mid)"  />
+            <ReconKpi label="Excess"              value={kpis.excess}          color="var(--color-warning-mid)"  bar="var(--color-warning-mid)" />
+            <ReconKpi label="Missing in physical" value={kpis.missingPhysical} color="var(--color-danger-mid)"   bar="var(--color-danger-mid)"  />
+            <ReconKpi label="Extra in physical"   value={kpis.extraPhysical}   color="var(--color-text-accent)"  bar="var(--color-primary)"    />
             {hasCost && (
               <ReconKpi
                 label="Total variance value"
-                value={`AED ${kpis.totalVarianceVal.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`}
+                value={`AED ${kpis.totalVarianceVal.toLocaleString(undefined, {
+                  minimumFractionDigits: 2, maximumFractionDigits: 2,
+                })}`}
                 color="var(--color-warning-mid)"
                 bar="var(--color-warning-mid)"
               />
             )}
           </div>
 
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap' }}>
-            {['ALL', 'MATCHED', 'SHORTAGE', 'EXCESS', 'MISSING_PHYSICAL', 'EXTRA_PHYSICAL'].map(d => (
+          <div style={{
+            display: 'flex', gap: '8px', alignItems: 'center',
+            marginBottom: '14px', flexWrap: 'wrap',
+          }}>
+            {['ALL','MATCHED','SHORTAGE','EXCESS','MISSING_PHYSICAL','EXTRA_PHYSICAL'].map(d => (
               <button
                 key={d}
                 onClick={() => setDirFilter(d)}
                 className="fm-filter-pill"
                 style={{
-                  background:   dirFilter === d ? 'rgba(24,95,165,0.15)' : 'transparent',
-                  borderColor:  dirFilter === d ? 'var(--color-primary)' : undefined,
-                  color:        dirFilter === d ? 'var(--color-text-accent)' : undefined,
+                  background:  dirFilter === d ? 'rgba(24,95,165,0.15)' : 'transparent',
+                  borderColor: dirFilter === d ? 'var(--color-primary)' : undefined,
+                  color:       dirFilter === d ? 'var(--color-text-accent)' : undefined,
                 }}
               >
                 {d === 'ALL' ? 'All' : DIR_META[d]?.label ?? d}
                 {d !== 'ALL' && (
-                  <span style={{
-                    marginLeft: '5px',
-                    fontSize: 'var(--text-xs)',
-                    color: 'var(--color-text-tertiary)',
-                  }}>
+                  <span style={{ marginLeft: '5px', fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)' }}>
                     {results.filter(r => r.direction === d).length}
                   </span>
                 )}
@@ -357,14 +400,12 @@ export default function ReconCompareEngine() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               style={{
-                marginLeft: 'auto',
-                padding: '5px 12px',
+                marginLeft: 'auto', padding: '5px 12px',
                 borderRadius: 'var(--radius-md)',
                 border: '1px solid var(--color-border-default)',
                 background: 'var(--color-bg-input)',
                 color: 'var(--color-text-primary)',
-                fontSize: 'var(--text-sm)',
-                fontFamily: 'var(--font-sans)',
+                fontSize: 'var(--text-sm)', fontFamily: 'var(--font-sans)',
                 minWidth: '200px',
               }}
             />
@@ -387,12 +428,16 @@ export default function ReconCompareEngine() {
                     {hasCost && <th>Unit cost</th>}
                     {hasCost && <th>Variance value</th>}
                     <th>Direction</th>
+                    <th title="Number of source rows aggregated">Rows (sys / phys)</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredResults.length === 0 && (
                     <tr>
-                      <td colSpan={hasCost ? 8 : 6} style={{ textAlign: 'center', color: 'var(--color-text-tertiary)', padding: '24px' }}>
+                      <td
+                        colSpan={hasCost ? 9 : 7}
+                        style={{ textAlign: 'center', color: 'var(--color-text-tertiary)', padding: '24px' }}
+                      >
                         No results match the current filter.
                       </td>
                     </tr>
@@ -412,10 +457,10 @@ export default function ReconCompareEngine() {
                         {r.itemName || <span style={{ color: 'var(--color-text-tertiary)' }}>—</span>}
                       </td>
                       <td style={{ fontWeight: 'var(--font-medium)', color: 'var(--color-text-primary)' }}>
-                        {r.sysQty  ?? <span style={{ color: 'var(--color-text-tertiary)' }}>N/A</span>}
+                        {r.sysQty  != null ? r.sysQty.toLocaleString()  : <span style={{ color: 'var(--color-text-tertiary)' }}>N/A</span>}
                       </td>
                       <td style={{ fontWeight: 'var(--font-medium)', color: 'var(--color-text-primary)' }}>
-                        {r.physQty ?? <span style={{ color: 'var(--color-text-tertiary)' }}>N/A</span>}
+                        {r.physQty != null ? r.physQty.toLocaleString() : <span style={{ color: 'var(--color-text-tertiary)' }}>N/A</span>}
                       </td>
                       <td>
                         <VarianceQty value={r.varianceQty} direction={r.direction} />
@@ -440,6 +485,20 @@ export default function ReconCompareEngine() {
                       <td>
                         <DirectionBadge direction={r.direction} />
                       </td>
+                      <td className="fm-table-muted" style={{ fontSize: 'var(--text-xs)' }}>
+                        {r.sysRows > 0 ? r.sysRows : '—'} / {r.physRows > 0 ? r.physRows : '—'}
+                        {(r.sysRows > 1 || r.physRows > 1) && (
+                          <span style={{
+                            marginLeft: '5px', fontSize: '9px', padding: '1px 5px',
+                            borderRadius: 'var(--radius-pill)',
+                            background: 'rgba(29,158,117,0.12)',
+                            color: 'var(--color-success)',
+                            border: '1px solid rgba(29,158,117,0.25)',
+                          }}>
+                            agg
+                          </span>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -452,20 +511,25 @@ export default function ReconCompareEngine() {
   )
 }
 
+// ─── sub-components ───────────────────────────────────────────────────────────
+
 function FileUploadCard({ label, subtitle, file, data, mapping, parsing, inputRef, onFile, onMap }) {
   return (
     <div className="fm-card">
       <div style={{ marginBottom: '12px' }}>
-        <div style={{ fontSize: 'var(--text-base)', fontWeight: 'var(--font-medium)', color: 'var(--color-text-primary)', marginBottom: '2px' }}>
+        <div style={{
+          fontSize: 'var(--text-base)', fontWeight: 'var(--font-medium)',
+          color: 'var(--color-text-primary)', marginBottom: '2px',
+        }}>
           {label}
         </div>
-        <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)' }}>{subtitle}</div>
+        <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)' }}>
+          {subtitle}
+        </div>
       </div>
 
       <input
-        ref={inputRef}
-        type="file"
-        accept=".csv,.xlsx,.xls"
+        ref={inputRef} type="file" accept=".csv,.xlsx,.xls"
         style={{ display: 'none' }}
         onChange={e => { if (e.target.files[0]) onFile(e.target.files[0]) }}
       />
@@ -483,14 +547,14 @@ function FileUploadCard({ label, subtitle, file, data, mapping, parsing, inputRe
           background: 'var(--color-bg-content)',
           border: '1px solid var(--color-border-subtle)',
           borderRadius: 'var(--radius-md)',
-          padding: '10px 12px',
-          marginBottom: '12px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          padding: '10px 12px', marginBottom: '12px',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         }}>
           <div>
-            <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)', color: 'var(--color-text-primary)' }}>
+            <div style={{
+              fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)',
+              color: 'var(--color-text-primary)',
+            }}>
               {file.name}
             </div>
             <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)', marginTop: '2px' }}>
@@ -509,10 +573,10 @@ function FileUploadCard({ label, subtitle, file, data, mapping, parsing, inputRe
 
       {data && (
         <div style={{ display: 'grid', gap: '8px', marginTop: '4px' }}>
-          <ColMapRow label="Key column *"      field="key"  headers={data.headers} value={mapping.key}  onChange={v => onMap('key',  v)} required />
-          <ColMapRow label="Quantity column *"  field="qty"  headers={data.headers} value={mapping.qty}  onChange={v => onMap('qty',  v)} required />
-          <ColMapRow label="Unit cost (optional)" field="cost" headers={data.headers} value={mapping.cost} onChange={v => onMap('cost', v)} />
-          <ColMapRow label="Item name (optional)" field="name" headers={data.headers} value={mapping.name} onChange={v => onMap('name', v)} />
+          <ColMapRow label="Key column *"           field="key"  headers={data.headers} value={mapping.key}  onChange={v => onMap('key',  v)} required />
+          <ColMapRow label="Quantity column *"      field="qty"  headers={data.headers} value={mapping.qty}  onChange={v => onMap('qty',  v)} required />
+          <ColMapRow label="Unit cost (optional)"   field="cost" headers={data.headers} value={mapping.cost} onChange={v => onMap('cost', v)} />
+          <ColMapRow label="Item name (optional)"   field="name" headers={data.headers} value={mapping.name} onChange={v => onMap('name', v)} />
         </div>
       )}
     </div>
@@ -524,26 +588,18 @@ function ColMapRow({ label, headers, value, onChange, required }) {
   return (
     <div style={{ display: 'grid', gap: '3px' }}>
       <label style={{
-        fontSize: 'var(--text-xs)',
-        color: 'var(--color-text-tertiary)',
-        textTransform: 'uppercase',
-        letterSpacing: '0.06em',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '6px',
+        fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)',
+        textTransform: 'uppercase', letterSpacing: '0.06em',
+        display: 'flex', alignItems: 'center', gap: '6px',
       }}>
         {label}
         {isDetected && (
           <span style={{
-            fontSize: '9px',
-            padding: '1px 6px',
+            fontSize: '9px', padding: '1px 6px',
             borderRadius: 'var(--radius-pill)',
-            background: 'rgba(29,158,117,0.12)',
-            color: 'var(--color-success)',
+            background: 'rgba(29,158,117,0.12)', color: 'var(--color-success)',
             border: '1px solid rgba(29,158,117,0.25)',
-            fontWeight: 'var(--font-medium)',
-            textTransform: 'none',
-            letterSpacing: 0,
+            fontWeight: 'var(--font-medium)', textTransform: 'none', letterSpacing: 0,
           }}>
             Auto-detected
           </span>
@@ -553,19 +609,15 @@ function ColMapRow({ label, headers, value, onChange, required }) {
         value={value}
         onChange={e => onChange(e.target.value)}
         style={{
-          padding: '6px 10px',
-          borderRadius: 'var(--radius-md)',
+          padding: '6px 10px', borderRadius: 'var(--radius-md)',
           border: `1px solid ${required && !value ? 'var(--color-danger-mid)' : 'var(--color-border-default)'}`,
           background: 'var(--color-bg-input)',
           color: value ? 'var(--color-text-primary)' : 'var(--color-text-tertiary)',
-          fontSize: 'var(--text-sm)',
-          fontFamily: 'var(--font-sans)',
+          fontSize: 'var(--text-sm)', fontFamily: 'var(--font-sans)',
         }}
       >
         <option value="">— not mapped —</option>
-        {headers.map(h => (
-          <option key={h} value={h}>{h}</option>
-        ))}
+        {headers.map(h => <option key={h} value={h}>{h}</option>)}
       </select>
     </div>
   )
@@ -575,7 +627,11 @@ function ReconKpi({ label, value, color, bar }) {
   return (
     <div className="fm-kpi-card">
       <div className="fm-kpi-label">{label}</div>
-      <div className="fm-kpi-value" style={{ color, fontSize: typeof value === 'string' && value.length > 10 ? 'var(--text-base)' : undefined }}>
+      <div className="fm-kpi-value" style={{
+        color,
+        fontSize: typeof value === 'string' && value.length > 10
+          ? 'var(--text-base)' : undefined,
+      }}>
         {typeof value === 'number' ? value.toLocaleString() : value}
       </div>
       <div className="fm-kpi-bar">
@@ -586,18 +642,19 @@ function ReconKpi({ label, value, color, bar }) {
 }
 
 function DirectionBadge({ direction }) {
-  const meta = DIR_META[direction] ?? { label: direction, color: 'var(--color-text-secondary)', bg: 'transparent', border: 'var(--color-border-default)' }
+  const meta = DIR_META[direction] ?? {
+    label: direction,
+    color: 'var(--color-text-secondary)',
+    bg: 'transparent',
+    border: 'var(--color-border-default)',
+  }
   return (
     <span style={{
-      display: 'inline-block',
-      padding: '3px 10px',
+      display: 'inline-block', padding: '3px 10px',
       borderRadius: 'var(--radius-pill)',
-      fontSize: 'var(--text-xs)',
-      fontWeight: 'var(--font-medium)',
-      whiteSpace: 'nowrap',
-      color: meta.color,
-      background: meta.bg,
-      border: `1px solid ${meta.border}`,
+      fontSize: 'var(--text-xs)', fontWeight: 'var(--font-medium)',
+      whiteSpace: 'nowrap', color: meta.color,
+      background: meta.bg, border: `1px solid ${meta.border}`,
     }}>
       {meta.label}
     </span>
