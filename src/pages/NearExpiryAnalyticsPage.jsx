@@ -78,8 +78,7 @@ export default function NearExpiryAnalyticsPage() {
       ),
       supabase.from('pharmacies').select('id, name, code, pharmacy_type'),
       supabase.from('drug_master_reference').select(
-        'drug_code, doh_code, generic_name, brand_name, strength, ' +
-        'dosage_form, therapeutic_class'
+        'drug_code, doh_code, generic_name, brand_name, strength, dosage_form'
       ),
     ])
 

@@ -17,6 +17,7 @@ import InventoryTransactionsPage from './pages/InventoryTransactionsPage'
 import InventoryOperationsPage from './pages/InventoryOperationsPage'
 import InventoryIntelligencePage from './pages/InventoryIntelligencePage'
 import NearExpiryAnalyticsPage from './pages/NearExpiryAnalyticsPage'
+import FinancialAnalyticsPage from './pages/FinancialAnalyticsPage'
 import SupplyChainPage from './pages/SupplyChainPage'
 
 import './styles/tokens.css'
@@ -51,7 +52,8 @@ const NAV_ZONES = [
   {
     label: 'Analytics',
     items: [
-      { key: 'near-expiry-analytics', label: 'Near Expiry Risk', icon: 'chart' },
+      { key: 'near-expiry-analytics', label: 'Near Expiry Risk',     icon: 'chart' },
+      { key: 'financial-analytics',   label: 'Financial Analytics', icon: 'chart' },
     ],
   },
   {
@@ -260,6 +262,7 @@ export default function App() {
           {currentPage === 'inventory'              && <InventoryExplorerPage />}
           {currentPage === 'inventory-intelligence' && <InventoryIntelligencePage />}
           {currentPage === 'near-expiry-analytics' && <NearExpiryAnalyticsPage />}
+          {currentPage === 'financial-analytics'   && <FinancialAnalyticsPage />}
           {currentPage === 'supply-chain'           && <SupplyChainPage />}
           {currentPage === 'transactions'           && <InventoryTransactionsPage />}
           {currentPage === 'operations'             && <InventoryOperationsPage />}
