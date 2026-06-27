@@ -1,79 +1,113 @@
 :root {
-  --color-primary: #185FA5;
-  --color-primary-light: #E6F1FB;
-  --color-primary-mid: #85B7EB;
-  --color-primary-dark: #0C447C;
+  /* ═══════════════════════════════════════════════════
+     SEMANTIC COLOUR SYSTEM
+     Used consistently in UI, charts, and Power BI
+  ═══════════════════════════════════════════════════ */
 
-  --color-success: #1D9E75;
-  --color-success-light: #EAF3DE;
-  --color-success-mid: #97C459;
-  --color-success-dark: #3B6D11;
+  /* Primary — Clinical Blue */
+  --color-primary:       #2563A8;
+  --color-primary-light: #D6E6F7;
+  --color-primary-mid:   #7EB3E8;
+  --color-primary-dark:  #1A4A82;
 
-  --color-warning: #BA7517;
-  --color-warning-light: #FAEEDA;
-  --color-warning-mid: #EF9F27;
-  --color-warning-dark: #854F0B;
+  /* Success — Operational Green */
+  --color-success:       #1A9068;
+  --color-success-light: #D4EFE6;
+  --color-success-mid:   #4DB896;
+  --color-success-dark:  #136B4E;
 
-  --color-danger: #A32D2D;
-  --color-danger-light: #FCEBEB;
-  --color-danger-mid: #E24B4A;
-  --color-danger-dark: #791F1F;
+  /* Warning — Caution Amber */
+  --color-warning:       #C47D1A;
+  --color-warning-light: #FBF0DC;
+  --color-warning-mid:   #E8A030;
+  --color-warning-dark:  #8E5A10;
 
-  --color-neutral-50: #F1EFE8;
-  --color-neutral-100: #D3D1C7;
-  --color-neutral-200: #B4B2A9;
-  --color-neutral-400: #888780;
-  --color-neutral-600: #5F5E5A;
-  --color-neutral-800: #444441;
-  --color-neutral-900: #2C2C2A;
+  /* Critical / Danger — Alert Red */
+  --color-danger:        #B03030;
+  --color-danger-light:  #FAEAEA;
+  --color-danger-mid:    #D95454;
+  --color-danger-dark:   #832020;
 
-  --color-bg-app: #0F1117;
-  --color-bg-sidebar: #111318;
-  --color-bg-content: #16181E;
-  --color-bg-card: #1C1F27;
-  --color-bg-card-hover: #22263A;
-  --color-bg-input: #1C1F27;
+  /* ═══════════════════════════════════════════════════
+     NEUTRAL SCALE
+  ═══════════════════════════════════════════════════ */
+  --color-neutral-50:  #EEF1F7;
+  --color-neutral-100: #CDD4E2;
+  --color-neutral-200: #A8B4C8;
+  --color-neutral-400: #6B7A92;
+  --color-neutral-600: #445068;
+  --color-neutral-800: #263044;
+  --color-neutral-900: #151E2D;
 
-  --color-border-subtle: rgba(255, 255, 255, 0.06);
+  /* ═══════════════════════════════════════════════════
+     BACKGROUND SYSTEM — Deep Clinical Navy
+     Three levels of depth for clear visual hierarchy
+  ═══════════════════════════════════════════════════ */
+  --color-bg-app:        #0D1520;   /* App shell — deepest */
+  --color-bg-sidebar:    #0A1228;   /* Sidebar — branded navy */
+  --color-bg-content:    #111B2C;   /* Content area */
+  --color-bg-card:       #172135;   /* Cards — lifted */
+  --color-bg-card-hover: #1E2C44;   /* Card hover state */
+  --color-bg-input:      #172135;   /* Form inputs */
+
+  /* ═══════════════════════════════════════════════════
+     BORDER SYSTEM — Subtle, not aggressive
+  ═══════════════════════════════════════════════════ */
+  --color-border-subtle:  rgba(255, 255, 255, 0.06);
   --color-border-default: rgba(255, 255, 255, 0.10);
-  --color-border-strong: rgba(255, 255, 255, 0.18);
+  --color-border-strong:  rgba(255, 255, 255, 0.18);
 
-  --color-text-primary: #F0EFE9;
-  --color-text-secondary: #9A9890;
-  --color-text-tertiary: #5F5E5A;
-  --color-text-accent: #378ADD;
+  /* ═══════════════════════════════════════════════════
+     TEXT SYSTEM — Blue-white hierarchy
+  ═══════════════════════════════════════════════════ */
+  --color-text-primary:   #E2EAF6;   /* Primary content — blue-white */
+  --color-text-secondary: #8A9BB8;   /* Secondary — muted blue-grey */
+  --color-text-tertiary:  #4A5C78;   /* Tertiary — very muted */
+  --color-text-accent:    #5AA3E8;   /* Links and highlights */
 
+  /* ═══════════════════════════════════════════════════
+     TYPOGRAPHY
+  ═══════════════════════════════════════════════════ */
   --font-sans: 'Inter', 'Segoe UI', Arial, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-  --text-xs: 10px;
-  --text-sm: 11px;
+  --text-xs:   10px;
+  --text-sm:   11px;
   --text-base: 13px;
-  --text-md: 15px;
-  --text-lg: 18px;
-  --text-xl: 22px;
-  --text-2xl: 28px;
+  --text-md:   15px;
+  --text-lg:   18px;
+  --text-xl:   22px;
+  --text-2xl:  28px;
 
   --font-regular: 400;
-  --font-medium: 500;
+  --font-medium:  500;
 
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
+  /* ═══════════════════════════════════════════════════
+     SPACING SCALE
+  ═══════════════════════════════════════════════════ */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
   --space-10: 40px;
 
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
+  /* ═══════════════════════════════════════════════════
+     BORDER RADIUS — Professional, not playful
+  ═══════════════════════════════════════════════════ */
+  --radius-sm:   6px;
+  --radius-md:   8px;
+  --radius-lg:   14px;   /* Cards — 14px per approval */
+  --radius-xl:   16px;
   --radius-pill: 999px;
 
-  --sidebar-width: 220px;
-  --topbar-height: 0px;
+  /* ═══════════════════════════════════════════════════
+     LAYOUT
+  ═══════════════════════════════════════════════════ */
+  --sidebar-width:   220px;
+  --topbar-height:   0px;
 
   --transition-fast: 120ms ease;
   --transition-base: 180ms ease;

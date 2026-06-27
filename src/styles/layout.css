@@ -21,40 +21,42 @@ body,
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── App shell ──────────────────────────────────────────────────────────────── */
 .fm-app-shell {
   display: flex;
   height: 100vh;
   overflow: hidden;
 }
 
+/* ── Sidebar ──────────────────────────────────────────────────────────────────
+   Deep clinical navy — branded, not generic dark
+   Left accent border on active items (SAP Fiori / ServiceNow pattern)
+────────────────────────────────────────────────────────────────────────────── */
 .fm-sidebar {
   width: var(--sidebar-width);
   flex-shrink: 0;
   background: var(--color-bg-sidebar);
-  border-right: 1px solid var(--color-border-subtle);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-.fm-sidebar::-webkit-scrollbar {
-  width: 4px;
-}
-.fm-sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
+.fm-sidebar::-webkit-scrollbar { width: 3px; }
+.fm-sidebar::-webkit-scrollbar-track { background: transparent; }
 .fm-sidebar::-webkit-scrollbar-thumb {
-  background: var(--color-border-default);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-pill);
 }
 
+/* ── Brand mark ─────────────────────────────────────────────────────────────── */
 .fm-brand {
   display: flex;
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-5) var(--space-4);
-  border-bottom: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   flex-shrink: 0;
 }
 
@@ -67,6 +69,7 @@ body,
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(37, 99, 168, 0.40);
 }
 
 .fm-brand-mark svg {
@@ -99,6 +102,7 @@ body,
   letter-spacing: 0.02em;
 }
 
+/* ── Navigation ─────────────────────────────────────────────────────────────── */
 .fm-nav {
   flex: 1;
   padding: var(--space-3) 0 var(--space-6);
@@ -111,7 +115,7 @@ body,
 .fm-nav-zone-label {
   font-size: 9px;
   font-weight: var(--font-medium);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.10em;
   text-transform: uppercase;
   color: var(--color-text-tertiary);
   padding: var(--space-4) var(--space-4) var(--space-2);
@@ -126,56 +130,54 @@ body,
   padding: 7px var(--space-4);
   background: transparent;
   border: none;
-  border-right: 2px solid transparent;
+  /* Left accent border — SAP Fiori pattern */
+  border-left: 3px solid transparent;
   color: var(--color-text-secondary);
   font-family: var(--font-sans);
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   font-weight: var(--font-regular);
   text-align: left;
   cursor: pointer;
-  transition: color var(--transition-fast),
-              background var(--transition-fast),
-              border-color var(--transition-fast);
-  border-radius: 0;
+  transition:
+    color var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast);
   line-height: 1;
 }
 
 .fm-nav-item:hover {
-  background: var(--color-bg-card);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--color-text-primary);
+  border-left-color: rgba(255, 255, 255, 0.10);
 }
 
 .fm-nav-item.active {
-  background: var(--color-bg-card);
-  color: var(--color-primary);
-  border-right-color: var(--color-primary);
+  background: rgba(37, 99, 168, 0.14);
+  color: var(--color-text-accent);
+  border-left-color: var(--color-primary);
   font-weight: var(--font-medium);
 }
 
 .fm-nav-icon {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   flex-shrink: 0;
-  opacity: 0.7;
+  opacity: 0.55;
 }
 
-.fm-nav-item.active .fm-nav-icon {
-  opacity: 1;
-}
-
-.fm-nav-item:hover .fm-nav-icon {
-  opacity: 1;
-}
+.fm-nav-item.active .fm-nav-icon  { opacity: 1; }
+.fm-nav-item:hover  .fm-nav-icon  { opacity: 0.85; }
 
 .fm-nav-divider {
   height: 1px;
-  background: var(--color-border-subtle);
+  background: rgba(255, 255, 255, 0.05);
   margin: var(--space-2) var(--space-4);
 }
 
+/* ── Sidebar footer ─────────────────────────────────────────────────────────── */
 .fm-sidebar-footer {
   padding: var(--space-4);
-  border-top: 1px solid var(--color-border-subtle);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   flex-shrink: 0;
 }
 
@@ -195,6 +197,7 @@ body,
   flex-shrink: 0;
 }
 
+/* ── Content area ───────────────────────────────────────────────────────────── */
 .fm-content {
   flex: 1;
   overflow-y: auto;
@@ -204,14 +207,10 @@ body,
   flex-direction: column;
 }
 
-.fm-content::-webkit-scrollbar {
-  width: 6px;
-}
-.fm-content::-webkit-scrollbar-track {
-  background: transparent;
-}
+.fm-content::-webkit-scrollbar { width: 5px; }
+.fm-content::-webkit-scrollbar-track { background: transparent; }
 .fm-content::-webkit-scrollbar-thumb {
-  background: var(--color-border-default);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-pill);
 }
 
