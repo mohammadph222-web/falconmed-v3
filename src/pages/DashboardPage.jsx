@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import * as XLSX from 'xlsx'
 import ImportCenterPanel from '../components/ImportCenterPanel'
@@ -189,94 +189,126 @@ export default function DashboardPage() {
     .sort((a, b) => b.nearExpiry - a.nearExpiry)
     .slice(0, 10)
 
+  const [sortKey, setSortKey] = React.useState('nearExpiryValue')
+
+  const sortedPerformance = [...pharmacyPerformance].sort((a, b) => b[sortKey] - a[sortKey])
+
+  // Executive Actions — derived from existing calculations
+  const immediateActions = pharmacyPerformance
+    .filter(p => p.criticalValue > 0 || p.expiredValue > 0)
+    .sort((a, b) => (b.criticalValue + b.expiredValue) - (a.criticalValue + a.expiredValue))
+    .slice(0, 5)
+
+  const highRiskPharmacies = pharmacyPerformance
+    .filter(p => p.healthScore < 80)
+    .sort((a, b) => a.healthScore - b.healthScore)
+    .slice(0, 5)
+
+  const totalPreventableLoss = stats.nearExpiryValue + stats.criticalValue
+  const totalConfirmedLoss   = stats.expiredValue
+
   return (
     <div style={{ color: 'white' }}>
 
-      {/* ── Page header — matches token system ── */}
+      {/* ═══════════════════════════════════════════════════════
+          PAGE HEADER
+      ═══════════════════════════════════════════════════════ */}
       <div className="fm-page-header">
         <div className="fm-page-header-top">
           <div>
             <div className="fm-page-header-meta">Command</div>
             <h1 className="fm-page-header-title">Executive dashboard</h1>
             <p className="fm-page-header-desc">
-              FalconMed operational overview powered by live inventory,
-              dispensing, expiry, transfer, and reconciliation views.
+              FalconMed operational overview — live inventory, expiry risk,
+              and financial exposure across {stats.pharmacies} pharmacies.
             </p>
-          </div>
-
-          <div style={healthBadgeStyle(health.tone)}>
-            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              Inventory health
-            </div>
-            <strong style={{ fontSize: 'var(--text-2xl)', color: toneColors[health.tone].text }}>
-              {health.score}%
-            </strong>
-            <span style={{ fontSize: 'var(--text-sm)', color: toneColors[health.tone].text }}>
-              {health.label}
-            </span>
           </div>
         </div>
       </div>
 
       {loading ? (
         <div style={gridStyle}>
-          {Array.from({ length: 10 }).map((_, index) => (
-            <div key={index} style={skeletonCardStyle} />
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} style={skeletonCardStyle} />
           ))}
         </div>
       ) : (
         <>
-          {/* ── Level 1: Health Score — primary signal ── */}
-          <div style={{ marginBottom: '8px' }}>
-            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>
-              Overall inventory health
+
+          {/* ═══════════════════════════════════════════════════════
+              SECTION 1 — EXECUTIVE HEALTH
+          ═══════════════════════════════════════════════════════ */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '20px',
+            padding: '22px 28px',
+            background: toneColors[health.tone].shadow,
+            border: `1px solid ${toneColors[health.tone].border}`,
+            borderRadius: 'var(--radius-lg)',
+            marginBottom: '24px',
+          }}>
+            <div style={{ fontSize: '56px', fontWeight: 900, color: toneColors[health.tone].text, lineHeight: 1 }}>
+              {health.score}%
             </div>
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: '16px',
-              padding: '20px 24px',
-              background: toneColors[health.tone].shadow,
-              border: `1px solid ${toneColors[health.tone].border}`,
-              borderRadius: 'var(--radius-lg)',
-              marginBottom: '20px',
-            }}>
-              <div style={{ fontSize: '52px', fontWeight: 900, color: toneColors[health.tone].text, lineHeight: 1 }}>
-                {health.score}%
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-medium)', color: toneColors[health.tone].text, marginBottom: '4px' }}>
+                {health.label} — Network Inventory Health
+              </div>
+              <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}>
+                Calculated from expired, near-expiry, critical, out-of-stock, and low-stock records across all {stats.pharmacies} pharmacies · {formatNumber(stats.inventoryRecords)} total inventory lines
+              </div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', textAlign: 'right' }}>
+              <div>
+                <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Preventable loss</div>
+                <div style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-medium)', color: 'var(--color-warning-mid)' }}>AED {formatMoneyCompact(totalPreventableLoss)}</div>
               </div>
               <div>
-                <div style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-medium)', color: toneColors[health.tone].text }}>
-                  {health.label}
-                </div>
-                <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', marginTop: '2px' }}>
-                  Based on expired, near-expiry, critical, and out-of-stock records across all {stats.pharmacies} pharmacies
-                </div>
+                <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Confirmed loss</div>
+                <div style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-medium)', color: 'var(--color-danger-mid)' }}>AED {formatMoneyCompact(totalConfirmedLoss)}</div>
               </div>
             </div>
           </div>
 
-          {/* ── Level 2: Four financial KPIs ── */}
+          {/* ═══════════════════════════════════════════════════════
+              SECTION 2 — EXECUTIVE KPI CARDS
+          ═══════════════════════════════════════════════════════ */}
           <div style={gridStyle}>
 
-            {/* KPI 1 — Total Inventory Value */}
             <StatCard
               title="Total inventory value"
               value={`AED ${formatMoneyCompact(stats.totalValue)}`}
               subValue={`AED ${formatMoney(stats.totalValue)}`}
-              badge={null}
               tone="green"
-              context={`${formatNumber(stats.inventoryRecords)} inventory lines`}
+              context={`${formatNumber(stats.inventoryRecords)} lines · ${stats.pharmacies} pharmacies`}
             />
 
-            {/* KPI 2 — Expired Stock Value */}
             <StatCard
-              title="Expired stock value"
-              value={`AED ${formatMoneyCompact(stats.expiredValue)}`}
-              subValue={`AED ${formatMoney(stats.expiredValue)}`}
-              badge="Loss confirmed"
+              title="Out of stock"
+              value={formatNumber(stats.outOfStock)}
+              subValue={`${((stats.outOfStock / (stats.inventoryRecords || 1)) * 100).toFixed(1)}% of formulary unavailable`}
+              badge="Action required"
               tone="red"
-              context={`${formatNumber(stats.expired)} expired lines — write-off required`}
+              context="Zero-quantity formulary lines"
             />
 
-            {/* KPI 3 — Critical Expiry Value (0–29 days) */}
+            <StatCard
+              title="Low stock"
+              value={formatNumber(stats.lowStock)}
+              subValue={`${((stats.lowStock / (stats.inventoryRecords || 1)) * 100).toFixed(1)}% below reorder point`}
+              badge="Shortage risk"
+              tone="amber"
+              context="Quantity below minimum stock level"
+            />
+
+            <StatCard
+              title="Near expiry — value at risk"
+              value={`AED ${formatMoneyCompact(stats.nearExpiryValue)}`}
+              subValue={`AED ${formatMoney(stats.nearExpiryValue)}`}
+              badge="Preventable loss"
+              tone="amber"
+              context={`${formatNumber(stats.nearExpiry)} lines expiring in 30–90 days`}
+            />
+
             <StatCard
               title="Critical expiry value"
               value={`AED ${formatMoneyCompact(stats.criticalValue)}`}
@@ -286,50 +318,171 @@ export default function DashboardPage() {
               context={`${formatNumber(stats.critical)} lines expiring within 29 days`}
             />
 
-            {/* KPI 4 — Near Expiry Value at Risk (30–90 days) */}
             <StatCard
-              title="Value at risk — near expiry"
-              value={`AED ${formatMoneyCompact(stats.nearExpiryValue)}`}
-              subValue={`AED ${formatMoney(stats.nearExpiryValue)}`}
-              badge="Preventable loss"
-              tone="amber"
-              context={`${formatNumber(stats.nearExpiry)} lines expiring within 30–90 days`}
+              title="Expired stock value"
+              value={`AED ${formatMoneyCompact(stats.expiredValue)}`}
+              subValue={`AED ${formatMoney(stats.expiredValue)}`}
+              badge="Loss confirmed"
+              tone="red"
+              context={`${formatNumber(stats.expired)} expired lines — write-off required`}
             />
 
           </div>
 
-          {/* ── Level 3: Pharmacy table sorted by near expiry value ── */}
+          {/* ═══════════════════════════════════════════════════════
+              SECTION 3 — PHARMACY RISK RANKING
+          ═══════════════════════════════════════════════════════ */}
           <SectionTitle
-            title="Pharmacy risk ranking — near expiry"
-            subtitle="Pharmacies ranked by value at risk. Highest near-expiry value requires first intervention."
+            title="Pharmacy risk ranking"
+            subtitle="Financial exposure by pharmacy — highest value at risk requires first intervention."
           />
 
           <div style={threeColumnGridStyle}>
             <MiniRankingCard
               title="Near expiry value at risk"
-              rows={[...pharmacyPerformance].sort((a, b) => b.nearExpiryValue - a.nearExpiryValue).slice(0, 10)}
+              rows={[...pharmacyPerformance].sort((a, b) => b.nearExpiryValue - a.nearExpiryValue).slice(0, 8)}
               valueKey="nearExpiryValue"
               valueFormatter={(v) => `AED ${formatMoneyCompact(v)}`}
               tone="amber"
             />
             <MiniRankingCard
-              title="Critical expiry value (0–29 days)"
-              rows={[...pharmacyPerformance].sort((a, b) => b.criticalValue - a.criticalValue).slice(0, 10)}
+              title="Critical expiry (0–29 days)"
+              rows={[...pharmacyPerformance].sort((a, b) => b.criticalValue - a.criticalValue).slice(0, 8)}
               valueKey="criticalValue"
               valueFormatter={(v) => `AED ${formatMoneyCompact(v)}`}
               tone="red"
             />
             <MiniRankingCard
               title="Expired stock value"
-              rows={[...pharmacyPerformance].sort((a, b) => b.expiredValue - a.expiredValue).slice(0, 10)}
+              rows={[...pharmacyPerformance].sort((a, b) => b.expiredValue - a.expiredValue).slice(0, 8)}
               valueKey="expiredValue"
               valueFormatter={(v) => `AED ${formatMoneyCompact(v)}`}
               tone="red"
             />
           </div>
 
-          <PharmacyPerformanceTable rows={pharmacyPerformance} />
+          {/* ═══════════════════════════════════════════════════════
+              SECTION 4 — EXECUTIVE ACTIONS
+          ═══════════════════════════════════════════════════════ */}
+          <SectionTitle
+            title="Executive actions"
+            subtitle="Pharmacies requiring immediate management attention based on current data."
+          />
 
+          <div style={threeColumnGridStyle}>
+
+            {/* Immediate Actions */}
+            <div style={panelStyle}>
+              <div style={{ fontSize: 'var(--text-base)', fontWeight: 'var(--font-medium)', color: 'var(--color-danger-mid)', marginBottom: '14px' }}>
+                ⚠ Immediate action required
+              </div>
+              {immediateActions.length === 0 ? (
+                <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-tertiary)' }}>No immediate actions — all pharmacies within tolerance.</div>
+              ) : immediateActions.map(p => (
+                <div key={p.pharmacyId} style={{ borderBottom: '1px solid var(--color-border-subtle)', paddingBottom: '10px', marginBottom: '10px' }}>
+                  <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)', color: 'var(--color-text-primary)' }}>{p.pharmacyName}</div>
+                  <div style={{ display: 'flex', gap: '16px', marginTop: '4px' }}>
+                    {p.expiredValue > 0 && (
+                      <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-danger-mid)' }}>
+                        Expired: AED {formatMoneyCompact(p.expiredValue)}
+                      </span>
+                    )}
+                    {p.criticalValue > 0 && (
+                      <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-warning-mid)' }}>
+                        Critical: AED {formatMoneyCompact(p.criticalValue)}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* High Risk Pharmacies */}
+            <div style={panelStyle}>
+              <div style={{ fontSize: 'var(--text-base)', fontWeight: 'var(--font-medium)', color: 'var(--color-warning-mid)', marginBottom: '14px' }}>
+                ◉ High risk pharmacies
+              </div>
+              {highRiskPharmacies.length === 0 ? (
+                <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-tertiary)' }}>All pharmacies above risk threshold.</div>
+              ) : highRiskPharmacies.map(p => (
+                <div key={p.pharmacyId} style={{ borderBottom: '1px solid var(--color-border-subtle)', paddingBottom: '10px', marginBottom: '10px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)' }}>{p.pharmacyName}</div>
+                    <span style={{
+                      fontSize: 'var(--text-xs)', padding: '2px 8px', borderRadius: 'var(--radius-pill)',
+                      color: toneColors[p.healthTone].text, background: toneColors[p.healthTone].shadow, border: `1px solid ${toneColors[p.healthTone].border}`
+                    }}>
+                      {p.healthScore}% {p.healthLabel}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Financial Summary */}
+            <div style={panelStyle}>
+              <div style={{ fontSize: 'var(--text-base)', fontWeight: 'var(--font-medium)', color: 'var(--color-text-primary)', marginBottom: '14px' }}>
+                ◈ Financial exposure summary
+              </div>
+              <div style={{ display: 'grid', gap: '12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '10px', borderBottom: '1px solid var(--color-border-subtle)' }}>
+                  <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}>Total value</span>
+                  <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)', color: 'var(--color-success)' }}>AED {formatMoneyCompact(stats.totalValue)}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '10px', borderBottom: '1px solid var(--color-border-subtle)' }}>
+                  <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}>Preventable loss (90d)</span>
+                  <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)', color: 'var(--color-warning-mid)' }}>AED {formatMoneyCompact(totalPreventableLoss)}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '10px', borderBottom: '1px solid var(--color-border-subtle)' }}>
+                  <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}>Confirmed loss (expired)</span>
+                  <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)', color: 'var(--color-danger-mid)' }}>AED {formatMoneyCompact(totalConfirmedLoss)}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}>Risk as % of total</span>
+                  <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)', color: 'var(--color-text-primary)' }}>
+                    {stats.totalValue > 0 ? ((totalPreventableLoss + totalConfirmedLoss) / stats.totalValue * 100).toFixed(2) : '0.00'}%
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* ═══════════════════════════════════════════════════════
+              SECTION 5 — PHARMACY PERFORMANCE TABLE
+          ═══════════════════════════════════════════════════════ */}
+          <SectionTitle
+            title="Pharmacy performance table"
+            subtitle="Full network view — sort by any column to identify priorities."
+          />
+
+          {/* Sort controls */}
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', flexWrap: 'wrap' }}>
+            {[
+              { key: 'nearExpiryValue', label: 'Near Expiry Value' },
+              { key: 'healthScore',     label: 'Health Score' },
+              { key: 'inventoryValue',  label: 'Inventory Value' },
+              { key: 'outOfStock',      label: 'Out of Stock' },
+            ].map(opt => (
+              <button
+                key={opt.key}
+                onClick={() => setSortKey(opt.key)}
+                className="fm-btn"
+                style={sortKey === opt.key ? {
+                  background: 'var(--color-primary)', borderColor: 'var(--color-primary)',
+                  color: '#fff', fontWeight: 'var(--font-medium)',
+                } : {}}
+              >
+                Sort: {opt.label}
+              </button>
+            ))}
+          </div>
+
+          <PharmacyPerformanceTable rows={sortedPerformance} />
+
+          {/* ═══════════════════════════════════════════════════════
+              DATA REPORTING PANEL
+          ═══════════════════════════════════════════════════════ */}
           <DataReportingPanel
             pharmacyPerformance={pharmacyPerformance}
             inventorySnapshot={inventorySnapshot}
