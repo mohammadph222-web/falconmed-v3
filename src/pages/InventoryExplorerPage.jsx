@@ -155,51 +155,84 @@ export default function InventoryExplorerPage() {
     )
   })
 
-  function handleExportCsv() {
-    const headers = [
-      'Drug Code', 'Generic Name', 'Brand Name', 'Strength',
-      'Dosage Form', 'Batch Number', 'Expiry Date', 'Quantity',
-      'Minimum Stock', 'Maximum Stock', 'Storage Location',
-      'Stock Status', 'Inventory Value AED',
-    ]
+  // ── Export builder — shared by CSV and Excel ──────────────────────────────
+  // Fix 3: uses `inventory` (all records), not `filteredInventory`
+  // Fix 4: includes OUT_OF_STOCK and EXPIRED records
+  function buildExportRows(source) {
+    return source.map((item) => {
+      const qty      = Number(item.quantity_on_hand || 0)
+      // Fix 5: use item.unit_cost from inventory table
+      const unitCost = Number(item.unit_cost || 0)
+      const value    = qty * unitCost
 
-    const rows = filteredInventory.map((item) => {
-      const qty = Number(item.quantity_on_hand || 0)
-      const unitCost = Number(item.drug?.unit_price_to_pharmacy || 0)
-      return [
-        item.drug_code || '',
-        item.drug?.generic_name || '',
-        item.drug?.brand_name || '',
-        item.drug?.strength || '',
-        item.drug?.dosage_form || '',
-        item.batch_number || '',
-        item.expiry_date || '',
-        qty,
-        item.minimum_stock || 0,
-        item.maximum_stock || 0,
-        item.storage_location || '',
-        getStockStatus(item).label,
-        (qty * unitCost).toFixed(2),
-      ]
+      return {
+        'Drug Code':           item.drug_code || '',
+        'Generic Name':        (item.drug?.generic_name  || '').trim(),
+        'Brand Name':          (item.drug?.brand_name    || '').trim(),
+        'Strength':            (item.drug?.strength      || '').trim(),
+        // Fix 1: trim whitespace from dosage_form
+        'Dosage Form':         (item.drug?.dosage_form   || '').trim(),
+        'Batch Number':        item.batch_number     || '',
+        'Expiry Date':         item.expiry_date      || '',
+        // Fix 2: round to 2 decimal places
+        'Quantity':            Math.round(qty * 100) / 100,
+        'Minimum Stock':       Number(item.minimum_stock || 0),
+        'Maximum Stock':       Number(item.maximum_stock || 0),
+        'Storage Location':    item.storage_location || '',
+        'Inventory Status':    item.inventory_status || '',
+        'Stock Status':        getStockStatus(item).label,
+        // Fix 6: zero-value records show 0.00 not blank
+        'Inventory Value AED': value > 0 ? value.toFixed(2) : '0.00',
+        'Unit Cost AED':       unitCost > 0 ? unitCost.toFixed(4) : '0.0000',
+      }
     })
+  }
 
-    const csv = [headers, ...rows]
-      .map((row) =>
-        row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(',')
-      )
-      .join('\n')
+  function handleExportCsv() {
+    // Fix 3: export ALL records — not limited to filteredInventory
+    const exportRows = buildExportRows(inventory)
+    if (!exportRows.length) { alert('No inventory data to export.'); return }
 
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-    const url = URL.createObjectURL(blob)
+    const headers = Object.keys(exportRows[0])
+    const csv = [
+      headers.join(','),
+      ...exportRows.map((row) =>
+        headers
+          .map((h) => `"${String(row[h] ?? '').replace(/"/g, '""')}"`)
+          .join(',')
+      ),
+    ].join('\n')
+
+    // BOM ensures Excel opens UTF-8 correctly
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
+    const url  = URL.createObjectURL(blob)
     const link = document.createElement('a')
-    link.href = url
+    link.href     = url
     link.download = `falconmed_inventory_${new Date().toISOString().slice(0, 10)}.csv`
     link.click()
     URL.revokeObjectURL(url)
   }
 
   function handleExportExcel() {
-    handleExportCsv()
+    // Fix: real XLSX — no longer calls handleExportCsv
+    import('xlsx').then((XLSX) => {
+      const exportRows = buildExportRows(inventory)
+      if (!exportRows.length) { alert('No inventory data to export.'); return }
+
+      const worksheet = XLSX.utils.json_to_sheet(exportRows)
+      worksheet['!cols'] = [
+        { wch: 22 }, { wch: 32 }, { wch: 28 }, { wch: 14 },
+        { wch: 16 }, { wch: 26 }, { wch: 14 }, { wch: 12 },
+        { wch: 14 }, { wch: 14 }, { wch: 22 }, { wch: 16 },
+        { wch: 14 }, { wch: 20 }, { wch: 16 },
+      ]
+      const workbook = XLSX.utils.book_new()
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Inventory')
+      XLSX.writeFile(
+        workbook,
+        `falconmed_inventory_${new Date().toISOString().slice(0, 10)}.xlsx`
+      )
+    })
   }
 
   const healthColors = {

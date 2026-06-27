@@ -12,14 +12,18 @@ export default function DashboardPage() {
     outOfStock: 0,
     lowStock: 0,
     nearExpiry: 0,
+    nearExpiryValue: 0,
+    critical: 0,
+    criticalValue: 0,
     expired: 0,
+    expiredValue: 0,
     dispenseEvents: 0,
     transferEvents: 0,
     adjustmentEvents: 0,
   })
 
   const [pharmacyPerformance, setPharmacyPerformance] = useState([])
-    const [inventorySnapshot, setInventorySnapshot] = useState([])
+  const [inventorySnapshot, setInventorySnapshot]     = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -81,8 +85,8 @@ export default function DashboardPage() {
     const { data: inventoryRows, error: inventoryError } = await supabase
       .from('inventory')
       .select(
-  'id, pharmacy_id, drug_code, quantity_on_hand, minimum_stock, maximum_stock, batch_number, expiry_date, unit_cost, storage_location, inventory_status'
-)
+        'id, pharmacy_id, drug_code, quantity_on_hand, minimum_stock, maximum_stock, batch_number, expiry_date, unit_cost, storage_location, inventory_status'
+      )
 
     if (inventoryError) {
       console.error('Inventory performance error:', inventoryError)
@@ -102,15 +106,40 @@ export default function DashboardPage() {
       isLowStock(item)
     ).length
 
+    // ── Financial expiry calculations from inventory rows ──────────────────
+    const today = new Date(); today.setHours(0, 0, 0, 0)
+    const criticalLimit  = new Date(today); criticalLimit.setDate(today.getDate() + 29)
+    const nearExpiryLimit = new Date(today); nearExpiryLimit.setDate(today.getDate() + 90)
+
+    let expiredCount      = 0, expiredValue      = 0
+    let criticalCount     = 0, criticalValue     = 0
+    let nearExpiryCount   = 0, nearExpiryValue   = 0
+
+    for (const item of (inventoryRows || [])) {
+      if (!item.expiry_date) continue
+      const exp = new Date(item.expiry_date); exp.setHours(0, 0, 0, 0)
+      const lineValue = Number(item.quantity_on_hand || 0) * Number(item.unit_cost || 0)
+
+      if (exp < today) {
+        expiredCount++; expiredValue += lineValue
+      } else if (exp <= criticalLimit) {
+        criticalCount++; criticalValue += lineValue
+      } else if (exp <= nearExpiryLimit) {
+        nearExpiryCount++; nearExpiryValue += lineValue
+      }
+    }
+
     const performanceRows = buildPharmacyPerformance({
-      pharmaciesRows: pharmaciesRows || [],
-      inventoryRows: inventoryRows || [],
+      pharmaciesRows:     pharmaciesRows     || [],
+      inventoryRows:      inventoryRows      || [],
       inventoryValueRows: inventoryValueRows || [],
     })
-         const snapshotRows = buildInventorySnapshot({
-  pharmaciesRows: pharmaciesRows || [],
-  inventoryRows: inventoryRows || [],
-})
+
+    const snapshotRows = buildInventorySnapshot({
+      pharmaciesRows: pharmaciesRows || [],
+      inventoryRows:  inventoryRows  || [],
+    })
+
     setStats({
       pharmacies,
       inventoryRecords,
@@ -118,15 +147,19 @@ export default function DashboardPage() {
       totalValue,
       outOfStock,
       lowStock: lowStockTotal,
-      nearExpiry,
-      expired,
+      nearExpiry:     nearExpiryCount,
+      nearExpiryValue,
+      critical:       criticalCount,
+      criticalValue,
+      expired:        expiredCount,
+      expiredValue,
       dispenseEvents,
       transferEvents,
       adjustmentEvents,
     })
 
     setPharmacyPerformance(performanceRows)
-         setInventorySnapshot(snapshotRows)
+    setInventorySnapshot(snapshotRows)
     setLoading(false)
   }
 
@@ -136,9 +169,9 @@ export default function DashboardPage() {
     const total = stats.inventoryRecords || 1
     const score = Math.max(0, Math.round(100 - (riskItems / total) * 100))
 
-    if (score >= 80) return { score, label: 'Healthy', tone: 'green' }
-    if (score >= 60) return { score, label: 'Watch', tone: 'amber' }
-    return { score, label: 'Critical', tone: 'red' }
+    if (score >= 80) return { score, label: 'Healthy',  tone: 'green' }
+    if (score >= 60) return { score, label: 'Watch',    tone: 'amber' }
+    return              { score, label: 'Critical', tone: 'red'   }
   }, [stats])
 
   const topValuePharmacies = pharmacyPerformance
@@ -157,22 +190,31 @@ export default function DashboardPage() {
     .slice(0, 10)
 
   return (
-    <div style={{ padding: '24px', color: 'white' }}>
-      <div style={headerStyle}>
-        <div>
-          <h1 style={{ margin: 0, fontSize: '36px' }}>Executive Dashboard</h1>
-          <p style={{ color: '#94a3b8', marginTop: '8px', fontSize: '16px' }}>
-            FalconMed operational overview powered by live inventory,
-            dispensing, expiry, transfer, and reconciliation views.
-          </p>
-        </div>
+    <div style={{ color: 'white' }}>
 
-        <div style={healthBadgeStyle(health.tone)}>
-          <div style={{ fontSize: '13px', color: '#cbd5e1' }}>
-            Inventory Health
+      {/* ── Page header — matches token system ── */}
+      <div className="fm-page-header">
+        <div className="fm-page-header-top">
+          <div>
+            <div className="fm-page-header-meta">Command</div>
+            <h1 className="fm-page-header-title">Executive dashboard</h1>
+            <p className="fm-page-header-desc">
+              FalconMed operational overview powered by live inventory,
+              dispensing, expiry, transfer, and reconciliation views.
+            </p>
           </div>
-          <strong>{health.score}%</strong>
-          <span>{health.label}</span>
+
+          <div style={healthBadgeStyle(health.tone)}>
+            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              Inventory health
+            </div>
+            <strong style={{ fontSize: 'var(--text-2xl)', color: toneColors[health.tone].text }}>
+              {health.score}%
+            </strong>
+            <span style={{ fontSize: 'var(--text-sm)', color: toneColors[health.tone].text }}>
+              {health.label}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -184,65 +226,123 @@ export default function DashboardPage() {
         </div>
       ) : (
         <>
-          <div style={gridStyle}>
-            <StatCard title="Total Pharmacies" value={stats.pharmacies} tone="blue" />
-            <StatCard title="Inventory Records" value={formatNumber(stats.inventoryRecords)} tone="blue" />
-            <StatCard title="Total Quantity" value={formatCompact(stats.totalQuantity)} subValue={formatNumber(stats.totalQuantity)} tone="blue" />
-            <StatCard title="Inventory Value" value={`AED ${formatMoneyCompact(stats.totalValue)}`} subValue={`AED ${formatMoney(stats.totalValue)}`} tone="green" />
-
-            <StatCard title="Out of Stock" value={stats.outOfStock} tone="red" badge="Action Required" />
-            <StatCard title="Low Stock" value={stats.lowStock} tone="amber" badge="Shortage Risk" />
-            <StatCard title="Near Expiry" value={stats.nearExpiry} tone="amber" badge="Warning" />
-            <StatCard title="Expired Items" value={stats.expired} tone="red" badge="Critical" />
-
-            <StatCard title="Dispense Events" value={stats.dispenseEvents} tone="purple" />
-            <StatCard title="Transfer Activity" value={stats.transferEvents} tone="cyan" />
-            <StatCard title="Adjustment Activity" value={stats.adjustmentEvents} tone="orange" />
+          {/* ── Level 1: Health Score — primary signal ── */}
+          <div style={{ marginBottom: '8px' }}>
+            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>
+              Overall inventory health
+            </div>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '16px',
+              padding: '20px 24px',
+              background: toneColors[health.tone].shadow,
+              border: `1px solid ${toneColors[health.tone].border}`,
+              borderRadius: 'var(--radius-lg)',
+              marginBottom: '20px',
+            }}>
+              <div style={{ fontSize: '52px', fontWeight: 900, color: toneColors[health.tone].text, lineHeight: 1 }}>
+                {health.score}%
+              </div>
+              <div>
+                <div style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-medium)', color: toneColors[health.tone].text }}>
+                  {health.label}
+                </div>
+                <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', marginTop: '2px' }}>
+                  Based on expired, near-expiry, critical, and out-of-stock records across all {stats.pharmacies} pharmacies
+                </div>
+              </div>
+            </div>
           </div>
 
+          {/* ── Level 2: Four financial KPIs ── */}
+          <div style={gridStyle}>
+
+            {/* KPI 1 — Total Inventory Value */}
+            <StatCard
+              title="Total inventory value"
+              value={`AED ${formatMoneyCompact(stats.totalValue)}`}
+              subValue={`AED ${formatMoney(stats.totalValue)}`}
+              badge={null}
+              tone="green"
+              context={`${formatNumber(stats.inventoryRecords)} inventory lines`}
+            />
+
+            {/* KPI 2 — Expired Stock Value */}
+            <StatCard
+              title="Expired stock value"
+              value={`AED ${formatMoneyCompact(stats.expiredValue)}`}
+              subValue={`AED ${formatMoney(stats.expiredValue)}`}
+              badge="Loss confirmed"
+              tone="red"
+              context={`${formatNumber(stats.expired)} expired lines — write-off required`}
+            />
+
+            {/* KPI 3 — Critical Expiry Value (0–29 days) */}
+            <StatCard
+              title="Critical expiry value"
+              value={`AED ${formatMoneyCompact(stats.criticalValue)}`}
+              subValue={`AED ${formatMoney(stats.criticalValue)}`}
+              badge="Act this week"
+              tone="red"
+              context={`${formatNumber(stats.critical)} lines expiring within 29 days`}
+            />
+
+            {/* KPI 4 — Near Expiry Value at Risk (30–90 days) */}
+            <StatCard
+              title="Value at risk — near expiry"
+              value={`AED ${formatMoneyCompact(stats.nearExpiryValue)}`}
+              subValue={`AED ${formatMoney(stats.nearExpiryValue)}`}
+              badge="Preventable loss"
+              tone="amber"
+              context={`${formatNumber(stats.nearExpiry)} lines expiring within 30–90 days`}
+            />
+
+          </div>
+
+          {/* ── Level 3: Pharmacy table sorted by near expiry value ── */}
           <SectionTitle
-            title="Phase 8.1 — Pharmacy Performance Dashboard"
-            subtitle="Live pharmacy-level operational intelligence from Supabase inventory and value views."
+            title="Pharmacy risk ranking — near expiry"
+            subtitle="Pharmacies ranked by value at risk. Highest near-expiry value requires first intervention."
           />
 
           <div style={threeColumnGridStyle}>
             <MiniRankingCard
-              title="Inventory Value by Pharmacy"
-              rows={topValuePharmacies}
-              valueKey="inventoryValue"
-              valueFormatter={(value) => `AED ${formatMoneyCompact(value)}`}
-              tone="green"
-            />
-
-            <MiniRankingCard
-              title="Low Stock by Pharmacy"
-              rows={topLowStockPharmacies}
-              valueKey="lowStock"
-              valueFormatter={formatNumber}
+              title="Near expiry value at risk"
+              rows={[...pharmacyPerformance].sort((a, b) => b.nearExpiryValue - a.nearExpiryValue).slice(0, 10)}
+              valueKey="nearExpiryValue"
+              valueFormatter={(v) => `AED ${formatMoneyCompact(v)}`}
               tone="amber"
             />
-
             <MiniRankingCard
-              title="Near Expiry by Pharmacy"
-              rows={topNearExpiryPharmacies}
-              valueKey="nearExpiry"
-              valueFormatter={formatNumber}
-              tone="orange"
+              title="Critical expiry value (0–29 days)"
+              rows={[...pharmacyPerformance].sort((a, b) => b.criticalValue - a.criticalValue).slice(0, 10)}
+              valueKey="criticalValue"
+              valueFormatter={(v) => `AED ${formatMoneyCompact(v)}`}
+              tone="red"
+            />
+            <MiniRankingCard
+              title="Expired stock value"
+              rows={[...pharmacyPerformance].sort((a, b) => b.expiredValue - a.expiredValue).slice(0, 10)}
+              valueKey="expiredValue"
+              valueFormatter={(v) => `AED ${formatMoneyCompact(v)}`}
+              tone="red"
             />
           </div>
 
           <PharmacyPerformanceTable rows={pharmacyPerformance} />
-  <DataReportingPanel
-  pharmacyPerformance={pharmacyPerformance}
-  inventorySnapshot={inventorySnapshot}
-/>
-<ImportCenterPanel />
+
+          <DataReportingPanel
+            pharmacyPerformance={pharmacyPerformance}
+            inventorySnapshot={inventorySnapshot}
+          />
+
+          <ImportCenterPanel />
         </>
       )}
     </div>
   )
 }
 
+// ─── buildPharmacyPerformance ─────────────────────────────────────────────────
 function buildPharmacyPerformance({
   pharmaciesRows,
   inventoryRows,
@@ -258,8 +358,8 @@ function buildPharmacyPerformance({
 
   for (const row of inventoryValueRows) {
     valueByName.set(row.pharmacy_name, {
-      inventoryLines: Number(row.inventory_items || 0),
-      totalQuantity: Number(row.total_quantity || 0),
+      inventoryLines: Number(row.inventory_items    || 0),
+      totalQuantity:  Number(row.total_quantity      || 0),
       inventoryValue: Number(row.inventory_value_aed || 0),
     })
   }
@@ -270,31 +370,50 @@ function buildPharmacyPerformance({
     const valueInfo = valueByName.get(pharmacy.name) || {}
 
     performanceMap.set(pharmacy.id, {
-      pharmacyId: pharmacy.id,
-      pharmacyName: pharmacy.name,
-      pharmacyCode: pharmacy.code,
-      pharmacyType: pharmacy.pharmacy_type,
-      inventoryValue: Number(valueInfo.inventoryValue || 0),
-      inventoryLines: Number(valueInfo.inventoryLines || 0),
-      totalQuantity: Number(valueInfo.totalQuantity || 0),
-      outOfStock: 0,
-      lowStock: 0,
-      nearExpiry: 0,
-      expired: 0,
-      healthScore: 100,
-      healthLabel: 'Healthy',
-      healthTone: 'green',
+      pharmacyId:      pharmacy.id,
+      pharmacyName:    pharmacy.name,
+      pharmacyCode:    pharmacy.code,
+      pharmacyType:    pharmacy.pharmacy_type,
+      inventoryValue:  Number(valueInfo.inventoryValue || 0),
+      inventoryLines:  Number(valueInfo.inventoryLines || 0),
+      totalQuantity:   Number(valueInfo.totalQuantity  || 0),
+      outOfStock:      0,
+      lowStock:        0,
+      nearExpiry:      0,
+      nearExpiryValue: 0,
+      critical:        0,
+      criticalValue:   0,
+      expired:         0,
+      expiredValue:    0,
+      healthScore:     100,
+      healthLabel:     'Healthy',
+      healthTone:      'green',
     })
   }
+
+  const today2 = new Date(); today2.setHours(0, 0, 0, 0)
+  const critLimit  = new Date(today2); critLimit.setDate(today2.getDate() + 29)
+  const neLimit    = new Date(today2); neLimit.setDate(today2.getDate() + 90)
 
   for (const item of inventoryRows) {
     const row = performanceMap.get(item.pharmacy_id)
     if (!row) continue
 
+    const lineValue = Number(item.quantity_on_hand || 0) * Number(item.unit_cost || 0)
+
     if (isOutOfStock(item)) row.outOfStock += 1
-    if (isLowStock(item)) row.lowStock += 1
-    if (isExpired(item, today)) row.expired += 1
-    if (isNearExpiry(item, today, nearExpiryLimit)) row.nearExpiry += 1
+    if (isLowStock(item))   row.lowStock   += 1
+
+    if (item.expiry_date) {
+      const exp = new Date(item.expiry_date); exp.setHours(0, 0, 0, 0)
+      if (exp < today2) {
+        row.expired++;      row.expiredValue      += lineValue
+      } else if (exp <= critLimit) {
+        row.critical++;     row.criticalValue     += lineValue
+      } else if (exp <= neLimit) {
+        row.nearExpiry++;   row.nearExpiryValue   += lineValue
+      }
+    }
   }
 
   const rows = Array.from(performanceMap.values()).map((row) => {
@@ -308,57 +427,103 @@ function buildPharmacyPerformance({
     )
 
     let healthLabel = 'Healthy'
-    let healthTone = 'green'
+    let healthTone  = 'green'
 
-    if (healthScore < 60) {
-      healthLabel = 'Critical'
-      healthTone = 'red'
-    } else if (healthScore < 80) {
-      healthLabel = 'Watch'
-      healthTone = 'amber'
-    }
+    if (healthScore < 60) { healthLabel = 'Critical'; healthTone = 'red'   }
+    else if (healthScore < 80) { healthLabel = 'Watch'; healthTone = 'amber' }
 
-    return {
-      ...row,
-      healthScore,
-      healthLabel,
-      healthTone,
-    }
+    return { ...row, healthScore, healthLabel, healthTone }
   })
 
-  return rows.sort((a, b) => b.inventoryValue - a.inventoryValue)
+  return rows.sort((a, b) => b.nearExpiryValue - a.nearExpiryValue)
 }
 
+// ─── Stock status helpers ─────────────────────────────────────────────────────
 function isOutOfStock(item) {
   return Number(item.quantity_on_hand || 0) <= 0
 }
 
 function isLowStock(item) {
   const quantity = Number(item.quantity_on_hand || 0)
-  const minimum = Number(item.minimum_stock || 0)
-
+  const minimum  = Number(item.minimum_stock    || 0)
   return quantity > 0 && minimum > 0 && quantity <= minimum
 }
 
 function isExpired(item, today) {
   if (!item.expiry_date) return false
-
   const expiryDate = new Date(item.expiry_date)
   expiryDate.setHours(0, 0, 0, 0)
-
   return expiryDate < today
 }
 
 function isNearExpiry(item, today, nearExpiryLimit) {
   if (!item.expiry_date) return false
-
   const expiryDate = new Date(item.expiry_date)
   expiryDate.setHours(0, 0, 0, 0)
-
   return expiryDate >= today && expiryDate <= nearExpiryLimit
 }
 
-function StatCard({ title, value, subValue, tone, badge }) {
+// ─── buildInventorySnapshot ───────────────────────────────────────────────────
+function buildInventorySnapshot({ pharmaciesRows, inventoryRows }) {
+  const pharmacyMap = new Map(
+    pharmaciesRows.map((pharmacy) => [pharmacy.id, pharmacy])
+  )
+
+  return inventoryRows.map((item) => {
+    const pharmacy = pharmacyMap.get(item.pharmacy_id)
+
+    return {
+      pharmacy_name:       pharmacy?.name || '',
+      pharmacy_code:       pharmacy?.code || '',
+      drug_code:           item.drug_code           || '',
+      batch_number:        item.batch_number         || '',
+      expiry_date:         item.expiry_date          || '',
+      quantity_on_hand:    Number(item.quantity_on_hand || 0),
+      minimum_stock:       Number(item.minimum_stock    || 0),
+      maximum_stock:       Number(item.maximum_stock    || 0),
+      unit_cost:           Number(item.unit_cost        || 0),
+      inventory_value_aed:
+        Number(item.quantity_on_hand || 0) * Number(item.unit_cost || 0),
+      storage_location: item.storage_location || '',
+      inventory_status: item.inventory_status || '',
+    }
+  })
+}
+
+// ─── createImportJob ──────────────────────────────────────────────────────────
+async function createImportJob({
+  importType,
+  fileName,
+  totalRows,
+  validRows,
+  invalidRows,
+}) {
+  const { error } = await supabase
+    .from('import_jobs')
+    .insert([
+      {
+        import_type:  importType,
+        file_name:    fileName,
+        total_rows:   totalRows,
+        valid_rows:   validRows,
+        invalid_rows: invalidRows,
+        status:       'COMPLETED',
+        started_at:   new Date().toISOString(),
+        completed_at: new Date().toISOString(),
+        notes:        'Created from FalconMed Import Center',
+      },
+    ])
+
+  if (error) {
+    console.error('Import job error:', error)
+    return false
+  }
+
+  return true
+}
+
+// ─── StatCard ─────────────────────────────────────────────────────────────────
+function StatCard({ title, value, subValue, tone, badge, context }) {
   const color = toneColors[tone] || toneColors.blue
 
   return (
@@ -370,7 +535,9 @@ function StatCard({ title, value, subValue, tone, badge }) {
       }}
     >
       <div style={cardTopStyle}>
-        <div style={{ color: '#cbd5e1', fontSize: '15px' }}>{title}</div>
+        <div style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--text-sm)' }}>
+          {title}
+        </div>
         {badge && <span style={badgeStyle(color)}>{badge}</span>}
       </div>
 
@@ -379,30 +546,48 @@ function StatCard({ title, value, subValue, tone, badge }) {
       </div>
 
       {subValue && (
-        <div style={{ color: '#94a3b8', fontSize: '13px', marginTop: '10px' }}>
-          Full value: {subValue}
+        <div style={{ color: 'var(--color-text-tertiary)', fontSize: 'var(--text-xs)', marginTop: '6px' }}>
+          {subValue}
         </div>
       )}
+
+      {context && (
+        <div style={{ color: 'var(--color-text-tertiary)', fontSize: 'var(--text-xs)', marginTop: '4px', borderTop: '1px solid var(--color-border-subtle)', paddingTop: '8px' }}>
+          {context}
+        </div>
+      )}
+
+      <div style={{ height: '3px', background: 'var(--color-bg-content)', borderRadius: '999px', marginTop: '12px', overflow: 'hidden' }}>
+        <div style={{ width: '60%', height: '100%', background: color.text, borderRadius: '999px' }} />
+      </div>
     </div>
   )
 }
 
+// ─── SectionTitle ─────────────────────────────────────────────────────────────
 function SectionTitle({ title, subtitle }) {
   return (
     <div style={{ marginTop: '36px', marginBottom: '18px' }}>
-      <h2 style={{ margin: 0, fontSize: '26px' }}>{title}</h2>
-      <p style={{ color: '#94a3b8', marginTop: '8px' }}>{subtitle}</p>
+      <h2 style={{ margin: 0, fontSize: 'var(--text-lg)', fontWeight: 'var(--font-medium)', color: 'var(--color-text-primary)' }}>
+        {title}
+      </h2>
+      <p style={{ color: 'var(--color-text-secondary)', marginTop: '6px', fontSize: 'var(--text-sm)' }}>
+        {subtitle}
+      </p>
     </div>
   )
 }
 
+// ─── MiniRankingCard ──────────────────────────────────────────────────────────
 function MiniRankingCard({ title, rows, valueKey, valueFormatter, tone }) {
-  const color = toneColors[tone] || toneColors.blue
+  const color    = toneColors[tone] || toneColors.blue
   const maxValue = Math.max(...rows.map((row) => Number(row[valueKey] || 0)), 1)
 
   return (
     <div style={panelStyle}>
-      <h3 style={{ marginTop: 0, marginBottom: '16px' }}>{title}</h3>
+      <h3 style={{ marginTop: 0, marginBottom: '16px', fontSize: 'var(--text-base)', color: 'var(--color-text-primary)' }}>
+        {title}
+      </h3>
 
       <div style={{ display: 'grid', gap: '14px' }}>
         {rows.map((row) => {
@@ -412,8 +597,10 @@ function MiniRankingCard({ title, rows, valueKey, valueFormatter, tone }) {
           return (
             <div key={`${title}-${row.pharmacyId}`}>
               <div style={rankingRowTopStyle}>
-                <span>{row.pharmacyName}</span>
-                <strong style={{ color: color.text }}>
+                <span style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--text-sm)' }}>
+                  {row.pharmacyName}
+                </span>
+                <strong style={{ color: color.text, fontSize: 'var(--text-sm)' }}>
                   {valueFormatter(value)}
                 </strong>
               </div>
@@ -422,7 +609,7 @@ function MiniRankingCard({ title, rows, valueKey, valueFormatter, tone }) {
                 <div
                   style={{
                     ...barFillStyle,
-                    width: `${width}%`,
+                    width:      `${width}%`,
                     background: color.text,
                   }}
                 />
@@ -435,15 +622,16 @@ function MiniRankingCard({ title, rows, valueKey, valueFormatter, tone }) {
   )
 }
 
+// ─── PharmacyPerformanceTable ─────────────────────────────────────────────────
 function PharmacyPerformanceTable({ rows }) {
   return (
     <div style={tablePanelStyle}>
       <div style={tableHeaderStyle}>
         <div>
-          <h3 style={{ margin: 0, fontSize: '22px' }}>
+          <h3 style={{ margin: 0, fontSize: 'var(--text-lg)', color: 'var(--color-text-primary)' }}>
             Pharmacy Performance Table
           </h3>
-          <p style={{ color: '#94a3b8', marginTop: '6px' }}>
+          <p style={{ color: 'var(--color-text-secondary)', marginTop: '6px', fontSize: 'var(--text-sm)' }}>
             Value, shortage, expiry risk, and health score by pharmacy.
           </p>
         </div>
@@ -453,14 +641,14 @@ function PharmacyPerformanceTable({ rows }) {
         <table style={tableStyle}>
           <thead>
             <tr>
-              <th style={thStyle}>Pharmacy Name</th>
+              <th style={thStyle}>Pharmacy</th>
+              <th style={thStyle}>Type</th>
               <th style={thStyle}>Inventory Value</th>
-              <th style={thStyle}>Inventory Lines</th>
-              <th style={thStyle}>Out Of Stock</th>
-              <th style={thStyle}>Low Stock</th>
-              <th style={thStyle}>Near Expiry</th>
-              <th style={thStyle}>Expired</th>
-              <th style={thStyle}>Health Score</th>
+              <th style={thStyle}>Near Expiry Value</th>
+              <th style={thStyle}>Critical Value</th>
+              <th style={thStyle}>Expired Value</th>
+              <th style={thStyle}>Out of Stock</th>
+              <th style={thStyle}>Health</th>
             </tr>
           </thead>
 
@@ -471,17 +659,44 @@ function PharmacyPerformanceTable({ rows }) {
               return (
                 <tr key={row.pharmacyId}>
                   <td style={tdStyle}>
-                    <strong>{row.pharmacyName}</strong>
-                    <div style={{ color: '#94a3b8', fontSize: '12px' }}>
-                      {row.pharmacyCode || '-'} · {row.pharmacyType || '-'}
+                    <strong style={{ color: 'var(--color-text-primary)' }}>{row.pharmacyName}</strong>
+                    <div style={{ color: 'var(--color-text-tertiary)', fontSize: 'var(--text-xs)' }}>
+                      {row.pharmacyCode || '-'}
                     </div>
                   </td>
-                  <td style={tdStyle}>AED {formatMoney(row.inventoryValue)}</td>
-                  <td style={tdStyle}>{formatNumber(row.inventoryLines)}</td>
-                  <td style={tdStyle}>{formatNumber(row.outOfStock)}</td>
-                  <td style={tdStyle}>{formatNumber(row.lowStock)}</td>
-                  <td style={tdStyle}>{formatNumber(row.nearExpiry)}</td>
-                  <td style={tdStyle}>{formatNumber(row.expired)}</td>
+                  <td style={{ ...tdStyle, fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)' }}>
+                    {row.pharmacyType || '—'}
+                  </td>
+                  <td style={{ ...tdStyle, color: 'var(--color-success)' }}>
+                    AED {formatMoney(row.inventoryValue)}
+                  </td>
+                  <td style={{ ...tdStyle, color: row.nearExpiryValue > 0 ? 'var(--color-warning-mid)' : 'var(--color-text-secondary)' }}>
+                    {row.nearExpiryValue > 0 ? `AED ${formatMoney(row.nearExpiryValue)}` : '—'}
+                    {row.nearExpiry > 0 && (
+                      <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)' }}>
+                        {row.nearExpiry} lines
+                      </div>
+                    )}
+                  </td>
+                  <td style={{ ...tdStyle, color: row.criticalValue > 0 ? 'var(--color-danger-mid)' : 'var(--color-text-secondary)' }}>
+                    {row.criticalValue > 0 ? `AED ${formatMoney(row.criticalValue)}` : '—'}
+                    {row.critical > 0 && (
+                      <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)' }}>
+                        {row.critical} lines
+                      </div>
+                    )}
+                  </td>
+                  <td style={{ ...tdStyle, color: row.expiredValue > 0 ? 'var(--color-danger-mid)' : 'var(--color-text-secondary)' }}>
+                    {row.expiredValue > 0 ? `AED ${formatMoney(row.expiredValue)}` : '—'}
+                    {row.expired > 0 && (
+                      <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)' }}>
+                        {row.expired} lines
+                      </div>
+                    )}
+                  </td>
+                  <td style={{ ...tdStyle, color: row.outOfStock > 0 ? 'var(--color-danger-mid)' : 'var(--color-text-secondary)' }}>
+                    {formatNumber(row.outOfStock)}
+                  </td>
                   <td style={tdStyle}>
                     <span style={scoreBadgeStyle(color)}>
                       {row.healthScore}% · {row.healthLabel}
@@ -497,86 +712,7 @@ function PharmacyPerformanceTable({ rows }) {
   )
 }
 
-function formatNumber(value) {
-  return Number(value || 0).toLocaleString()
-}
-
-function formatMoney(value) {
-  return Number(value || 0).toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
-}
-
-function formatCompact(value) {
-  return Intl.NumberFormat(undefined, {
-    notation: 'compact',
-    maximumFractionDigits: 1,
-  }).format(Number(value || 0))
-}
-
-function formatMoneyCompact(value) {
-  return Intl.NumberFormat(undefined, {
-    notation: 'compact',
-    maximumFractionDigits: 1,
-  }).format(Number(value || 0))
-}
-
-function buildInventorySnapshot({ pharmaciesRows, inventoryRows }) {
-  const pharmacyMap = new Map(
-    pharmaciesRows.map((pharmacy) => [pharmacy.id, pharmacy])
-  )
-
-  return inventoryRows.map((item) => {
-    const pharmacy = pharmacyMap.get(item.pharmacy_id)
-
-    return {
-      pharmacy_name: pharmacy?.name || '',
-      pharmacy_code: pharmacy?.code || '',
-      drug_code: item.drug_code || '',
-      batch_number: item.batch_number || '',
-      expiry_date: item.expiry_date || '',
-      quantity_on_hand: Number(item.quantity_on_hand || 0),
-      minimum_stock: Number(item.minimum_stock || 0),
-      maximum_stock: Number(item.maximum_stock || 0),
-      unit_cost: Number(item.unit_cost || 0),
-      inventory_value_aed:
-        Number(item.quantity_on_hand || 0) * Number(item.unit_cost || 0),
-      storage_location: item.storage_location || '',
-      inventory_status: item.inventory_status || '',
-    }
-  })
-}
-async function createImportJob({
-  importType,
-  fileName,
-  totalRows,
-  validRows,
-  invalidRows,
-}) {
-  const { error } = await supabase
-    .from('import_jobs')
-    .insert([
-      {
-        import_type: importType,
-        file_name: fileName,
-        total_rows: totalRows,
-        valid_rows: validRows,
-        invalid_rows: invalidRows,
-        status: 'COMPLETED',
-        started_at: new Date().toISOString(),
-        completed_at: new Date().toISOString(),
-        notes: 'Created from FalconMed Import Center',
-      },
-    ])
-
-  if (error) {
-    console.error('Import job error:', error)
-    return false
-  }
-
-  return true
-}
+// ─── DataReportingPanel ───────────────────────────────────────────────────────
 function DataReportingPanel({ pharmacyPerformance, inventorySnapshot }) {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
@@ -587,7 +723,7 @@ function DataReportingPanel({ pharmacyPerformance, inventorySnapshot }) {
   const lowStockRows = inventorySnapshot.filter(
     (item) =>
       Number(item.quantity_on_hand || 0) > 0 &&
-      Number(item.minimum_stock || 0) > 0 &&
+      Number(item.minimum_stock    || 0) > 0 &&
       Number(item.quantity_on_hand || 0) <= Number(item.minimum_stock || 0)
   )
 
@@ -604,26 +740,19 @@ function DataReportingPanel({ pharmacyPerformance, inventorySnapshot }) {
     expiry.setHours(0, 0, 0, 0)
     return expiry >= today && expiry <= nearExpiryLimit
   })
-     function exportExcel(filename, sheetName, rows) {
-  if (!rows?.length) {
-    alert('No data available for export.')
-    return
+
+  function exportExcel(filename, sheetName, rows) {
+    if (!rows?.length) { alert('No data available for export.'); return }
+    const worksheet = XLSX.utils.json_to_sheet(rows)
+    const workbook  = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, sheetName)
+    XLSX.writeFile(workbook, filename)
   }
 
-  const worksheet = XLSX.utils.json_to_sheet(rows)
-  const workbook = XLSX.utils.book_new()
-
-  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName)
-  XLSX.writeFile(workbook, filename)
-}
   function exportCSV(filename, rows) {
-    if (!rows?.length) {
-      alert('No data available for export.')
-      return
-    }
+    if (!rows?.length) { alert('No data available for export.'); return }
 
     const headers = Object.keys(rows[0])
-
     const csv = [
       headers.join(','),
       ...rows.map((row) =>
@@ -633,11 +762,8 @@ function DataReportingPanel({ pharmacyPerformance, inventorySnapshot }) {
       ),
     ].join('\n')
 
-    const blob = new Blob([csv], {
-      type: 'text/csv;charset=utf-8;',
-    })
-
-    const url = URL.createObjectURL(blob)
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const url  = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
     link.download = filename
@@ -647,119 +773,63 @@ function DataReportingPanel({ pharmacyPerformance, inventorySnapshot }) {
 
   return (
     <div style={reportingPanelStyle}>
-      <h2 style={{ marginTop: 0 }}>Phase 8.2 — Data & Reporting</h2>
+      <h2 style={{ marginTop: 0, fontSize: 'var(--text-lg)', color: 'var(--color-text-primary)' }}>
+        Data &amp; Reporting
+      </h2>
 
-      <p style={{ color: '#94a3b8' }}>
+      <p style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--text-sm)' }}>
         Export FalconMed operational intelligence for Power BI, Excel,
         reporting, and external analytics.
       </p>
 
       <div style={reportingButtonGridStyle}>
-        <button
-          style={exportButtonStyle}
-          onClick={() =>
-            exportCSV('falconmed_pharmacy_performance.csv', pharmacyPerformance)
-          }
-        >
+        <button style={exportButtonStyle}
+          onClick={() => exportCSV('falconmed_pharmacy_performance.csv', pharmacyPerformance)}>
           Export Pharmacy Performance CSV
         </button>
 
-        <button
-  style={excelButtonStyle}
-  onClick={() =>
-    exportExcel(
-      'falconmed_pharmacy_performance.xlsx',
-      'Pharmacy Performance',
-      pharmacyPerformance
-    )
-  }
->
-  Export Pharmacy Performance Excel
-</button>
+        <button style={excelButtonStyle}
+          onClick={() => exportExcel('falconmed_pharmacy_performance.xlsx', 'Pharmacy Performance', pharmacyPerformance)}>
+          Export Pharmacy Performance Excel
+        </button>
 
-<button
-  style={exportButtonStyle}
-  onClick={() =>
-    exportCSV(
-      'falconmed_inventory_snapshot.csv',
-      inventorySnapshot
-    )
-  }
->
-  Export Inventory Snapshot CSV
-</button>
-             <button
-  style={excelButtonStyle}
-  onClick={() =>
-    exportExcel(
-      'falconmed_inventory_snapshot.xlsx',
-      'Inventory Snapshot',
-      inventorySnapshot
-    )
-  }
->
-  Export Inventory Snapshot Excel
-</button>
+        <button style={exportButtonStyle}
+          onClick={() => exportCSV('falconmed_inventory_snapshot.csv', inventorySnapshot)}>
+          Export Inventory Snapshot CSV
+        </button>
 
-<button
-  style={excelButtonStyle}
-  onClick={() =>
-    exportExcel(
-      'falconmed_low_stock.xlsx',
-      'Low Stock',
-      lowStockRows
-    )
-  }
->
-  Export Low Stock Excel
-</button>
+        <button style={excelButtonStyle}
+          onClick={() => exportExcel('falconmed_inventory_snapshot.xlsx', 'Inventory Snapshot', inventorySnapshot)}>
+          Export Inventory Snapshot Excel
+        </button>
 
-<button
-  style={excelButtonStyle}
-  onClick={() =>
-    exportExcel(
-      'falconmed_near_expiry.xlsx',
-      'Near Expiry',
-      nearExpiryRows
-    )
-  }
->
-  Export Near Expiry Excel
-</button>
+        <button style={excelButtonStyle}
+          onClick={() => exportExcel('falconmed_low_stock.xlsx', 'Low Stock', lowStockRows)}>
+          Export Low Stock Excel
+        </button>
 
-<button
-  style={excelButtonStyle}
-  onClick={() =>
-    exportExcel(
-      'falconmed_expired_inventory.xlsx',
-      'Expired Inventory',
-      expiredRows
-    )
-  }
->
-  Export Expired Excel
-</button>
+        <button style={excelButtonStyle}
+          onClick={() => exportExcel('falconmed_near_expiry.xlsx', 'Near Expiry', nearExpiryRows)}>
+          Export Near Expiry Excel
+        </button>
 
-        <button
-          style={exportButtonStyle}
-          onClick={() => exportCSV('falconmed_low_stock.csv', lowStockRows)}
-        >
+        <button style={excelButtonStyle}
+          onClick={() => exportExcel('falconmed_expired_inventory.xlsx', 'Expired Inventory', expiredRows)}>
+          Export Expired Excel
+        </button>
+
+        <button style={exportButtonStyle}
+          onClick={() => exportCSV('falconmed_low_stock.csv', lowStockRows)}>
           Export Low Stock CSV
         </button>
 
-        <button
-          style={exportButtonStyle}
-          onClick={() => exportCSV('falconmed_near_expiry.csv', nearExpiryRows)}
-        >
+        <button style={exportButtonStyle}
+          onClick={() => exportCSV('falconmed_near_expiry.csv', nearExpiryRows)}>
           Export Near Expiry CSV
         </button>
 
-        <button
-          style={exportButtonStyle}
-          onClick={() =>
-            exportCSV('falconmed_expired_inventory.csv', expiredRows)
-          }
-        >
+        <button style={exportButtonStyle}
+          onClick={() => exportCSV('falconmed_expired_inventory.csv', expiredRows)}>
           Export Expired CSV
         </button>
       </div>
@@ -767,219 +837,257 @@ function DataReportingPanel({ pharmacyPerformance, inventorySnapshot }) {
   )
 }
 
+// ─── Formatters ───────────────────────────────────────────────────────────────
+function formatNumber(value) {
+  return Number(value || 0).toLocaleString()
+}
+
+function formatMoney(value) {
+  return Number(value || 0).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+}
+
+function formatCompact(value) {
+  return Intl.NumberFormat(undefined, {
+    notation:             'compact',
+    maximumFractionDigits: 1,
+  }).format(Number(value || 0))
+}
+
+function formatMoneyCompact(value) {
+  return Intl.NumberFormat(undefined, {
+    notation:             'compact',
+    maximumFractionDigits: 1,
+  }).format(Number(value || 0))
+}
+
+// ─── Style constants ──────────────────────────────────────────────────────────
 const headerStyle = {
-  display: 'flex',
+  display:        'flex',
   justifyContent: 'space-between',
-  alignItems: 'flex-start',
-  gap: '20px',
-  marginBottom: '28px',
-  flexWrap: 'wrap',
+  alignItems:     'flex-start',
+  gap:            '20px',
+  marginBottom:   '28px',
+  flexWrap:       'wrap',
 }
 
 const gridStyle = {
-  display: 'grid',
+  display:             'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-  gap: '18px',
-  marginTop: '24px',
+  gap:                 '18px',
+  marginTop:           '24px',
 }
 
 const threeColumnGridStyle = {
-  display: 'grid',
+  display:             'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-  gap: '18px',
-  marginTop: '18px',
+  gap:                 '18px',
+  marginTop:           '18px',
 }
+
 const reportingPanelStyle = {
-  background: 'linear-gradient(180deg, #111827 0%, #0f172a 100%)',
-  border: '1px solid #334155',
-  borderRadius: '18px',
-  padding: '24px',
-  marginTop: '24px',
+  background:   'var(--color-bg-card)',
+  border:       '1px solid var(--color-border-default)',
+  borderRadius: 'var(--radius-lg)',
+  padding:      '24px',
+  marginTop:    '24px',
 }
 
 const reportingButtonGridStyle = {
-  display: 'grid',
+  display:             'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-  gap: '12px',
-  marginTop: '18px',
+  gap:                 '12px',
+  marginTop:           '18px',
 }
 
 const exportButtonStyle = {
-  background: '#0ea5e9',
-  color: 'white',
-  border: 'none',
-  borderRadius: '12px',
-  padding: '14px',
-  cursor: 'pointer',
-  fontWeight: 700,
-  fontSize: '14px',
+  background:   'rgba(24,95,165,0.12)',
+  color:        'var(--color-text-accent)',
+  border:       '1px solid rgba(24,95,165,0.30)',
+  borderRadius: 'var(--radius-md)',
+  padding:      '12px 16px',
+  cursor:       'pointer',
+  fontWeight:   'var(--font-medium)',
+  fontSize:     'var(--text-sm)',
+  fontFamily:   'var(--font-sans)',
+  textAlign:    'left',
 }
-   const excelButtonStyle = {
+
+const excelButtonStyle = {
   ...exportButtonStyle,
-  background: '#16a34a',
+  background: 'rgba(29,158,117,0.12)',
+  color:      'var(--color-success)',
+  border:     '1px solid rgba(29,158,117,0.30)',
 }
+
 const cardStyle = {
-  background: 'linear-gradient(180deg, #111827 0%, #0f172a 100%)',
-  padding: '24px',
-  borderRadius: '18px',
-  border: '1px solid #334155',
-  color: 'white',
-  minHeight: '130px',
+  background:   'var(--color-bg-card)',
+  padding:      '24px',
+  borderRadius: 'var(--radius-lg)',
+  border:       '1px solid var(--color-border-default)',
+  color:        'white',
+  minHeight:    '130px',
 }
 
 const panelStyle = {
-  background: 'linear-gradient(180deg, #111827 0%, #0f172a 100%)',
-  padding: '22px',
-  borderRadius: '18px',
-  border: '1px solid #334155',
-  color: 'white',
+  background:   'var(--color-bg-card)',
+  padding:      '22px',
+  borderRadius: 'var(--radius-lg)',
+  border:       '1px solid var(--color-border-default)',
+  color:        'white',
 }
 
 const tablePanelStyle = {
   ...panelStyle,
-  marginTop: '18px',
+  padding:    0,
+  overflow:   'hidden',
+  marginTop:  '18px',
 }
 
 const tableHeaderStyle = {
-  display: 'flex',
+  display:        'flex',
   justifyContent: 'space-between',
-  gap: '16px',
-  marginBottom: '18px',
-  flexWrap: 'wrap',
+  gap:            '16px',
+  marginBottom:   '0',
+  flexWrap:       'wrap',
+  padding:        '16px',
+  borderBottom:   '1px solid var(--color-border-subtle)',
 }
 
 const cardTopStyle = {
-  display: 'flex',
+  display:        'flex',
   justifyContent: 'space-between',
-  gap: '12px',
-  marginBottom: '16px',
+  gap:            '12px',
+  marginBottom:   '16px',
 }
 
 const skeletonCardStyle = {
   ...cardStyle,
   minHeight: '130px',
-  opacity: 0.45,
+  opacity:   0.35,
 }
 
 const rankingRowTopStyle = {
-  display: 'flex',
+  display:        'flex',
   justifyContent: 'space-between',
-  gap: '12px',
-  fontSize: '13px',
-  marginBottom: '6px',
+  gap:            '12px',
+  marginBottom:   '6px',
 }
 
 const barTrackStyle = {
-  height: '8px',
-  background: '#1e293b',
-  borderRadius: '999px',
-  overflow: 'hidden',
+  height:       '6px',
+  background:   'var(--color-bg-content)',
+  borderRadius: 'var(--radius-pill)',
+  overflow:     'hidden',
 }
 
 const barFillStyle = {
-  height: '100%',
-  borderRadius: '999px',
+  height:       '100%',
+  borderRadius: 'var(--radius-pill)',
 }
 
 const tableStyle = {
-  width: '100%',
-  borderCollapse: 'collapse',
-  minWidth: '1100px',
+  width:           '100%',
+  borderCollapse:  'collapse',
+  minWidth:        '1100px',
 }
 
 const thStyle = {
-  textAlign: 'left',
-  padding: '14px',
-  color: '#cbd5e1',
-  fontSize: '13px',
-  borderBottom: '1px solid #334155',
-  whiteSpace: 'nowrap',
+  textAlign:    'left',
+  padding:      '12px 16px',
+  color:        'var(--color-text-tertiary)',
+  fontSize:     'var(--text-xs)',
+  borderBottom: '1px solid var(--color-border-subtle)',
+  whiteSpace:   'nowrap',
+  textTransform:'uppercase',
+  letterSpacing:'0.06em',
 }
 
 const tdStyle = {
-  padding: '14px',
-  borderBottom: '1px solid #1e293b',
-  color: '#e5e7eb',
-  fontSize: '14px',
-  whiteSpace: 'nowrap',
+  padding:      '12px 16px',
+  borderBottom: '1px solid var(--color-border-subtle)',
+  color:        'var(--color-text-secondary)',
+  fontSize:     'var(--text-sm)',
+  whiteSpace:   'nowrap',
 }
 
 function badgeStyle(color) {
   return {
-    color: color.text,
-    border: `1px solid ${color.border}`,
-    background: color.shadow,
-    borderRadius: '999px',
-    padding: '4px 9px',
-    fontSize: '11px',
-    fontWeight: 700,
-    whiteSpace: 'nowrap',
+    color:        color.text,
+    border:       `1px solid ${color.border}`,
+    background:   color.shadow,
+    borderRadius: 'var(--radius-pill)',
+    padding:      '3px 9px',
+    fontSize:     '11px',
+    fontWeight:   'var(--font-medium)',
+    whiteSpace:   'nowrap',
   }
 }
 
 function scoreBadgeStyle(color) {
   return {
-    color: color.text,
-    border: `1px solid ${color.border}`,
-    background: color.shadow,
-    borderRadius: '999px',
-    padding: '6px 10px',
-    fontSize: '12px',
-    fontWeight: 800,
-    whiteSpace: 'nowrap',
+    color:        color.text,
+    border:       `1px solid ${color.border}`,
+    background:   color.shadow,
+    borderRadius: 'var(--radius-pill)',
+    padding:      '4px 10px',
+    fontSize:     'var(--text-xs)',
+    fontWeight:   'var(--font-medium)',
+    whiteSpace:   'nowrap',
   }
 }
 
 function healthBadgeStyle(tone) {
   const color = toneColors[tone] || toneColors.blue
-
   return {
-    minWidth: '170px',
-    background: '#0f172a',
-    border: `1px solid ${color.border}`,
-    boxShadow: `0 0 0 1px ${color.shadow}`,
-    borderRadius: '18px',
-    padding: '16px',
-    color: color.text,
-    display: 'grid',
-    gap: '4px',
+    minWidth:     '170px',
+    background:   'var(--color-bg-card)',
+    border:       `1px solid ${color.border}`,
+    borderRadius: 'var(--radius-lg)',
+    padding:      '16px',
+    color:        color.text,
+    display:      'grid',
+    gap:          '4px',
   }
 }
 
+// ─── Tone colour map — uses token values ──────────────────────────────────────
 const toneColors = {
   blue: {
-    text: '#60a5fa',
-    border: '#334155',
-    shadow: 'rgba(96, 165, 250, 0.18)',
+    text:   'var(--color-primary)',
+    border: 'rgba(24,95,165,0.30)',
+    shadow: 'rgba(24,95,165,0.12)',
   },
   green: {
-    text: '#34d399',
-    border: '#14532d',
-    shadow: 'rgba(52, 211, 153, 0.18)',
+    text:   'var(--color-success)',
+    border: 'rgba(29,158,117,0.30)',
+    shadow: 'rgba(29,158,117,0.12)',
   },
   red: {
-    text: '#f87171',
-    border: '#7f1d1d',
-    shadow: 'rgba(248, 113, 113, 0.18)',
+    text:   'var(--color-danger-mid)',
+    border: 'rgba(163,45,45,0.30)',
+    shadow: 'rgba(163,45,45,0.12)',
   },
   amber: {
-    text: '#fbbf24',
-    border: '#78350f',
-    shadow: 'rgba(251, 191, 36, 0.18)',
+    text:   'var(--color-warning-mid)',
+    border: 'rgba(186,117,23,0.30)',
+    shadow: 'rgba(186,117,23,0.12)',
   },
   purple: {
-    text: '#c084fc',
-    border: '#581c87',
-    shadow: 'rgba(192, 132, 252, 0.18)',
+    text:   '#c084fc',
+    border: 'rgba(168,85,247,0.30)',
+    shadow: 'rgba(168,85,247,0.12)',
   },
   cyan: {
-    text: '#22d3ee',
-    border: '#164e63',
-    shadow: 'rgba(34, 211, 238, 0.18)',
+    text:   '#22d3ee',
+    border: 'rgba(34,211,238,0.30)',
+    shadow: 'rgba(34,211,238,0.12)',
   },
   orange: {
-    text: '#fb923c',
-    border: '#7c2d12',
-    shadow: 'rgba(251, 146, 60, 0.18)',
+    text:   '#fb923c',
+    border: 'rgba(251,146,60,0.30)',
+    shadow: 'rgba(251,146,60,0.12)',
   },
 }

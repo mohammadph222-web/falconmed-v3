@@ -38,7 +38,6 @@ export default function InventoryTransactionsPage() {
   const [transactions, setTransactions] = useState([])
   const [selectedTransaction, setSelectedTransaction] = useState(null)
   const [loading, setLoading] = useState(false)
-
   const [typeFilter, setTypeFilter] = useState('ALL')
   const [pharmacyFilter, setPharmacyFilter] = useState('ALL')
   const [dateFilter, setDateFilter] = useState('')
@@ -144,20 +143,16 @@ export default function InventoryTransactionsPage() {
 
   const transactionsWithRunningBalance = useMemo(() => {
     const balances = {}
-
     return filteredTransactions.map((item) => {
       const pharmacyKey =
         item.transaction_type === 'TRANSFER_IN'
           ? item.destination_pharmacy_id
           : item.source_pharmacy_id || item.destination_pharmacy_id
-
       const key = `${pharmacyKey || 'NO_PHARMACY'}-${
         item.drug_code || 'NO_DRUG'
       }`
       const qty = Number(item.quantity || 0)
-
       if (!balances[key]) balances[key] = 0
-
       if (
         item.transaction_type === 'OPENING_BALANCE' ||
         item.transaction_type === 'ADJUSTMENT_PLUS' ||
@@ -165,7 +160,6 @@ export default function InventoryTransactionsPage() {
       ) {
         balances[key] += qty
       }
-
       if (
         item.transaction_type === 'DISPENSE' ||
         item.transaction_type === 'ADJUSTMENT_MINUS' ||
@@ -173,7 +167,6 @@ export default function InventoryTransactionsPage() {
       ) {
         balances[key] -= qty
       }
-
       return { ...item, running_balance: balances[key] }
     })
   }, [filteredTransactions])
@@ -208,7 +201,6 @@ export default function InventoryTransactionsPage() {
   }, [transactions])
 
   const displayRows = transactionsWithRunningBalance.slice().reverse()
-
   const hasActiveFilter =
     typeFilter !== 'ALL' || pharmacyFilter !== 'ALL' || dateFilter !== ''
 
@@ -243,14 +235,23 @@ export default function InventoryTransactionsPage() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: '10px',
+            flexWrap: 'wrap',
+            alignItems: 'flex-end',
+          }}
+        >
           <div style={{ display: 'grid', gap: '5px' }}>
-            <label style={{
-              fontSize: 'var(--text-xs)',
-              color: 'var(--color-text-tertiary)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.06em',
-            }}>
+            <label
+              style={{
+                fontSize: 'var(--text-xs)',
+                color: 'var(--color-text-tertiary)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+              }}
+            >
               Transaction type
             </label>
             <select
@@ -279,12 +280,14 @@ export default function InventoryTransactionsPage() {
           </div>
 
           <div style={{ display: 'grid', gap: '5px' }}>
-            <label style={{
-              fontSize: 'var(--text-xs)',
-              color: 'var(--color-text-tertiary)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.06em',
-            }}>
+            <label
+              style={{
+                fontSize: 'var(--text-xs)',
+                color: 'var(--color-text-tertiary)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+              }}
+            >
               Pharmacy
             </label>
             <select
@@ -313,12 +316,14 @@ export default function InventoryTransactionsPage() {
           </div>
 
           <div style={{ display: 'grid', gap: '5px' }}>
-            <label style={{
-              fontSize: 'var(--text-xs)',
-              color: 'var(--color-text-tertiary)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.06em',
-            }}>
+            <label
+              style={{
+                fontSize: 'var(--text-xs)',
+                color: 'var(--color-text-tertiary)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+              }}
+            >
               Date
             </label>
             <input
@@ -375,7 +380,10 @@ export default function InventoryTransactionsPage() {
       )}
 
       {loading && (
-        <div className="fm-card" style={{ color: 'var(--color-text-secondary)' }}>
+        <div
+          className="fm-card"
+          style={{ color: 'var(--color-text-secondary)' }}
+        >
           Loading transactions...
         </div>
       )}
@@ -400,20 +408,35 @@ export default function InventoryTransactionsPage() {
               minWidth: 0,
             }}
           >
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '12px 16px',
-              borderBottom: '1px solid var(--color-border-subtle)',
-              flexWrap: 'wrap',
-              gap: '8px',
-            }}>
-              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '12px 16px',
+                borderBottom: '1px solid var(--color-border-subtle)',
+                flexWrap: 'wrap',
+                gap: '8px',
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 'var(--text-sm)',
+                  color: 'var(--color-text-primary)',
+                }}
+              >
                 <strong>{displayRows.length.toLocaleString()}</strong>
-                <span style={{ color: 'var(--color-text-secondary)' }}> transactions</span>
+                <span style={{ color: 'var(--color-text-secondary)' }}>
+                  {' '}
+                  transactions
+                </span>
               </span>
-              <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)' }}>
+              <span
+                style={{
+                  fontSize: 'var(--text-xs)',
+                  color: 'var(--color-text-tertiary)',
+                }}
+              >
                 Most recent first · Click row to inspect
               </span>
             </div>
@@ -422,7 +445,19 @@ export default function InventoryTransactionsPage() {
               <table className="fm-table" style={{ minWidth: '1100px' }}>
                 <thead>
                   <tr>
-                    {['Date','Type','Pharmacy','From','To','Drug','Brand','Qty','Balance','Code','Notes'].map((col) => (
+                    {[
+                      'Date',
+                      'Type',
+                      'Pharmacy',
+                      'From',
+                      'To',
+                      'Drug',
+                      'Brand',
+                      'Qty',
+                      'Balance',
+                      'Code',
+                      'Notes',
+                    ].map((col) => (
                       <th
                         key={col}
                         style={{
@@ -457,7 +492,10 @@ export default function InventoryTransactionsPage() {
                     >
                       <td
                         className="fm-table-muted"
-                        style={{ fontSize: 'var(--text-xs)', whiteSpace: 'nowrap' }}
+                        style={{
+                          fontSize: 'var(--text-xs)',
+                          whiteSpace: 'nowrap',
+                        }}
                       >
                         {item.created_at
                           ? new Date(item.created_at).toLocaleString()
@@ -468,62 +506,84 @@ export default function InventoryTransactionsPage() {
                       </td>
                       <td
                         className="fm-table-muted"
-                        style={{ whiteSpace: 'nowrap', fontSize: 'var(--text-xs)' }}
+                        style={{
+                          whiteSpace: 'nowrap',
+                          fontSize: 'var(--text-xs)',
+                        }}
                       >
                         {getTransactionPharmacyName(item)}
                       </td>
                       <td
                         className="fm-table-muted"
-                        style={{ fontSize: 'var(--text-xs)', whiteSpace: 'nowrap' }}
+                        style={{
+                          fontSize: 'var(--text-xs)',
+                          whiteSpace: 'nowrap',
+                        }}
                       >
                         {item.sourcePharmacy?.name || '—'}
                       </td>
                       <td
                         className="fm-table-muted"
-                        style={{ fontSize: 'var(--text-xs)', whiteSpace: 'nowrap' }}
+                        style={{
+                          fontSize: 'var(--text-xs)',
+                          whiteSpace: 'nowrap',
+                        }}
                       >
                         {item.destinationPharmacy?.name || '—'}
                       </td>
-                      <td style={{ whiteSpace: 'normal', minWidth: '160px' }}>
-                        <div style={{
-                          fontWeight: 'var(--font-medium)',
-                          color: 'var(--color-text-primary)',
-                          lineHeight: 1.3,
-                        }}>
+                      <td
+                        style={{ whiteSpace: 'normal', minWidth: '160px' }}
+                      >
+                        <div
+                          style={{
+                            fontWeight: 'var(--font-medium)',
+                            color: 'var(--color-text-primary)',
+                            lineHeight: 1.3,
+                          }}
+                        >
                           {item.drug?.generic_name || '-'}
                         </div>
                         {item.drug?.strength && (
-                          <div style={{
-                            fontSize: 'var(--text-xs)',
-                            color: 'var(--color-text-secondary)',
-                            marginTop: '2px',
-                          }}>
+                          <div
+                            style={{
+                              fontSize: 'var(--text-xs)',
+                              color: 'var(--color-text-secondary)',
+                              marginTop: '2px',
+                            }}
+                          >
                             {item.drug.strength}
                           </div>
                         )}
                       </td>
                       <td
                         className="fm-table-muted"
-                        style={{ fontSize: 'var(--text-xs)', whiteSpace: 'nowrap' }}
+                        style={{
+                          fontSize: 'var(--text-xs)',
+                          whiteSpace: 'nowrap',
+                        }}
                       >
                         {item.drug?.brand_name || '-'}
                       </td>
-                      <td style={{
-                        fontWeight: 'var(--font-medium)',
-                        color: 'var(--color-text-primary)',
-                        whiteSpace: 'nowrap',
-                      }}>
+                      <td
+                        style={{
+                          fontWeight: 'var(--font-medium)',
+                          color: 'var(--color-text-primary)',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
                         {Number(item.quantity || 0).toLocaleString()}
                       </td>
                       <td style={{ whiteSpace: 'nowrap' }}>
                         <BalanceValue value={item.running_balance} />
                       </td>
                       <td>
-                        <span style={{
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: 'var(--text-xs)',
-                          color: 'var(--color-text-accent)',
-                        }}>
+                        <span
+                          style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: 'var(--text-xs)',
+                            color: 'var(--color-text-accent)',
+                          }}
+                        >
                           {item.drug_code || '-'}
                         </span>
                       </td>
@@ -546,21 +606,28 @@ export default function InventoryTransactionsPage() {
           </div>
 
           {selectedTransaction && (
-            <div className="fm-card" style={{ flex: '0 0 300px', minWidth: '260px' }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '16px',
-                paddingBottom: '12px',
-                borderBottom: '1px solid var(--color-border-subtle)',
-              }}>
-                <h3 style={{
-                  fontSize: 'var(--text-base)',
-                  fontWeight: 'var(--font-medium)',
-                  color: 'var(--color-text-primary)',
-                  margin: 0,
-                }}>
+            <div
+              className="fm-card"
+              style={{ flex: '0 0 300px', minWidth: '260px' }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '16px',
+                  paddingBottom: '12px',
+                  borderBottom: '1px solid var(--color-border-subtle)',
+                }}
+              >
+                <h3
+                  style={{
+                    fontSize: 'var(--text-base)',
+                    fontWeight: 'var(--font-medium)',
+                    color: 'var(--color-text-primary)',
+                    margin: 0,
+                  }}
+                >
                   Transaction detail
                 </h3>
                 <button
@@ -572,7 +639,13 @@ export default function InventoryTransactionsPage() {
                 </button>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '10px',
+                }}
+              >
                 <TxDetailField label="Type">
                   <TypeBadge type={selectedTransaction.transaction_type} />
                 </TxDetailField>
@@ -580,7 +653,9 @@ export default function InventoryTransactionsPage() {
                   label="Date"
                   value={
                     selectedTransaction.created_at
-                      ? new Date(selectedTransaction.created_at).toLocaleString()
+                      ? new Date(
+                          selectedTransaction.created_at
+                        ).toLocaleString()
                       : '-'
                   }
                 />
@@ -594,7 +669,9 @@ export default function InventoryTransactionsPage() {
                 />
                 <TxDetailField
                   label="To"
-                  value={selectedTransaction.destinationPharmacy?.name || '—'}
+                  value={
+                    selectedTransaction.destinationPharmacy?.name || '—'
+                  }
                 />
                 <TxDetailField
                   label="Drug"
@@ -610,17 +687,21 @@ export default function InventoryTransactionsPage() {
                 />
                 <TxDetailField
                   label="Quantity"
-                  value={Number(selectedTransaction.quantity || 0).toLocaleString()}
+                  value={Number(
+                    selectedTransaction.quantity || 0
+                  ).toLocaleString()}
                 />
                 <TxDetailField label="Running balance">
                   <BalanceValue value={selectedTransaction.running_balance} />
                 </TxDetailField>
                 <TxDetailField label="Drug code">
-                  <span style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 'var(--text-xs)',
-                    color: 'var(--color-text-accent)',
-                  }}>
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 'var(--text-xs)',
+                      color: 'var(--color-text-accent)',
+                    }}
+                  >
                     {selectedTransaction.drug_code || '-'}
                   </span>
                 </TxDetailField>
@@ -662,20 +743,19 @@ function TypeBadge({ type }) {
     background: 'rgba(255,255,255,0.05)',
     border: '1px solid var(--color-border-default)',
   }
-  const label = type
-    ? type.replace(/_/g, ' ')
-    : '—'
-
+  const label = type ? type.replace(/_/g, ' ') : '—'
   return (
-    <span style={{
-      display: 'inline-block',
-      padding: '3px 10px',
-      borderRadius: 'var(--radius-pill)',
-      fontSize: 'var(--text-xs)',
-      fontWeight: 'var(--font-medium)',
-      whiteSpace: 'nowrap',
-      ...style,
-    }}>
+    <span
+      style={{
+        display: 'inline-block',
+        padding: '3px 10px',
+        borderRadius: 'var(--radius-pill)',
+        fontSize: 'var(--text-xs)',
+        fontWeight: 'var(--font-medium)',
+        whiteSpace: 'nowrap',
+        ...style,
+      }}
+    >
       {label}
     </span>
   )
@@ -689,13 +769,14 @@ function BalanceValue({ value }) {
       : n < 0
       ? 'var(--color-danger-mid)'
       : 'var(--color-text-secondary)'
-
   return (
-    <span style={{
-      fontWeight: 'var(--font-medium)',
-      color,
-      fontVariantNumeric: 'tabular-nums',
-    }}>
+    <span
+      style={{
+        fontWeight: 'var(--font-medium)',
+        color,
+        fontVariantNumeric: 'tabular-nums',
+      }}
+    >
       {n.toLocaleString()}
     </span>
   )
@@ -704,20 +785,24 @@ function BalanceValue({ value }) {
 function TxDetailField({ label, value, children }) {
   return (
     <div>
-      <div style={{
-        fontSize: 'var(--text-xs)',
-        color: 'var(--color-text-tertiary)',
-        textTransform: 'uppercase',
-        letterSpacing: '0.06em',
-        marginBottom: '3px',
-      }}>
+      <div
+        style={{
+          fontSize: 'var(--text-xs)',
+          color: 'var(--color-text-tertiary)',
+          textTransform: 'uppercase',
+          letterSpacing: '0.06em',
+          marginBottom: '3px',
+        }}
+      >
         {label}
       </div>
-      <div style={{
-        fontSize: 'var(--text-sm)',
-        color: 'var(--color-text-primary)',
-        lineHeight: 1.4,
-      }}>
+      <div
+        style={{
+          fontSize: 'var(--text-sm)',
+          color: 'var(--color-text-primary)',
+          lineHeight: 1.4,
+        }}
+      >
         {children ?? value ?? '—'}
       </div>
     </div>

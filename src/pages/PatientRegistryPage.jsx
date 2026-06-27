@@ -11,8 +11,9 @@ export default function PatientRegistryPage() {
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const [messageType, setMessageType] = useState('success')
   const [medicationRefreshKey, setMedicationRefreshKey] = useState(0)
-
+  const [showForm, setShowForm] = useState(false)
 
   const [form, setForm] = useState({
     first_name: '',
@@ -46,7 +47,7 @@ export default function PatientRegistryPage() {
       .limit(1)
 
     if (orgError) {
-      setMessage(`Error loading organization: ${orgError.message}`)
+      showMsg(`Error loading organization: ${orgError.message}`, 'error')
       setLoading(false)
       return
     }
@@ -69,7 +70,7 @@ export default function PatientRegistryPage() {
       .order('created_at', { ascending: false })
 
     if (error) {
-      setMessage(`Error loading patients: ${error.message}`)
+      showMsg(`Error loading patients: ${error.message}`, 'error')
       setPatients([])
       return
     }
@@ -78,10 +79,7 @@ export default function PatientRegistryPage() {
   }
 
   function updateForm(field, value) {
-    setForm((prev) => ({
-      ...prev,
-      [field]: value,
-    }))
+    setForm((prev) => ({ ...prev, [field]: value }))
   }
 
   function resetForm() {
@@ -111,16 +109,21 @@ export default function PatientRegistryPage() {
       .trim()
   }
 
+  function showMsg(text, type = 'success') {
+    setMessage(text)
+    setMessageType(type)
+  }
+
   async function savePatient() {
     setMessage('')
 
     if (!organizationId) {
-      setMessage('Organization not found.')
+      showMsg('Organization not found.', 'error')
       return
     }
 
     if (!form.first_name || !form.last_name) {
-      setMessage('First Name and Last Name are required.')
+      showMsg('First name and last name are required.', 'error')
       return
     }
 
@@ -130,82 +133,64 @@ export default function PatientRegistryPage() {
 
     const payload = {
       organization_id: organizationId,
-
       first_name: form.first_name.trim(),
       middle_name: form.middle_name.trim() || null,
       last_name: form.last_name.trim(),
-
       patient_name: fullName,
       patient_status: form.patient_status || 'Active',
-
       gender: form.gender || null,
       date_of_birth: form.date_of_birth || null,
-
       mobile: form.mobile || null,
       email: form.email || null,
       address: form.address || null,
-
       insurance_provider: form.insurance_provider || null,
       insurance_number: form.insurance_number || null,
-
       weight_kg: form.weight_kg ? Number(form.weight_kg) : null,
       height_cm: form.height_cm ? Number(form.height_cm) : null,
-
       allergies: form.allergies || null,
       chronic_conditions: form.chronic_conditions || null,
       notes: form.notes || null,
-
       updated_at: new Date().toISOString(),
     }
 
     const { error } = await supabase.from('patients').insert(payload)
 
     if (error) {
-      setMessage(`Error: ${error.message}`)
+      showMsg(`Error: ${error.message}`, 'error')
       setLoading(false)
       return
     }
 
-    setMessage('Patient saved successfully.')
+    showMsg('Patient saved successfully.')
     resetForm()
+    setShowForm(false)
     await loadPatients()
     setLoading(false)
   }
 
   function calculateAge(dateOfBirth) {
     if (!dateOfBirth) return '-'
-
     const dob = new Date(dateOfBirth)
     const today = new Date()
-
     let age = today.getFullYear() - dob.getFullYear()
     const monthDiff = today.getMonth() - dob.getMonth()
-
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < dob.getDate())
-    ) {
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
       age -= 1
     }
-
     return age
   }
 
   function calculateBMI(patient) {
     const weight = Number(patient?.weight_kg || 0)
     const heightCm = Number(patient?.height_cm || 0)
-
     if (!weight || !heightCm) return '-'
-
     const heightM = heightCm / 100
     return (weight / (heightM * heightM)).toFixed(1)
   }
 
   const filteredPatients = useMemo(() => {
     const term = search.toLowerCase().trim()
-
     if (!term) return patients
-
     return patients.filter((patient) => {
       return (
         patient.mrn?.toLowerCase().includes(term) ||
@@ -220,7 +205,9 @@ export default function PatientRegistryPage() {
   }, [patients, search])
 
   const totalPatients = patients.length
-  const activePatients = patients.filter((p) => p.patient_status === 'Active').length
+  const activePatients = patients.filter(
+    (p) => p.patient_status === 'Active'
+  ).length
   const malePatients = patients.filter((p) => p.gender === 'Male').length
   const femalePatients = patients.filter((p) => p.gender === 'Female').length
   const allergyPatients = patients.filter(
@@ -228,313 +215,530 @@ export default function PatientRegistryPage() {
   ).length
 
   return (
-    <div style={{ padding: '24px', color: 'white' }}>
-      <h1>Patient Registry</h1>
-
-      <div style={statsGridStyle}>
-        <div style={cardStyle}>
-          <div>Total Patients</div>
-          <h2>{totalPatients}</h2>
-        </div>
-
-        <div style={cardStyle}>
-          <div>Active Patients</div>
-          <h2>{activePatients}</h2>
-        </div>
-
-        <div style={cardStyle}>
-          <div>Male</div>
-          <h2>{malePatients}</h2>
-        </div>
-
-        <div style={cardStyle}>
-          <div>Female</div>
-          <h2>{femalePatients}</h2>
-        </div>
-
-        <div style={cardStyle}>
-          <div>With Allergies</div>
-          <h2>{allergyPatients}</h2>
+    <div>
+      <div className="fm-page-header">
+        <div className="fm-page-header-top">
+          <div>
+            <div className="fm-page-header-meta">Operations</div>
+            <h1 className="fm-page-header-title">Patient registry</h1>
+            <p className="fm-page-header-desc">
+              Register and manage patients, view medication profiles, and
+              record dispense events.
+            </p>
+          </div>
+          <div className="fm-page-header-actions">
+            <button
+              className="fm-btn"
+              onClick={() => {
+                setShowForm((v) => !v)
+                setMessage('')
+              }}
+            >
+              {showForm ? 'Cancel' : '+ Add patient'}
+            </button>
+          </div>
         </div>
       </div>
 
-      <div style={sectionStyle}>
-        <h2>Add Patient</h2>
-
-        <div style={noticeStyle}>
-          MRN will be generated automatically by the system after saving.
-        </div>
-
-        <div style={formGridStyle}>
-          <input
-            style={inputStyle}
-            placeholder="First Name *"
-            value={form.first_name}
-            onChange={(e) => updateForm('first_name', e.target.value)}
-          />
-
-          <input
-            style={inputStyle}
-            placeholder="Middle Name"
-            value={form.middle_name}
-            onChange={(e) => updateForm('middle_name', e.target.value)}
-          />
-
-          <input
-            style={inputStyle}
-            placeholder="Last Name *"
-            value={form.last_name}
-            onChange={(e) => updateForm('last_name', e.target.value)}
-          />
-
-          <select
-            style={inputStyle}
-            value={form.patient_status}
-            onChange={(e) => updateForm('patient_status', e.target.value)}
-          >
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-            <option value="Deceased">Deceased</option>
-          </select>
-
-          <select
-            style={inputStyle}
-            value={form.gender}
-            onChange={(e) => updateForm('gender', e.target.value)}
-          >
-            <option value="">Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-
-          <input
-            style={inputStyle}
-            type="date"
-            value={form.date_of_birth}
-            onChange={(e) => updateForm('date_of_birth', e.target.value)}
-          />
-                    <input
-            style={inputStyle}
-            placeholder="Mobile"
-            value={form.mobile}
-            onChange={(e) => updateForm('mobile', e.target.value)}
-          />
-
-          <input
-            style={inputStyle}
-            placeholder="Email"
-            value={form.email}
-            onChange={(e) => updateForm('email', e.target.value)}
-          />
-
-          <select
-            style={inputStyle}
-            value={form.insurance_provider}
-            onChange={(e) => updateForm('insurance_provider', e.target.value)}
-          >
-            <option value="">Select Insurance</option>
-            <option value="Thiqa">Thiqa</option>
-            <option value="Daman">Daman</option>
-            <option value="Inayah">Inayah</option>
-            <option value="NAS">NAS</option>
-            <option value="Nextcare">Nextcare</option>
-            <option value="Other">Other</option>
-          </select>
-
-          <input
-            style={inputStyle}
-            placeholder="Insurance Number"
-            value={form.insurance_number}
-            onChange={(e) => updateForm('insurance_number', e.target.value)}
-          />
-
-          <input
-            style={inputStyle}
-            type="number"
-            placeholder="Weight kg"
-            value={form.weight_kg}
-            onChange={(e) => updateForm('weight_kg', e.target.value)}
-          />
-
-          <input
-            style={inputStyle}
-            type="number"
-            placeholder="Height cm"
-            value={form.height_cm}
-            onChange={(e) => updateForm('height_cm', e.target.value)}
-          />
-
-          <select
-            style={inputStyle}
-            value={form.allergies}
-            onChange={(e) => updateForm('allergies', e.target.value)}
-          >
-            <option value="No Known Drug Allergies">No Known Drug Allergies</option>
-            <option value="Penicillin">Penicillin</option>
-            <option value="Sulfa">Sulfa</option>
-            <option value="NSAIDs">NSAIDs</option>
-            <option value="Aspirin">Aspirin</option>
-            <option value="Other">Other</option>
-          </select>
-
-          <select
-            style={inputStyle}
-            value={form.chronic_conditions}
-            onChange={(e) => updateForm('chronic_conditions', e.target.value)}
-          >
-            <option value="None">None</option>
-            <option value="Hypertension">Hypertension</option>
-            <option value="Diabetes">Diabetes</option>
-            <option value="Asthma">Asthma</option>
-            <option value="CKD">CKD</option>
-            <option value="Heart Failure">Heart Failure</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-
-        <textarea
-          style={textareaStyle}
-          placeholder="Address"
-          value={form.address}
-          onChange={(e) => updateForm('address', e.target.value)}
+      <div className="fm-grid-kpi" style={{ marginBottom: '20px' }}>
+        <PatientKpiCard
+          label="Total patients"
+          value={totalPatients}
+          color="var(--color-text-accent)"
+          barColor="var(--color-primary)"
         />
-
-        <textarea
-          style={textareaStyle}
-          placeholder="Notes"
-          value={form.notes}
-          onChange={(e) => updateForm('notes', e.target.value)}
+        <PatientKpiCard
+          label="Active"
+          value={activePatients}
+          color="var(--color-success)"
+          barColor="var(--color-success)"
         />
+        <PatientKpiCard
+          label="Male"
+          value={malePatients}
+          color="var(--color-text-accent)"
+          barColor="var(--color-primary)"
+        />
+        <PatientKpiCard
+          label="Female"
+          value={femalePatients}
+          color="var(--color-text-accent)"
+          barColor="var(--color-primary)"
+        />
+        <PatientKpiCard
+          label="With allergies"
+          value={allergyPatients}
+          color="var(--color-warning-mid)"
+          barColor="var(--color-warning-mid)"
+        />
+      </div>
 
-        <button onClick={savePatient} disabled={loading} style={buttonStyle}>
-          {loading ? 'Saving...' : 'Save Patient'}
-        </button>
-
-        {message && (
+      {showForm && (
+        <div className="fm-card" style={{ marginBottom: '20px' }}>
           <div
             style={{
-              marginTop: '12px',
-              color: message.startsWith('Error') ? '#fca5a5' : '#86efac',
+              marginBottom: '16px',
+              paddingBottom: '14px',
+              borderBottom: '1px solid var(--color-border-subtle)',
             }}
           >
-            {message}
+            <h2
+              style={{
+                fontSize: 'var(--text-lg)',
+                fontWeight: 'var(--font-medium)',
+                color: 'var(--color-text-primary)',
+                margin: 0,
+              }}
+            >
+              Add patient
+            </h2>
+            <p
+              style={{
+                fontSize: 'var(--text-xs)',
+                color: 'var(--color-text-accent)',
+                marginTop: '6px',
+                padding: '6px 10px',
+                background: 'rgba(24,95,165,0.10)',
+                border: '1px solid rgba(24,95,165,0.25)',
+                borderRadius: 'var(--radius-md)',
+                display: 'inline-block',
+              }}
+            >
+              MRN will be generated automatically after saving.
+            </p>
           </div>
-        )}
-      </div>
 
-      <input
-        style={{ ...inputStyle, marginBottom: '18px' }}
-        placeholder="Search by MRN, Name, Mobile or Insurance..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+              gap: '12px',
+              marginBottom: '12px',
+            }}
+          >
+            {[
+              { placeholder: 'First name *', field: 'first_name', type: 'text' },
+              { placeholder: 'Middle name', field: 'middle_name', type: 'text' },
+              { placeholder: 'Last name *', field: 'last_name', type: 'text' },
+            ].map(({ placeholder, field, type }) => (
+              <input
+                key={field}
+                type={type}
+                placeholder={placeholder}
+                value={form[field]}
+                onChange={(e) => updateForm(field, e.target.value)}
+                style={formInputStyle}
+              />
+            ))}
 
-      <div style={{ overflowX: 'auto' }}>
-        <table style={tableStyle}>
-          <thead>
-            <tr style={{ background: '#1e293b' }}>
-              <th style={thStyle}>MRN</th>
-              <th style={thStyle}>Name</th>
-              <th style={thStyle}>Status</th>
-              <th style={thStyle}>Gender</th>
-              <th style={thStyle}>DOB</th>
-              <th style={thStyle}>Mobile</th>
-              <th style={thStyle}>Insurance</th>
-              <th style={thStyle}>Allergies</th>
-            </tr>
-          </thead>
+            <select
+              value={form.patient_status}
+              onChange={(e) => updateForm('patient_status', e.target.value)}
+              style={formInputStyle}
+            >
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Deceased">Deceased</option>
+            </select>
 
-          <tbody>
-            {filteredPatients.map((patient) => (
-              <tr
-                key={patient.id}
-                onClick={() => setSelectedPatient(patient)}
+            <select
+              value={form.gender}
+              onChange={(e) => updateForm('gender', e.target.value)}
+              style={formInputStyle}
+            >
+              <option value="">Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+
+            <input
+              type="date"
+              value={form.date_of_birth}
+              onChange={(e) => updateForm('date_of_birth', e.target.value)}
+              style={formInputStyle}
+            />
+
+            <input
+              type="text"
+              placeholder="Mobile"
+              value={form.mobile}
+              onChange={(e) => updateForm('mobile', e.target.value)}
+              style={formInputStyle}
+            />
+
+            <input
+              type="email"
+              placeholder="Email"
+              value={form.email}
+              onChange={(e) => updateForm('email', e.target.value)}
+              style={formInputStyle}
+            />
+
+            <select
+              value={form.insurance_provider}
+              onChange={(e) => updateForm('insurance_provider', e.target.value)}
+              style={formInputStyle}
+            >
+              <option value="">Select insurance</option>
+              <option value="Thiqa">Thiqa</option>
+              <option value="Daman">Daman</option>
+              <option value="Inayah">Inayah</option>
+              <option value="NAS">NAS</option>
+              <option value="Nextcare">Nextcare</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <input
+              type="text"
+              placeholder="Insurance number"
+              value={form.insurance_number}
+              onChange={(e) => updateForm('insurance_number', e.target.value)}
+              style={formInputStyle}
+            />
+
+            <input
+              type="number"
+              placeholder="Weight (kg)"
+              value={form.weight_kg}
+              onChange={(e) => updateForm('weight_kg', e.target.value)}
+              style={formInputStyle}
+            />
+
+            <input
+              type="number"
+              placeholder="Height (cm)"
+              value={form.height_cm}
+              onChange={(e) => updateForm('height_cm', e.target.value)}
+              style={formInputStyle}
+            />
+
+            <select
+              value={form.allergies}
+              onChange={(e) => updateForm('allergies', e.target.value)}
+              style={formInputStyle}
+            >
+              <option value="No Known Drug Allergies">No known drug allergies</option>
+              <option value="Penicillin">Penicillin</option>
+              <option value="Sulfa">Sulfa</option>
+              <option value="NSAIDs">NSAIDs</option>
+              <option value="Aspirin">Aspirin</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <select
+              value={form.chronic_conditions}
+              onChange={(e) => updateForm('chronic_conditions', e.target.value)}
+              style={formInputStyle}
+            >
+              <option value="None">None</option>
+              <option value="Hypertension">Hypertension</option>
+              <option value="Diabetes">Diabetes</option>
+              <option value="Asthma">Asthma</option>
+              <option value="CKD">CKD</option>
+              <option value="Heart Failure">Heart failure</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <textarea
+            placeholder="Address"
+            value={form.address}
+            onChange={(e) => updateForm('address', e.target.value)}
+            style={{ ...formInputStyle, minHeight: '60px', resize: 'vertical', marginBottom: '10px' }}
+          />
+
+          <textarea
+            placeholder="Notes"
+            value={form.notes}
+            onChange={(e) => updateForm('notes', e.target.value)}
+            style={{ ...formInputStyle, minHeight: '60px', resize: 'vertical', marginBottom: '16px' }}
+          />
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <button
+              onClick={savePatient}
+              disabled={loading}
+              className="fm-btn fm-btn-primary"
+              style={{ opacity: loading ? 0.6 : 1 }}
+            >
+              {loading ? 'Saving...' : 'Save patient'}
+            </button>
+
+            {message && (
+              <span
                 style={{
-                  cursor: 'pointer',
-                  borderBottom: '1px solid #1e293b',
+                  fontSize: 'var(--text-sm)',
+                  fontWeight: 'var(--font-medium)',
+                  color:
+                    messageType === 'error'
+                      ? 'var(--color-danger-mid)'
+                      : 'var(--color-success)',
                 }}
               >
-                <td style={tdStyle}>{patient.mrn}</td>
-                <td style={tdStyle}>{patient.patient_name}</td>
-                <td style={tdStyle}>
-  <span
-    style={{
-      color:
-        String(patient.patient_status || '').toLowerCase() === 'active'
-          ? '#34d399'
-          : '#f87171',
-      fontWeight: 'bold',
-    }}
-  >
-    {patient.patient_status || '-'}
-  </span>
-</td>
-                <td style={tdStyle}>{patient.gender || '-'}</td>
-                <td style={tdStyle}>{patient.date_of_birth || '-'}</td>
-                <td style={tdStyle}>{patient.mobile || '-'}</td>
-                <td style={tdStyle}>{patient.insurance_provider || '-'}</td>
-                <td style={tdStyle}>{patient.allergies || '-'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                {messageType === 'error' ? '✕ ' : '✓ '}
+                {message}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+
+      <div style={{ marginBottom: '14px' }}>
+        <input
+          type="text"
+          placeholder="Search by MRN, name, mobile or insurance..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value)
+            setSelectedPatient(null)
+          }}
+          style={{
+            width: '100%',
+            padding: '8px 12px',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--color-border-default)',
+            background: 'var(--color-bg-input)',
+            color: 'var(--color-text-primary)',
+            fontSize: 'var(--text-base)',
+            fontFamily: 'var(--font-sans)',
+          }}
+        />
       </div>
 
+      {loading && (
+        <div className="fm-card" style={{ color: 'var(--color-text-secondary)' }}>
+          Loading patients...
+        </div>
+      )}
+
+      {!loading && filteredPatients.length === 0 && (
+        <div className="fm-empty-state">
+          <div className="fm-empty-state-title">No patients found</div>
+          <div className="fm-empty-state-desc">
+            {search ? 'Try a different search term.' : 'Add the first patient using the button above.'}
+          </div>
+        </div>
+      )}
+
+      {!loading && filteredPatients.length > 0 && (
+        <div className="fm-card" style={{ padding: 0, overflow: 'hidden', marginBottom: '16px' }}>
+          <div
+            style={{
+              padding: '10px 16px',
+              borderBottom: '1px solid var(--color-border-subtle)',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--color-text-secondary)',
+            }}
+          >
+            <strong style={{ color: 'var(--color-text-primary)' }}>
+              {filteredPatients.length.toLocaleString()}
+            </strong>{' '}
+            patients · Click a row to view profile
+          </div>
+          <div className="fm-table-wrap">
+            <table className="fm-table">
+              <thead>
+                <tr>
+                  <th>MRN</th>
+                  <th>Name</th>
+                  <th>Status</th>
+                  <th>Gender</th>
+                  <th>DOB</th>
+                  <th>Mobile</th>
+                  <th>Insurance</th>
+                  <th>Allergies</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredPatients.map((patient) => (
+                  <tr
+                    key={patient.id}
+                    onClick={() =>
+                      setSelectedPatient(
+                        selectedPatient?.id === patient.id ? null : patient
+                      )
+                    }
+                    style={{
+                      cursor: 'pointer',
+                      background:
+                        selectedPatient?.id === patient.id
+                          ? 'var(--color-bg-card-hover)'
+                          : undefined,
+                    }}
+                  >
+                    <td>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 'var(--text-xs)',
+                          color: 'var(--color-text-accent)',
+                        }}
+                      >
+                        {patient.mrn}
+                      </span>
+                    </td>
+                    <td>
+                      <div
+                        style={{
+                          fontWeight: 'var(--font-medium)',
+                          color: 'var(--color-text-primary)',
+                        }}
+                      >
+                        {patient.patient_name}
+                      </div>
+                    </td>
+                    <td>
+                      <PatientStatusBadge status={patient.patient_status} />
+                    </td>
+                    <td className="fm-table-muted">{patient.gender || '-'}</td>
+                    <td className="fm-table-muted">
+                      {patient.date_of_birth || '-'}
+                    </td>
+                    <td className="fm-table-muted">{patient.mobile || '-'}</td>
+                    <td className="fm-table-muted">
+                      {patient.insurance_provider || '-'}
+                    </td>
+                    <td
+                      style={{
+                        fontSize: 'var(--text-xs)',
+                        color:
+                          patient.allergies &&
+                          patient.allergies !== 'No Known Drug Allergies'
+                            ? 'var(--color-warning-mid)'
+                            : 'var(--color-text-tertiary)',
+                      }}
+                    >
+                      {patient.allergies || '-'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
       {selectedPatient && (
-        <div onClick={() => setSelectedPatient(null)} style={modalOverlayStyle}>
-          <div onClick={(e) => e.stopPropagation()} style={modalStyle}>
-            <h2>Patient Profile</h2>
-
-            <div style={profileGridStyle}>
-              <div><strong>MRN:</strong> {selectedPatient.mrn}</div>
-              <div><strong>Status:</strong> {selectedPatient.patient_status || '-'}</div>
-
-              <div><strong>First Name:</strong> {selectedPatient.first_name || '-'}</div>
-              <div><strong>Middle Name:</strong> {selectedPatient.middle_name || '-'}</div>
-              <div><strong>Last Name:</strong> {selectedPatient.last_name || '-'}</div>
-              <div><strong>Full Name:</strong> {selectedPatient.patient_name || '-'}</div>
-
-              <div><strong>Gender:</strong> {selectedPatient.gender || '-'}</div>
-              <div><strong>DOB:</strong> {selectedPatient.date_of_birth || '-'}</div>
-              <div><strong>Age:</strong> {calculateAge(selectedPatient.date_of_birth)}</div>
-
-              <div><strong>Mobile:</strong> {selectedPatient.mobile || '-'}</div>
-              <div><strong>Email:</strong> {selectedPatient.email || '-'}</div>
-              <div><strong>Insurance:</strong> {selectedPatient.insurance_provider || '-'}</div>
-              <div><strong>Insurance No:</strong> {selectedPatient.insurance_number || '-'}</div>
-
-              <div><strong>Weight:</strong> {selectedPatient.weight_kg || '-'} kg</div>
-              <div><strong>Height:</strong> {selectedPatient.height_cm || '-'} cm</div>
-              <div><strong>BMI:</strong> {calculateBMI(selectedPatient)}</div>
+        <div className="fm-card" style={{ marginTop: '4px' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              marginBottom: '16px',
+              paddingBottom: '14px',
+              borderBottom: '1px solid var(--color-border-subtle)',
+              flexWrap: 'wrap',
+              gap: '12px',
+            }}
+          >
+            <div>
+              <h2
+                style={{
+                  fontSize: 'var(--text-lg)',
+                  fontWeight: 'var(--font-medium)',
+                  color: 'var(--color-text-primary)',
+                  margin: 0,
+                }}
+              >
+                {selectedPatient.patient_name}
+              </h2>
+              <p
+                style={{
+                  fontSize: 'var(--text-sm)',
+                  color: 'var(--color-text-secondary)',
+                  margin: '4px 0 0',
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    color: 'var(--color-text-accent)',
+                    marginRight: '10px',
+                  }}
+                >
+                  {selectedPatient.mrn}
+                </span>
+                <PatientStatusBadge status={selectedPatient.patient_status} />
+              </p>
             </div>
+            <button
+              className="fm-btn"
+              style={{ fontSize: 'var(--text-xs)', padding: '4px 10px' }}
+              onClick={() => setSelectedPatient(null)}
+            >
+              ✕ Close
+            </button>
+          </div>
 
-            <hr style={{ borderColor: '#334155' }} />
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+              gap: '10px',
+              marginBottom: '20px',
+            }}
+          >
+            <ProfileField label="First name" value={selectedPatient.first_name} />
+            <ProfileField label="Middle name" value={selectedPatient.middle_name} />
+            <ProfileField label="Last name" value={selectedPatient.last_name} />
+            <ProfileField label="Gender" value={selectedPatient.gender} />
+            <ProfileField label="Date of birth" value={selectedPatient.date_of_birth} />
+            <ProfileField label="Age" value={calculateAge(selectedPatient.date_of_birth)} />
+            <ProfileField label="Mobile" value={selectedPatient.mobile} />
+            <ProfileField label="Email" value={selectedPatient.email} />
+            <ProfileField label="Insurance" value={selectedPatient.insurance_provider} />
+            <ProfileField label="Insurance no." value={selectedPatient.insurance_number} />
+            <ProfileField label="Weight" value={selectedPatient.weight_kg ? `${selectedPatient.weight_kg} kg` : null} />
+            <ProfileField label="Height" value={selectedPatient.height_cm ? `${selectedPatient.height_cm} cm` : null} />
+            <ProfileField label="BMI" value={calculateBMI(selectedPatient)} />
+          </div>
 
-     <p><strong>Address:</strong> {selectedPatient.address || '-'}</p>
-<p><strong>Allergies:</strong> {selectedPatient.allergies || '-'}</p>
-<p><strong>Chronic Conditions:</strong> {selectedPatient.chronic_conditions || '-'}</p>
-<p><strong>Notes:</strong> {selectedPatient.notes || '-'}</p>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: '10px',
+              marginBottom: '20px',
+              paddingTop: '14px',
+              borderTop: '1px solid var(--color-border-subtle)',
+            }}
+          >
+            <ProfileField label="Address" value={selectedPatient.address} />
+            <ProfileField
+              label="Allergies"
+              value={selectedPatient.allergies}
+              highlight={
+                selectedPatient.allergies &&
+                selectedPatient.allergies !== 'No Known Drug Allergies'
+              }
+            />
+            <ProfileField label="Chronic conditions" value={selectedPatient.chronic_conditions} />
+            <ProfileField label="Notes" value={selectedPatient.notes} />
+          </div>
 
-<PatientMedicationProfile
-  patient={selectedPatient}
-  refreshKey={medicationRefreshKey}
-/>
+          <div
+            style={{
+              paddingTop: '16px',
+              borderTop: '1px solid var(--color-border-subtle)',
+            }}
+          >
+            <PatientMedicationProfile
+              patient={selectedPatient}
+              refreshKey={medicationRefreshKey}
+            />
 
-<PatientDispenseForm
-  patient={selectedPatient}
-  onDispenseSaved={() => {
-    setMedicationRefreshKey((prev) => prev + 1)
-  }}
-/>
+            <PatientDispenseForm
+              patient={selectedPatient}
+              onDispenseSaved={() => {
+                setMedicationRefreshKey((prev) => prev + 1)
+              }}
+            />
 
-<MedicationHistorySection
-  patient={selectedPatient}
-  refreshKey={medicationRefreshKey}
-/>
-
-<button onClick={() => setSelectedPatient(null)} style={buttonStyle}>
-  Close
-</button>
+            <MedicationHistorySection
+              patient={selectedPatient}
+              refreshKey={medicationRefreshKey}
+            />
           </div>
         </div>
       )}
@@ -542,114 +746,101 @@ export default function PatientRegistryPage() {
   )
 }
 
-const statsGridStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-  gap: '16px',
-  marginBottom: '24px',
-}
-const noticeStyle = {
-  background: '#020617',
-  border: '1px solid #334155',
-  borderRadius: '10px',
-  padding: '12px',
-  color: '#93c5fd',
-  marginBottom: '16px',
-}
-
-const sectionStyle = {
-  background: '#0f172a',
-  border: '1px solid #334155',
-  borderRadius: '16px',
-  padding: '20px',
-  marginBottom: '24px',
+function PatientKpiCard({ label, value, color, barColor }) {
+  return (
+    <div className="fm-kpi-card">
+      <div className="fm-kpi-label">{label}</div>
+      <div className="fm-kpi-value" style={{ color }}>
+        {Number(value || 0).toLocaleString()}
+      </div>
+      <div className="fm-kpi-bar">
+        <div
+          className="fm-kpi-bar-fill"
+          style={{ width: '60%', background: barColor }}
+        />
+      </div>
+    </div>
+  )
 }
 
-const cardStyle = {
-  background: '#0f172a',
-  padding: '20px',
-  borderRadius: '12px',
-  border: '1px solid #334155',
+function PatientStatusBadge({ status }) {
+  const isActive =
+    String(status || '').toLowerCase() === 'active'
+
+  const style = isActive
+    ? {
+        color: 'var(--color-success)',
+        background: 'rgba(29,158,117,0.12)',
+        border: '1px solid rgba(29,158,117,0.30)',
+      }
+    : {
+        color: 'var(--color-danger-mid)',
+        background: 'rgba(163,45,45,0.12)',
+        border: '1px solid rgba(163,45,45,0.30)',
+      }
+
+  return (
+    <span
+      style={{
+        display: 'inline-block',
+        padding: '3px 10px',
+        borderRadius: 'var(--radius-pill)',
+        fontSize: 'var(--text-xs)',
+        fontWeight: 'var(--font-medium)',
+        whiteSpace: 'nowrap',
+        ...style,
+      }}
+    >
+      {status || 'Unknown'}
+    </span>
+  )
 }
 
-const formGridStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
-  gap: '12px',
+function ProfileField({ label, value, highlight }) {
+  return (
+    <div
+      style={{
+        background: 'var(--color-bg-content)',
+        border: '1px solid var(--color-border-subtle)',
+        borderRadius: 'var(--radius-md)',
+        padding: '8px 12px',
+      }}
+    >
+      <div
+        style={{
+          fontSize: 'var(--text-xs)',
+          color: 'var(--color-text-tertiary)',
+          textTransform: 'uppercase',
+          letterSpacing: '0.06em',
+          marginBottom: '3px',
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          fontSize: 'var(--text-sm)',
+          fontWeight: 'var(--font-medium)',
+          color: highlight
+            ? 'var(--color-warning-mid)'
+            : 'var(--color-text-primary)',
+          lineHeight: 1.4,
+        }}
+      >
+        {value || '—'}
+      </div>
+    </div>
+  )
 }
 
-const inputStyle = {
+const formInputStyle = {
   width: '100%',
-  background: '#020617',
-  color: 'white',
-  border: '1px solid #334155',
-  borderRadius: '10px',
-  padding: '12px',
+  padding: '8px 12px',
+  borderRadius: 'var(--radius-md)',
+  border: '1px solid var(--color-border-default)',
+  background: 'var(--color-bg-input)',
+  color: 'var(--color-text-primary)',
+  fontSize: 'var(--text-base)',
+  fontFamily: 'var(--font-sans)',
   boxSizing: 'border-box',
-}
-
-const textareaStyle = {
-  ...inputStyle,
-  minHeight: '70px',
-  marginTop: '12px',
-}
-
-const buttonStyle = {
-  marginTop: '16px',
-  background: '#2563eb',
-  color: 'white',
-  border: 'none',
-  borderRadius: '10px',
-  padding: '12px 18px',
-  cursor: 'pointer',
-  fontWeight: 'bold',
-}
-
-const tableStyle = {
-  width: '100%',
-  borderCollapse: 'collapse',
-  background: '#0f172a',
-  borderRadius: '16px',
-  overflow: 'hidden',
-}
-
-const thStyle = {
-  textAlign: 'left',
-  padding: '14px',
-  color: 'white',
-  borderBottom: '1px solid #334155',
-}
-
-const tdStyle = {
-  padding: '14px',
-  color: '#cbd5e1',
-  borderBottom: '1px solid #1e293b',
-}
-
-const modalOverlayStyle = {
-  position: 'fixed',
-  inset: 0,
-  background: 'rgba(0,0,0,0.7)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  zIndex: 9999,
-}
-
-const modalStyle = {
-  background: '#0f172a',
-  border: '1px solid #334155',
-  borderRadius: '16px',
-  padding: '24px',
-  width: '760px',
-  maxHeight: '90vh',
-  overflowY: 'auto',
-  color: 'white',
-}
-
-const profileGridStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
-  gap: '12px',
-  marginBottom: '16px',
 }
