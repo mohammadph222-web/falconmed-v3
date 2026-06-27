@@ -1,26 +1,42 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+build/
+
+# Environment variables — never commit these
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Supabase credentials — never commit
+src/lib/supabase.js
+
 # Logs
-logs
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# OS
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-data/raw/
-.env
+Thumbs.db
+
+# Power BI — large binary files, publish separately
+*.pbix
+
+# Raw source data files — not for public repository
+*.xlsx
+*.XLSX
+*.csv
+!docs/*.csv
