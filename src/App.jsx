@@ -17,7 +17,10 @@ import InventoryTransactionsPage from './pages/InventoryTransactionsPage'
 import InventoryOperationsPage from './pages/InventoryOperationsPage'
 import InventoryIntelligencePage from './pages/InventoryIntelligencePage'
 import NearExpiryAnalyticsPage from './pages/NearExpiryAnalyticsPage'
-import FinancialAnalyticsPage from './pages/FinancialAnalyticsPage'
+import FinancialAnalyticsPage    from './pages/FinancialAnalyticsPage'
+import AvailabilityAnalyticsPage  from './pages/AvailabilityAnalyticsPage'
+import SupplyChainAnalyticsPage   from './pages/SupplyChainAnalyticsPage'
+import InventoryEfficiencyPage     from './pages/InventoryEfficiencyPage'
 import SupplyChainPage from './pages/SupplyChainPage'
 
 import './styles/tokens.css'
@@ -53,7 +56,10 @@ const NAV_ZONES = [
     label: 'Analytics',
     items: [
       { key: 'near-expiry-analytics', label: 'Near Expiry Risk',     icon: 'chart' },
-      { key: 'financial-analytics',   label: 'Financial Analytics', icon: 'chart' },
+      { key: 'financial-analytics',    label: 'Financial Analytics',  icon: 'chart' },
+      { key: 'availability-analytics',  label: 'Availability',          icon: 'chart' },
+      { key: 'supplychain-analytics',   label: 'Supply Chain',          icon: 'chart' },
+      { key: 'efficiency-analytics',    label: 'Efficiency',            icon: 'chart' },
     ],
   },
   {
@@ -262,7 +268,10 @@ export default function App() {
           {currentPage === 'inventory'              && <InventoryExplorerPage />}
           {currentPage === 'inventory-intelligence' && <InventoryIntelligencePage />}
           {currentPage === 'near-expiry-analytics' && <NearExpiryAnalyticsPage />}
-          {currentPage === 'financial-analytics'   && <FinancialAnalyticsPage />}
+          {currentPage === 'financial-analytics'    && <FinancialAnalyticsPage />}
+          {currentPage === 'availability-analytics'  && <AvailabilityAnalyticsPage />}
+          {currentPage === 'supplychain-analytics'   && <SupplyChainAnalyticsPage />}
+          {currentPage === 'efficiency-analytics'    && <InventoryEfficiencyPage />}
           {currentPage === 'supply-chain'           && <SupplyChainPage />}
           {currentPage === 'transactions'           && <InventoryTransactionsPage />}
           {currentPage === 'operations'             && <InventoryOperationsPage />}
