@@ -22,6 +22,7 @@ import AvailabilityAnalyticsPage  from './pages/AvailabilityAnalyticsPage'
 import SupplyChainAnalyticsPage   from './pages/SupplyChainAnalyticsPage'
 import InventoryEfficiencyPage     from './pages/InventoryEfficiencyPage'
 import SupplyChainPage from './pages/SupplyChainPage'
+import falconLogo from './assets/falconmedlogo.png'
 
 import './styles/tokens.css'
 import './styles/layout.css'
@@ -220,18 +221,18 @@ export default function App() {
     <div className="fm-app-shell">
 
       <aside className="fm-sidebar" role="navigation" aria-label="FalconMed navigation">
+
         <div className="fm-brand">
-          <div className="fm-brand-mark">
-            <svg viewBox="0 0 16 16" aria-hidden="true">
-              <rect x="2" y="7" width="12" height="2" rx="1" stroke="white" strokeWidth="1.5" fill="none"/>
-              <rect x="7" y="2" width="2" height="12" rx="1" stroke="white" strokeWidth="1.5" fill="none"/>
-              <circle cx="8" cy="8" r="6.5" stroke="white" strokeWidth="1.5" fill="none"/>
-            </svg>
-          </div>
-          <div className="fm-brand-text">
-            <span className="fm-brand-name">FalconMed</span>
-            <span className="fm-brand-version">v3 · Pharmacy Analytics</span>
-          </div>
+          <img
+            src={falconLogo}
+            alt="FalconMed"
+            style={{
+              width: '100%',
+              height: 'auto',
+              objectFit: 'contain',
+              display: 'block',
+            }}
+          />
         </div>
 
         <nav className="fm-nav">
