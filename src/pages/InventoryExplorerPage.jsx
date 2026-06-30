@@ -39,6 +39,7 @@ export default function InventoryExplorerPage() {
       .select('*')
       .eq('pharmacy_id', pharmacyId)
       .order('quantity_on_hand', { ascending: false })
+      .range(0, 9999)
 
     if (inventoryError) {
       console.error('Inventory error:', inventoryError)
@@ -57,19 +58,28 @@ export default function InventoryExplorerPage() {
       return
     }
 
-    const { data: drugData, error: drugError } = await supabase
-      .from('drug_master_reference')
-      .select(
-        'drug_code, generic_name, brand_name, strength, dosage_form, unit_price_to_pharmacy'
-      )
-      .in('drug_code', drugCodes)
+    // Batch the drug_master_reference lookup since doh_code lists can be large (1000+)
+    // and Supabase/PostgREST .in() queries can hit URL length limits
+    const BATCH_SIZE = 200
+    let drugData = []
+    for (let i = 0; i < drugCodes.length; i += BATCH_SIZE) {
+      const batch = drugCodes.slice(i, i + BATCH_SIZE)
+      const { data: batchData, error: drugError } = await supabase
+        .from('drug_master_reference')
+        .select(
+          'doh_code, generic_name, brand_name, strength, dosage_form, unit_price_to_pharmacy'
+        )
+        .in('doh_code', batch)
 
-    if (drugError) {
-      console.error('Drug reference error:', drugError)
+      if (drugError) {
+        console.error('Drug reference error:', drugError)
+        continue
+      }
+      drugData = drugData.concat(batchData || [])
     }
 
     const drugMap = new Map(
-      (drugData || []).map((drug) => [drug.drug_code, drug])
+      (drugData || []).map((drug) => [drug.doh_code, drug])
     )
 
     const merged = (inventoryData || []).map((item) => ({
